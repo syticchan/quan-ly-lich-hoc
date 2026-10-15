@@ -1,0 +1,154 @@
+/* css/style.css - MÀU SẮC & KHUNG HEADER/FOOTER CHUNG CHO TOÀN BỘ WEBSITE */
+
+/* 1. Khai báo biến màu sắc chính */
+:root {
+    --primary-color: #0b497e;   /* Xanh đậm Header & Footer */
+    --accent-color: #007bff;    /* Xanh dương nút bấm */
+    --accent-hover: #0056b3;    /* Xanh đậm hơn khi di chuột vào nút */
+    --bg-light: #f4f6f9;        /* Nền xám nhạt toàn trang */
+    --text-color: #1e293b;      /* Màu chữ chính */
+    --border-color: #e2e8f0;    /* Màu viền các khung */
+}
+
+/* 2. Reset CSS cơ bản */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Giúp footer luôn nằm sát dưới cùng màn hình */
+}
+
+/* 3. NAVBAR / HEADER CHUNG */
+.navbar {
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 60px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.logo i {
+    font-size: 22px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    color: #cfd8dc;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.nav-links a.active,
+.nav-links a:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-login {
+    background-color: var(--accent-color);
+    color: white;
+    padding: 8px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.btn-login:hover {
+    background-color: var(--accent-hover);
+}
+
+/* 4. KHUNG NỘI DUNG CHÍNH (MAIN) */
+.content {
+    flex: 1;
+    width: 100%;
+}
+
+/* 5. FOOTER CHUNG */
+footer {
+    margin-top: auto;
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 13px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .navbar {
+        padding: 12px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 12px 16px;
+        gap: 10px;
+    }
+    .logo {
+        flex: 0 0 auto;
+    }
+    .btn-login {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 10px;
+        font-size: 13px;
+        width: auto;
+    }
+    .nav-links {
+        width: 100%;
+        justify-content: center;
+        order: 3;
+        gap: 6px;
+    }
+    .nav-links a {
+        font-size: 12px;
+        padding: 5px 8px;
+    }
+}
+
+@media (max-width: 600px) {
+    .logo {
+        font-size: 16px;
+    }
+    .logo i {
+        font-size: 18px;
+    }
+    .nav-links {
+        gap: 4px;
+    }
+    .nav-links a {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}

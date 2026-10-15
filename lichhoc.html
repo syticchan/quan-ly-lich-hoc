@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch học - QUẢN LÝ LỊCH HỌC</title>
+    <!-- Thư viện Icon FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- 1. CSS DÙNG CHUNG (BẮT BUỘC) -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- 2. CSS RIÊNG của trang Lịch học -->
+    <link rel="stylesheet" href="css/lichhoc.css">
+</head>
+<body>
+
+    <!-- NAV / HEADER DÙNG CHUNG -->
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>QUẢN LÝ LỊCH HỌC</span>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">Trang chủ</a>
+            <a href="lichhoc.html" class="active">Lịch học</a>
+            <a href="monhoc.html">Môn học</a>
+            <a href="thongbao.html">Thông báo</a>
+        </nav>
+        <a href="dangnhap.html" class="btn-login"><i class="fa-regular fa-user"></i> Đăng nhập</a>
+    </header>
+
+    <!-- THÂN TRANG -->
+    <main class="content">
+        <div class="schedule-page">
+
+            <div class="page-head">
+                <h1><i class="fa-regular fa-calendar-days"></i> LỊCH HỌC</h1>
+                <button type="button" class="btn btn-primary" id="btnAdd">
+                    <i class="fa-solid fa-plus"></i> Thêm lịch học
+                </button>
+            </div>
+
+            <div class="schedule-layout">
+
+                <aside class="sidebar">
+                    <div class="mini-cal" id="miniCal">
+                        <div class="mini-head">
+                            <button type="button" class="icon-btn" id="miniPrev" aria-label="Tháng trước"><i class="fa-solid fa-angle-left"></i></button>
+                            <span id="miniTitle">Tháng 10, 2026</span>
+                            <button type="button" class="icon-btn" id="miniNext" aria-label="Tháng sau"><i class="fa-solid fa-angle-right"></i></button>
+                        </div>
+                        <div class="mini-grid" id="miniGrid"></div>
+                    </div>
+                    <ul class="legend">
+                        <li><span class="dot dot-today"></span> Hôm nay</li>
+                        <li><span class="dot dot-done"></span> Đã học</li>
+                        <li><span class="dot dot-todo"></span> Chưa học</li>
+                    </ul>
+                </aside>
+
+                <section class="week-panel">
+                    <div class="week-toolbar">
+                        <button type="button" class="btn btn-outline" id="btnPrevWeek"><i class="fa-solid fa-arrow-left"></i> Tuần trước</button>
+                        <button type="button" class="btn btn-outline" id="btnNextWeek">Tuần sau <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+
+                    <div class="wg-scroll">
+                        <div class="wg" id="weekGrid"></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal" id="formModal" hidden>
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+            <div class="modal-head">
+                <h2 id="formTitle">Thêm lịch học</h2>
+                <button type="button" class="icon-btn" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="scheduleForm" novalidate>
+                <div class="field">
+                    <label for="fName">Tên môn học</label>
+                    <input type="text" id="fName" placeholder="Nhập tên môn học" maxlength="80">
+                    <small class="err" data-err="name"></small>
+                </div>
+
+                <div class="field-row row-time">
+                    <div class="field">
+                        <label for="fDate">Ngày học</label>
+                        <input type="date" id="fDate">
+                        <small class="err" data-err="date"></small>
+                    </div>
+                    <div class="field">
+                        <label for="fStart">Thời gian</label>
+                        <div class="time-range">
+                            <input type="time" id="fStart" min="07:00" max="22:00" aria-label="Giờ bắt đầu">
+                            <span>-</span>
+                            <input type="time" id="fEnd" min="07:00" max="22:00" aria-label="Giờ kết thúc">
+                        </div>
+                        <small class="err" data-err="time"></small>
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label for="fRoom">Phòng học</label>
+                        <input type="text" id="fRoom" placeholder="Ví dụ: 101-A1" maxlength="20">
+                        <small class="err" data-err="room"></small>
+                    </div>
+                    <div class="field">
+                        <label for="fTeacher">Giảng viên</label>
+                        <input type="text" id="fTeacher" placeholder="Nhập tên giảng viên" maxlength="60">
+                    </div>
+                </div>
+
+                <div class="field" id="repeatField">
+                    <label for="fRepeat">Số tuần học</label>
+                    <input type="number" id="fRepeat" min="1" max="52" value="1">
+                    <small class="err" data-err="repeat"></small>
+                </div>
+
+                <label class="check" id="editAllWrap" hidden>
+                    <input type="checkbox" id="editAll" checked="true"> 
+                    <span id="editAllText"></span>
+                </label>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" data-close>Hủy</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmit">Thêm lịch</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="detailModal" hidden>
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+            <div class="modal-head">
+                <h2 id="detailTitle">Chi tiết lịch học</h2>
+                <button type="button" class="icon-btn" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <dl class="detail-list" id="detailBody"></dl>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" id="detailEdit"><i class="fa-regular fa-pen-to-square"></i> Sửa</button>
+                <button type="button" class="btn btn-danger" id="detailDelete"><i class="fa-regular fa-trash-can"></i> Xóa</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="confirmModal" hidden>
+        <div class="modal-box small" role="alertdialog" aria-modal="true" aria-labelledby="confirmText">
+            <div class="result-icon warn"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <p class="result-text" id="confirmText">Bạn có chắc muốn xóa lịch học này?</p>
+            <label class="check" id="deleteAllWrap" hidden>
+                <input type="checkbox" id="deleteAll" checked="true">
+                <span id="deleteAllText"></span>
+            </label>
+            <div class="modal-actions center">
+                <button type="button" class="btn btn-outline" data-close>Hủy</button>
+                <button type="button" class="btn btn-danger" id="confirmYes">Xóa lịch học</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER DÙNG CHUNG -->
+    <footer>
+        <p>&copy; 2026 Quản lý lịch học. Tất cả các quyền được bảo lưu.</p>
+    </footer>
+
+    <!-- File JavaScript dùng chung -->
+    <script src="js/main.js"></script>
+    <!-- JavaScript riêng của trang Lịch học -->
+    <script src="js/lichhoc.js"></script>
+</body>
+</html>
