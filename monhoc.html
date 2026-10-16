@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Môn học - QUẢN LÝ LỊCH HỌC</title>
+
+    <!-- Thư viện Icon FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- 1. CSS DÙNG CHUNG (BẮT BUỘC) -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- 2. CSS RIÊNG của trang Môn học -->
+    <link rel="stylesheet" href="css/monhoc.css">
+</head>
+
+<body>
+
+    <!-- NAV / HEADER DÙNG CHUNG -->
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>QUẢN LÝ LỊCH HỌC</span>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">Trang chủ</a>
+            <a href="lichhoc.html">Lịch học</a>
+            <a href="monhoc.html" class="active">Môn học</a>
+            <a href="thongbao.html">Thông báo</a>
+        </nav>
+        <a href="dangnhap.html" class="btn-login"><i class="fa-regular fa-user"></i> Đăng nhập</a>
+    </header>
+
+    <!-- THÂN TRANG -->
+    <main class="content">
+        <div class="subject-page">
+
+            <!-- Tiêu đề trang + nút thêm môn -->
+            <div class="page-head">
+                <h1><i class="fa-solid fa-book"></i> MÔN HỌC</h1>
+                <button type="button" class="btn btn-primary" id="btnAdd">
+                    <i class="fa-solid fa-plus"></i> Thêm môn học
+                </button>
+            </div>
+
+            <!-- Ô tìm kiếm -->
+            <div class="subject-toolbar">
+                <input type="search" id="searchInput" placeholder="Tìm theo mã môn, tên môn, giảng viên hoặc phòng học" aria-label="Tìm môn học">
+            </div>
+
+            <!-- Bảng danh sách môn học (các dòng sẽ do monhoc.js tạo ra) -->
+            <div class="table-wrap">
+                <table class="subject-table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Mã môn</th>
+                            <th>Tên môn học</th>
+                            <th>Giảng viên</th>
+                            <th>Phòng học</th>
+                            <th>Số tín chỉ</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="subjectBody"></tbody>
+                </table>
+            </div>
+
+            <!-- Hiện khi chưa có môn học nào hoặc tìm không thấy -->
+            <p class="empty-text" id="emptyText" hidden>Chưa có môn học nào. Bấm "Thêm môn học" để bắt đầu.</p>
+
+        </div>
+    </main>
+
+    <!-- HỘP THOẠI: THÊM / SỬA MÔN HỌC -->
+    <div class="modal" id="formModal" hidden>
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+            <div class="modal-head">
+                <h2 id="formTitle">Thêm môn học</h2>
+                <button type="button" class="icon-btn" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form id="subjectForm" novalidate>
+                <!-- Lưu id của môn đang sửa (để trống khi thêm mới) -->
+                <input type="hidden" id="fId">
+
+                <div class="field-row">
+                    <div class="field">
+                        <label for="fCode">Mã môn</label>
+                        <input type="text" id="fCode" placeholder="Ví dụ: IT101" maxlength="20">
+                        <small class="err" data-err="code"></small>
+                    </div>
+                    <div class="field">
+                        <label for="fCredit">Số tín chỉ</label>
+                        <input type="number" id="fCredit" min="1" max="10" value="3">
+                        <small class="err" data-err="credit"></small>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="fName">Tên môn học</label>
+                    <input type="text" id="fName" placeholder="Nhập tên môn học" maxlength="80">
+                    <small class="err" data-err="name"></small>
+                </div>
+
+                <div class="field-row">
+                    <div class="field">
+                        <label for="fTeacher">Giảng viên</label>
+                        <input type="text" id="fTeacher" placeholder="Nhập tên giảng viên" maxlength="60">
+                        <small class="err" data-err="teacher"></small>
+                    </div>
+                    <div class="field">
+                        <label for="fRoom">Phòng học</label>
+                        <input type="text" id="fRoom" placeholder="Ví dụ: P201-A2" maxlength="20">
+                        <small class="err" data-err="room"></small>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" data-close>Hủy</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmit">Thêm môn học</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- HỘP THOẠI: XÁC NHẬN XÓA -->
+    <div class="modal" id="confirmModal" hidden>
+        <div class="modal-box small" role="alertdialog" aria-modal="true" aria-labelledby="confirmText">
+            <div class="result-icon warn"><i class="fa-solid fa-triangle-exclamation"></i></div>
+            <p class="result-text" id="confirmText">Bạn có chắc muốn xóa môn học này?</p>
+            <div class="modal-actions center">
+                <button type="button" class="btn btn-outline" data-close>Hủy</button>
+                <button type="button" class="btn btn-danger" id="confirmYes">Xóa môn học</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER DÙNG CHUNG -->
+    <footer>
+        <p>&copy; 2026 Quản lý lịch học. Tất cả các quyền được bảo lưu.</p>
+    </footer>
+
+    <!-- File JavaScript dùng chung -->
+    <script src="js/main.js"></script>
+    <!-- JavaScript riêng của trang Môn học -->
+    <script src="js/monhoc.js"></script>
+</body>
+
+</html>
