@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUẢN LÝ LỊCH HỌC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/thongbao.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>QUẢN LÝ LỊCH HỌC</span>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">Trang chủ</a>
+            <a href="lichhoc.html">Lịch học</a>
+            <a href="monhoc.html">Môn học</a>
+            <a href="thongbao.html" class="active">Thông báo</a>
+        </nav>
+        <a href="dangnhap.html" class="btn-login"><i class="fa-regular fa-user"></i> Đăng nhập</a>
+    </header>
+
+    <main class="content">
+        <div class="khungthongbao">
+            <!-- Khu vực tiêu đề kèm nút mở modal thêm thông báo -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div class="tieudetrang" style="margin-bottom: 0;">
+                    <i class="fa-regular fa-bell"></i>
+                    <span>THÔNG BÁO</span>
+                </div>
+                <button id="nutMoModal" class="nutdadoc">
+                    <i class="fa-solid fa-plus"></i> Thêm thông báo
+                </button>
+            </div>
+
+            <div class="luoitruyenthong">
+                <div class="cotdanhsach">
+                    <div class="thanhboloc">
+                        <button class="nutloc active" onclick="chuyenTab('tatca', event)">Tất cả (5)</button>
+                        <button class="nutloc" onclick="chuyenTab('chuadoc', event)">Chưa đọc (3)</button>
+                        <button class="nutloc" onclick="chuyenTab('dadoc', event)">Đã đọc (2)</button>
+                    </div>
+
+                    <div class="danhsachitem">
+                        <div class="itemthongbao chuadoc" onclick="hienThiChiTiet('Thay đổi phòng học môn Lập trình C++', '06/10/2026 - 10:30', 'Môn Lập trình C++ sẽ được chuyển sang phòng A102 từ tuần sau (bắt đầu từ ngày 12/10/2026).<br>Sinh viên vui lòng lưu ý để không bỏ lỡ buổi học.', this)">
+                            <div class="noidungitem">
+                                <div class="chamchuadoc"></div>
+                                <div class="textitem">
+                                    <h4>Thay đổi phòng học môn Lập trình C++</h4>
+                                    <p>Môn Lập trình C++ sẽ được chuyển sang phòng A102 từ tuần sau.</p>
+                                </div>
+                            </div>
+                            <div class="thongtinphu">
+                                <span class="ngaythang">06/10/2026</span>
+                                <span class="nhandanchuadoc">Chưa đọc</span>
+                            </div>
+                        </div>
+
+                        <div class="itemthongbao chuadoc" onclick="hienThiChiTiet('Lịch học tuần mới', '05/10/2026 - 08:00', 'Cập nhật thời khóa biểu chiều 06/10 - 12/10/2026.', this)">
+                            <div class="noidungitem">
+                                <div class="chamchuadoc"></div>
+                                <div class="textitem">
+                                    <h4>Lịch học tuần mới</h4>
+                                    <p>Cập nhật thời khóa biểu chiều 06/10 - 12/10/2026.</p>
+                                </div>
+                            </div>
+                            <div class="thongtinphu">
+                                <span class="ngaythang">05/10/2026</span>
+                                <span class="nhandanchuadoc">Chưa đọc</span>
+                            </div>
+                        </div>
+
+                        <div class="itemthongbao chuadoc" onclick="hienThiChiTiet('Thông báo nghỉ học', '05/10/2026 - 07:30', 'Ngày 06/10/2026 (Thứ 2) các lớp nghỉ học theo thông báo của ban cán sự.', this)">
+                            <div class="noidungitem">
+                                <div class="chamchuadoc"></div>
+                                <div class="textitem">
+                                    <h4>Thông báo nghỉ học</h4>
+                                    <p>Ngày 06/10/2026 (Thứ 2) nghỉ học theo thông báo.</p>
+                                </div>
+                            </div>
+                            <div class="thongtinphu">
+                                <span class="ngaythang">05/10/2026</span>
+                                <span class="nhandanchuadoc">Chưa đọc</span>
+                            </div>
+                        </div>
+
+                        <div class="itemthongbao dadoc" onclick="hienThiChiTiet('Kết thúc học phần', '30/09/2026 - 15:00', 'Học phần đã kết thúc. Sinh viên kiểm tra lại điểm số trên hệ thống.', this)">
+                            <div class="noidungitem">
+                                <div class="textitem" style="padding-left: 18px;">
+                                    <h4>Kết thúc học phần</h4>
+                                    <p>Học phần đã kết thúc. Sinh viên kiểm tra lại điểm số...</p>
+                                </div>
+                            </div>
+                            <div class="thongtinphu">
+                                <span class="ngaythang">30/09/2026</span>
+                                <span class="nhandandadoc">Đã đọc</span>
+                            </div>
+                        </div>
+
+                        <div class="itemthongbao dadoc" onclick="hienThiChiTiet('Thông báo về tài liệu học tập', '28/09/2026 - 14:20', 'Tài liệu học tập đã được cập nhật lên hệ thống.', this)">
+                            <div class="noidungitem">
+                                <div class="textitem" style="padding-left: 18px;">
+                                    <h4>Thông báo về tài liệu học tập</h4>
+                                    <p>Tài liệu học tập đã được cập nhật lên hệ thống.</p>
+                                </div>
+                            </div>
+                            <div class="thongtinphu">
+                                <span class="ngaythang">28/09/2026</span>
+                                <span class="nhandandadoc">Đã đọc</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="cotchitiet" id="khungchitiet">
+                    <h3 id="tieudecitiet">Thay đổi phòng học môn Lập trình C++</h3>
+                    <p class="thoigianchitiet"><i class="fa-regular fa-clock"></i> <span id="ngaygiochitiet">06/10/2026 - 10:30</span></p>
+                    <div class="noidungchitiet" id="noidungchitiet">
+                        Môn Lập trình C++ sẽ được chuyển sang phòng A102 từ tuần sau (bắt đầu từ ngày 12/10/2026).<br>Sinh viên vui lòng lưu ý để không bỏ lỡ buổi học.
+                    </div>
+                    <button class="nutdadoc" onclick="danhDauDaDoc()"><i class="fa-solid fa-check"></i> Đã đọc</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Thêm Thông Báo -->
+    <div class="hopmodal" id="modalThemTB" hidden>
+        <div class="hopnoidung" role="dialog" aria-modal="true">
+            <div class="modal-head">
+                <h2>Thêm thông báo mới</h2>
+                <button type="button" class="icon-dong" id="nutDongModal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="formThemTB">
+                <div class="nhaplieu">
+                    <label for="nhapTieuDe">Tiêu đề thông báo</label>
+                    <input type="text" id="nhapTieuDe" placeholder="Nhập tiêu đề thông báo..." required>
+                </div>
+                <div class="nhaplieu">
+                    <label for="nhapNoiDung">Nội dung chi tiết</label>
+                    <textarea id="nhapNoiDung" rows="4" placeholder="Nhập nội dung thông báo..." required></textarea>
+                </div>
+                <div class="nhaplieu">
+                    <label for="nhapNgay">Ngày đăng</label>
+                    <input type="date" id="nhapNgay" required>
+                </div>
+                <div class="modal-hanh-dong">
+                    <button type="button" class="nutbam nut-huy" id="nutHuyModal">Hủy</button>
+                    <button type="submit" class="nutbam nutthem">Thêm thông báo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Quản lý lịch học. Tất cả các quyền được bảo lưu.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/thongbao.js"></script>
+</body>
+</html>
