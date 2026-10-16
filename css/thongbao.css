@@ -1,4 +1,3 @@
-/* thongbao_2.css */
 .khungthongbao {
     max-width: 1200px;
     margin: 25px auto;
@@ -176,29 +175,6 @@
     background-color: #08375e;
 }
 
-@media screen and (max-width: 768px) {
-    .luoitruyenthong {
-        grid-template-columns: 1fr;
-    }
-
-    .khungthongbao {
-        padding: 0 10px;
-        margin: 10px auto;
-    }
-
-    .navbar {
-        padding: 10px 15px;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .nav-links {
-        gap: 10px;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-}
-
 .hopmodal {
     position: fixed;
     inset: 0;
@@ -301,4 +277,89 @@
 
 .nutthem:hover {
     background: #08375e;
+}
+
+@media screen and (max-width: 900px) {
+    .khungthongbao {
+        max-width: 100%;
+        padding: 0 15px;
+    }
+
+    .luoitruyenthong {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .textitem p {
+        max-width: 240px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .luoitruyenthong {
+        grid-template-columns: 1fr;
+    }
+
+    .khungthongbao {
+        padding: 0 10px;
+        margin: 10px auto;
+    }
+
+    .navbar {
+        padding: 10px 15px;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav-links {
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .khungthongbao {
+        padding: 0 8px;
+        margin: 8px auto;
+    }
+
+    .cotdanhsach, .cotchitiet {
+        padding: 15px;
+    }
+
+    .thanhboloc {
+        flex-wrap: wrap;
+        gap: 6px;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+
+    .nutloc {
+        padding: 5px 10px;
+        font-size: 13px;
+    }
+
+    .itemthongbao {
+        padding: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .thongtinphu {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .textitem p {
+        max-width: 100%;
+    }
+
+    .hopnoidung {
+        padding: 15px 18px;
+        margin: 0 10px;
+    }
 }
