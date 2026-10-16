@@ -66,7 +66,7 @@
                     </div>
 
                     <div class="wg-scroll">
-                        <div class="wg" id="weekGrid"></div>
+                        <table class="wg" id="weekGrid"></table>
                     </div>
                 </section>
             </div>
@@ -93,13 +93,16 @@
                         <small class="err" data-err="date"></small>
                     </div>
                     <div class="field">
-                        <label for="fStart">Thời gian</label>
-                        <div class="time-range">
-                            <input type="time" id="fStart" min="07:00" max="22:00" aria-label="Giờ bắt đầu">
-                            <span>-</span>
-                            <input type="time" id="fEnd" min="07:00" max="22:00" aria-label="Giờ kết thúc">
-                        </div>
-                        <small class="err" data-err="time"></small>
+                        <label for="fCa">Ca học</label>
+                        <select id="fCa">
+                            <option value="">Chọn ca học</option>
+                            <option value="1">Ca 1 (07:00 - 09:30) - Tiết 1-3</option>
+                            <option value="2">Ca 2 (09:30 - 12:00) - Tiết 4-6</option>
+                            <option value="3">Ca 3 (12:30 - 15:00) - Tiết 7-9</option>
+                            <option value="4">Ca 4 (15:00 - 17:30) - Tiết 10-12</option>
+                            <option value="5">Ca 5 (17:30 - 20:00) - Tiết 13-15</option>
+                        </select>
+                        <small class="err" data-err="ca"></small>
                     </div>
                 </div>
 

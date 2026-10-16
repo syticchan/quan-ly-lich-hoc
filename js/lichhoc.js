@@ -1,13 +1,19 @@
 (function () {
     'use strict';
 
-    const START_HOUR = 7;
-    const END_HOUR = 22;
-    const ROW_H = 64;
-    const GRID_TOP = 10;
-    const STORAGE_KEY = 'data_lh';
+    const STORAGE_KEY = 'data_lh_ca';
 
     const DAY_NAMES = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật'];
+    const DAYS_SHOWN = 6;
+
+    const CA_LIST = [
+        { ca: 1, start: '07:00', end: '09:30', tiet: '1 - 3' },
+        { ca: 2, start: '09:30', end: '12:00', tiet: '4 - 6' },
+        { ca: 3, start: '12:30', end: '15:00', tiet: '7 - 9' },
+        { ca: 4, start: '15:00', end: '17:30', tiet: '10 - 12' },
+        { ca: 5, start: '17:30', end: '20:00', tiet: '13 - 15' }
+    ];
+    const getCa = n => CA_LIST.find(c => c.ca === Number(n));
 
     const PALETTE = [
         { bg: '#dbeafe', bd: '#3b82f6', tx: '#1e3a8a' },
@@ -28,9 +34,8 @@
     const dayIndex = d => (d.getDay() + 6) % 7;
     const startOfWeek = d => addDays(d, -dayIndex(d));
     const fmtDM = d => `${pad(d.getDate())}/${pad(d.getMonth() + 1)}`;
-    const toMin = t => { const [h, m] = t.split(':').map(Number); return h * 60 + m; };
 
-    const isDone = ev => new Date() >= new Date(`${ev.date}T${ev.end}`);
+    const isDone = ev => new Date() >= new Date(`${ev.date}T${getCa(ev.ca).end}`);
 
     function colorIndexFor(name) {
         let h = 0;
@@ -56,43 +61,48 @@
     const confirmModal = $('confirmModal');
     const form = $('scheduleForm');
     const f = {
-        name: $('fName'), date: $('fDate'), start:$('fStart'),
-        end: $('fEnd'), room: $('fRoom'), teacher:$('fTeacher'),
+        name: $('fName'), date: $('fDate'), ca: $('fCa'),
+        room: $('fRoom'), teacher:$('fTeacher'),
         repeat: $('fRepeat')
     };
 
     function renderEvent(e) {
-        const top = GRID_TOP + (toMin(e.start) - START_HOUR * 60) / 60 * ROW_H + 1;
-        const height = Math.max((toMin(e.end) - toMin(e.start)) / 60 * ROW_H - 2, 22);
         const p = PALETTE[colorIndexFor(e.name)];
         return `<div class="ev${isDone(e) ? ' is-done' : ''}" data-id="${e.id}"
-                     style="top:${top}px;height:${height}px;--bg:${p.bg};--bd:${p.bd};--tx:${p.tx}">
+                     style="--bg:${p.bg};--bd:${p.bd};--tx:${p.tx}">
                     <span class="ev-title">${esc(e.name)}</span>
-                    <span class="ev-meta">${e.start} - ${e.end}</span>
                     ${e.room ? `<span class="ev-meta">${esc(e.room)}</span>` : ''}
                 </div>`;
     }
 
     function renderWeek() {
         const todayISO = toISO(new Date());
-        let heads = '', cols = '';
+        let heads = '<th class="wg-corner">Ca / Tiết</th>', rows = '';
 
-        for (let i = 0; i < 7; i++) {
+        for (let i = 0; i < DAYS_SHOWN; i++) {
             const d = addDays(weekStart, i);
-            const iso = toISO(d);
-            const today = iso === todayISO ? ' today' : '';
-            heads += `<div class="wg-head${today}"><strong>${DAY_NAMES[i]}</strong><small>${fmtDM(d)}</small></div>`;
-            cols += `<div class="wg-col${today}" data-date="${iso}">
-                        ${events.filter(e => e.date === iso).map(renderEvent).join('')}
-                     </div>`;
+            const today = toISO(d) === todayISO ? ' today' : '';
+            heads += `<th class="wg-head${today}"><strong>${DAY_NAMES[i]}</strong><small>${fmtDM(d)}</small></th>`;
         }
 
-        let times = '';
-        for (let h = START_HOUR; h <= END_HOUR; h++) {
-            times += `<span class="wg-time" style="top:${GRID_TOP + (h - START_HOUR) * ROW_H}px">${pad(h)}:00</span>`;
-        }
+        CA_LIST.forEach(c => {
+            let cells = '';
+            for (let i = 0; i < DAYS_SHOWN; i++) {
+                const iso = toISO(addDays(weekStart, i));
+                const today = iso === todayISO ? ' today' : '';
+                const ev = events.find(e => e.date === iso && Number(e.ca) === c.ca);
+                cells += `<td class="wg-cell${today}" data-date="${iso}" data-ca="${c.ca}">${ev ? renderEvent(ev) : ''}</td>`;
+            }
+            rows += `<tr>
+                        <th class="wg-ca">
+                            <strong>Ca ${c.ca}</strong>
+                            <small>(${c.start} - ${c.end})</small>
+                            <small>Tiết ${c.tiet}</small>
+                        </th>${cells}
+                     </tr>`;
+        });
 
-        weekGrid.innerHTML = `<div class="wg-corner"></div>${heads}<div class="wg-times">${times}</div>${cols}`;
+        weekGrid.innerHTML = `<thead><tr>${heads}</tr></thead><tbody>${rows}</tbody>`;
     }
 
     function renderMini() {
@@ -145,7 +155,7 @@
         m.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closeModal(m)));
     });
 
-    const inputs = { name: [f.name], date: [f.date], time: [f.start, f.end], room: [f.room], repeat: [f.repeat] };
+    const inputs = { name: [f.name], date: [f.date], ca: [f.ca], room: [f.room], repeat: [f.repeat] };
     function showErrors(errs = {}) {
         Object.keys(inputs).forEach(k => {
             const errEl = form.querySelector(`[data-err="${k}"]`);
@@ -154,28 +164,25 @@
         });
     }
 
-    function checkTime(date, start, end, weeks, isEditAll = false) {
-        if (!start || !end) return 'Vui lòng chọn giờ bắt đầu và kết thúc';
-        if (end <= start) return 'Giờ kết thúc phải sau giờ bắt đầu';
-        if (toMin(end) - toMin(start) < 30) return 'Thời lượng buổi học phải từ 30 phút trở lên';
-        if (toMin(start) < START_HOUR * 60 || toMin(end) > END_HOUR * 60) {
-            return `Thời gian học phải trong khoảng ${pad(START_HOUR)}:00 - ${END_HOUR}:00`;
-        }
-        
+        function checkCa(date, ca, weeks, isEditAll = false) {
+        if (!ca) return 'Vui lòng chọn ca học';
+
         const ev = currentId ? findEvent(currentId) : null;
+        const skip = isEditAll && ev ? e => e.group === ev.group : e => e.id === currentId;
         let dates = [];
-        if (isEditAll && ev && ev.group) {
-            const groupEvents = events.filter(e => e.group === ev.group).sort((a, b) => new Date(a.date) - new Date(b.date));
-            const baseDate = parseISO(date);
-            dates = groupEvents.map((_, index) => toISO(addDays(baseDate, index * 7)));
+        if (isEditAll && ev) {
+            const groupEvents = events.filter(e => e.group === ev.group).sort((a, b) => a.date.localeCompare(b.date));
+            const first = addDays(parseISO(date), -groupEvents.findIndex(e => e.id === ev.id) * 7);
+            dates = groupEvents.map((_, index) => toISO(addDays(first, index * 7)));
         } else {
-            dates = Array.from({ length: weeks }, (_, i) => toISO(addDays(parseISO(date), i * 7)));
+            dates = Array.from({ length: Math.min(weeks || 0, 52) }, (_, i) => toISO(addDays(parseISO(date), i * 7)));
         }
 
         for (const dStr of dates) {
-            const c = events.find(e => e.id !== currentId && (!ev || e.group !== ev.group) && e.date === dStr && start < e.end && e.start < end);
+            const c = events.find(e => !skip(e) && e.date === dStr && Number(e.ca) === ca);
             if (c) {
-                return `Trùng giờ với: ${c.name} (${fmtDM(parseISO(c.date))}, ${c.start} - ${c.end})`;
+                const cc = getCa(c.ca);
+                return `Trùng ca với: ${c.name} (${fmtDM(parseISO(c.date))}, Ca ${c.ca}: ${cc.start} - ${cc.end})`;
             }
         }
         return '';
@@ -190,12 +197,11 @@
         $('btnSubmit').textContent = currentId ? 'Lưu thay đổi' : 'Thêm lịch';
 
         const today = new Date();
-        const inWeek = today >= weekStart && today < addDays(weekStart, 7);
+        const inWeek = today >= weekStart && today < addDays(weekStart, 7) && dayIndex(today) < DAYS_SHOWN;
 
         f.name.value = ev.name || '';
         f.date.value = ev.date || opts.date || toISO(inWeek ? today : weekStart);
-        f.start.value = ev.start || opts.start || '';
-        f.end.value = ev.end || opts.end || '';
+        f.ca.value = ev.ca || opts.ca || '';
         f.room.value = ev.room || '';
         f.teacher.value = ev.teacher || '';
         f.repeat.value = 1;
@@ -223,20 +229,23 @@
 
         const name = f.name.value.trim();
         const date = f.date.value;
-        const start = f.start.value;
-        const end = f.end.value;
+        const ca = Number(f.ca.value);
         const editAllCheckbox = $('editAll');
         const isEditAll = currentId && editAllCheckbox && !editAllCheckbox.hidden && editAllCheckbox.checked;
         const repeatVal = f.repeat.value.trim();
         const weeks = Number(repeatVal);
 
-        const parsedDate = parseISO(date);
-        const year = parsedDate.getFullYear();
+        const parsedDate = date ? parseISO(date) : null;
+
+        let dateErr = '';
+        if (!date) dateErr = 'Ngày học không hợp lệ';
+        else if (parsedDate.getFullYear() < 2000) dateErr = 'Năm học không hợp lệ';
+        else if (dayIndex(parsedDate) >= DAYS_SHOWN) dateErr = 'Chỉ xếp lịch từ Thứ 2 đến Thứ 7';
 
         const errs = {
             name: name ? '' : 'Vui lòng nhập tên môn học',
-            date: !date ? 'Ngày học không hợp lệ' : (year < 2000 ? 'Năm học không hợp lệ' : ''),
-            time: checkTime(date, start, end, weeks, isEditAll),
+            date: dateErr,
+            ca: dateErr ? (ca ? '' : 'Vui lòng chọn ca học') : checkCa(date, ca, weeks, isEditAll),
             room: f.room.value.trim() ? '' : 'Vui lòng nhập phòng học',
             repeat: (!currentId && (!/^\d+$/.test(repeatVal) || weeks < 1 || weeks > 52)) ? 'Số tuần học chỉ từ 1 đến 52 tuần' : ''
         };
@@ -244,7 +253,7 @@
         if (Object.values(errs).some(Boolean)) return;
 
         const data = {
-            name, date, start, end,
+            name, date, ca,
             room: f.room.value.trim(),
             teacher: f.teacher.value.trim()
         };
@@ -253,19 +262,15 @@
             const ev = findEvent(currentId);
             
             if (isEditAll && ev.group) {
-                const newDate = parseISO(date);
-                let groupEvents = events.filter(e => e.group === ev.group);
-                groupEvents.sort((a, b) => new Date(a.date) - new Date(b.date));
+                const groupEvents = events.filter(e => e.group === ev.group).sort((a, b) => a.date.localeCompare(b.date));
+                const first = addDays(parseISO(date), -groupEvents.findIndex(e => e.id === ev.id) * 7);
 
                 groupEvents.forEach((item, index) => {
                     item.name = data.name;
-                    item.start = data.start;
-                    item.end = data.end;
+                    item.ca = data.ca;
                     item.room = data.room;
                     item.teacher = data.teacher;
-
-                    const newBaseDate = addDays(newDate, index * 7);
-                    item.date = toISO(newBaseDate);
+                    item.date = toISO(addDays(first, index * 7));
                 });
             } else {
                 Object.assign(ev, data);
@@ -286,11 +291,12 @@
         const ev = findEvent(id);
         currentId = id;
         const d = parseISO(ev.date);
+        const c = getCa(ev.ca);
         const done = isDone(ev);
         $('detailBody').innerHTML = `
             <dt>Môn học</dt><dd>${esc(ev.name)}</dd>
             <dt>Ngày học</dt><dd>${DAY_NAMES[dayIndex(d)]}, ${fmtDM(d)}/${d.getFullYear()}</dd>
-            <dt>Thời gian</dt><dd>${ev.start} - ${ev.end}</dd>
+            <dt>Ca học</dt><dd>Ca ${c.ca} (${c.start} - ${c.end}) - Tiết ${c.tiet}</dd>
             <dt>Phòng học</dt><dd>${ev.room ? esc(ev.room) : '-'}</dd>
             <dt>Giảng viên</dt><dd>${ev.teacher ? esc(ev.teacher) : '-'}</dd>
             <dt>Trạng thái</dt><dd><span class="badge ${done ? 'done' : 'todo'}">${done ? 'Đã học' : 'Chưa học'}</span></dd>`;
@@ -299,8 +305,9 @@
 
     function askDelete(id) {
         const ev = findEvent(id);
+        const c = getCa(ev.ca);
         currentId = id;
-        $('confirmText').textContent = `Xóa lịch học "${ev.name}" (${fmtDM(parseISO(ev.date))}, ${ev.start} - ${ev.end})?`;
+        $('confirmText').textContent = `Xóa lịch học "${ev.name}" (${fmtDM(parseISO(ev.date))}, Ca ${c.ca}: ${c.start} - ${c.end})?`;
         const n = events.filter(e => e.group && e.group === ev.group).length;
         $('deleteAllWrap').hidden = n < 2;
         $('deleteAll').checked = true;
@@ -310,7 +317,8 @@
 
     $('confirmYes').addEventListener('click', () => {
         const ev = findEvent(currentId);
-        events = events.filter(e => $('deleteAll').checked ? e.group !== ev.group : e.id !== currentId);
+        const all = $('deleteAll').checked && ev.group;
+        events = events.filter(e => all ? e.group !== ev.group : e.id !== currentId);
         saveEvents();
         closeModal(confirmModal);
         render();
@@ -319,23 +327,18 @@
     $('detailEdit').addEventListener('click', () => { closeModal(detailModal); openForm({ id: currentId }); });$('detailDelete').addEventListener('click', () => { closeModal(detailModal); askDelete(currentId); });
 
     weekGrid.addEventListener('click', e => {
-        const card = e.target.closest('.ev');
-        if (card) { openDetail(card.dataset.id); return; }
+        const cell = e.target.closest('.wg-cell');
+        if (!cell) return;
 
-        const col = e.target.closest('.wg-col');
-        if (col) {
-            const rect = col.getBoundingClientRect();
-            const y = e.clientY - rect.top - GRID_TOP;
-            if (y < 0) return;
-            const hour = Math.min(Math.max(START_HOUR + Math.floor(y / ROW_H), START_HOUR), END_HOUR - 1);
-            openForm({ date: col.dataset.date, start: `${pad(hour)}:00`, end: `${pad(hour + 1)}:00` });
-        }
+        const card = cell.querySelector('.ev');
+        if (card) openDetail(card.dataset.id);
+        else openForm({ date: cell.dataset.date, ca: cell.dataset.ca });
     });
 
     $('btnPrevWeek').addEventListener('click', () => goToWeekOf(addDays(weekStart, -7)));
     $('btnNextWeek').addEventListener('click', () => goToWeekOf(addDays(weekStart, 7)));$('btnAdd').addEventListener('click', () => openForm());
 
-    $('miniPrev').addEventListener('click', () => { miniMonth = nativeMonthDate = new Date(miniMonth.getFullYear(), miniMonth.getMonth() - 1, 1); renderMini(); });$('miniNext').addEventListener('click', () => {
+    $('miniPrev').addEventListener('click', () => { miniMonth = new Date(miniMonth.getFullYear(), miniMonth.getMonth() - 1, 1); renderMini(); });$('miniNext').addEventListener('click', () => {
         miniMonth = new Date(miniMonth.getFullYear(), miniMonth.getMonth() + 1, 1);
         renderMini();
     });
