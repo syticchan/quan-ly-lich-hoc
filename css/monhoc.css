@@ -1,9 +1,3 @@
-/* css/monhoc.css - GIAO DIỆN RIÊNG CỦA TRANG MÔN HỌC
-   Dùng lại các biến màu trong style.css (--primary-color, --accent-color, ...)
-   Lưu ý: style.css chỉ có màu, header, footer. Các class như .btn, .modal, .field
-   nằm trong lichhoc.css (mà trang này không gọi), nên được viết lại ở đây. */
-
-/* 1. KHUNG TRANG */
 .subject-page {
     max-width: 1280px;
     margin: 0 auto;
@@ -25,7 +19,6 @@
     color: var(--primary-color);
 }
 
-/* 2. NÚT BẤM */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -69,7 +62,6 @@
     background: #b91c1c;
 }
 
-/* Nút icon nhỏ (nút đóng hộp thoại) */
 .icon-btn {
     width: 28px;
     height: 28px;
@@ -88,13 +80,11 @@
     color: var(--text-color);
 }
 
-/* Viền xanh khi dùng phím Tab để chọn */
 :where(.btn, .icon-btn, .action-btn, input):focus-visible {
     outline: 2px solid var(--accent-color);
     outline-offset: 2px;
 }
 
-/* 3. Ô TÌM KIẾM */
 .subject-toolbar {
     margin-bottom: 14px;
 }
@@ -113,8 +103,6 @@
     border-color: var(--accent-color);
 }
 
-/* 4. BẢNG DANH SÁCH MÔN HỌC */
-/* Khung bọc giúp bảng cuộn ngang được trên màn hình nhỏ */
 .table-wrap {
     overflow-x: auto;
     background: #fff;
@@ -142,17 +130,14 @@
     font-size: 13px;
 }
 
-/* Dòng cuối không cần đường kẻ dưới */
 .subject-table tbody tr:last-child td {
     border-bottom: none;
 }
 
-/* Rê chuột vào dòng thì đổi màu nền */
 .subject-table tbody tr:hover {
     background: #f8fafc;
 }
 
-/* Canh giữa: cột 1 (STT), cột 6 (Số tín chỉ), cột 7 (Thao tác) */
 .subject-table th:nth-child(1),
 .subject-table td:nth-child(1),
 .subject-table th:nth-child(6),
@@ -162,12 +147,10 @@
     text-align: center;
 }
 
-/* Mã môn in đậm */
 .subject-table td:nth-child(2) {
     font-weight: 600;
 }
 
-/* Nút Sửa / Xóa trong cột Thao tác (do monhoc.js tạo ra) */
 .action-btn {
     width: 32px;
     height: 32px;
@@ -195,7 +178,6 @@
     background: #fee2e2;
 }
 
-/* Dòng thông báo khi danh sách trống */
 .empty-text {
     margin-top: 16px;
     padding: 24px;
@@ -210,8 +192,6 @@
     display: none;
 }
 
-/* 5. HỘP THOẠI (MODAL) */
-/* Lớp nền mờ phủ toàn màn hình */
 .modal {
     position: fixed;
     inset: 0;
@@ -223,7 +203,6 @@
     background: rgba(15, 23, 42, 0.45);
 }
 
-/* Thuộc tính hidden thì ẩn hộp thoại */
 .modal[hidden] {
     display: none;
 }
@@ -240,7 +219,6 @@
     animation: pop 0.16s ease-out;
 }
 
-/* Hộp thoại nhỏ (xác nhận xóa) */
 .modal-box.small {
     max-width: 340px;
     text-align: center;
@@ -280,14 +258,12 @@
     justify-content: center;
 }
 
-/* 6. FORM TRONG HỘP THOẠI */
 .field {
     margin-bottom: 12px;
     flex: 1;
     min-width: 0;
 }
 
-/* Hai ô nằm cùng một hàng */
 .field-row {
     display: flex;
     gap: 12px;
@@ -315,12 +291,10 @@
     border-color: var(--accent-color);
 }
 
-/* Ô nhập sai sẽ có viền đỏ (JS thêm class "invalid") */
 .field input.invalid {
     border-color: #dc2626;
 }
 
-/* Dòng báo lỗi dưới ô nhập; rỗng thì ẩn */
 .err {
     display: block;
     margin-top: 3px;
@@ -332,7 +306,6 @@
     display: none;
 }
 
-/* 7. HỘP THOẠI XÁC NHẬN XÓA */
 .result-icon {
     font-size: 44px;
     margin: 6px 0 10px;
@@ -348,13 +321,11 @@
     color: var(--text-color);
 }
 
-/* 8. RESPONSIVE (MÀN HÌNH NHỎ) */
 @media (max-width: 900px) {
     .subject-page {
         padding: 16px;
     }
 
-    /* Hai ô cùng hàng chuyển thành xếp dọc */
     .field-row {
         flex-direction: column;
         gap: 0;
@@ -375,7 +346,6 @@
     }
 }
 
-/* Người dùng tắt hiệu ứng chuyển động thì bỏ animation */
 @media (prefers-reduced-motion: reduce) {
     .modal-box {
         animation: none;

@@ -6,19 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Môn học - QUẢN LÝ LỊCH HỌC</title>
 
-    <!-- Thư viện Icon FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- 1. CSS DÙNG CHUNG (BẮT BUỘC) -->
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- 2. CSS RIÊNG của trang Môn học -->
     <link rel="stylesheet" href="css/monhoc.css">
 </head>
 
 <body>
 
-    <!-- NAV / HEADER DÙNG CHUNG -->
     <header class="navbar">
         <div class="logo">
             <i class="fa-solid fa-graduation-cap"></i>
@@ -33,11 +29,9 @@
         <a href="dangnhap.html" class="btn-login"><i class="fa-regular fa-user"></i> Đăng nhập</a>
     </header>
 
-    <!-- THÂN TRANG -->
     <main class="content">
         <div class="subject-page">
 
-            <!-- Tiêu đề trang + nút thêm môn -->
             <div class="page-head">
                 <h1><i class="fa-solid fa-book"></i> MÔN HỌC</h1>
                 <button type="button" class="btn btn-primary" id="btnAdd">
@@ -45,12 +39,10 @@
                 </button>
             </div>
 
-            <!-- Ô tìm kiếm -->
             <div class="subject-toolbar">
                 <input type="search" id="searchInput" placeholder="Tìm theo mã môn, tên môn, giảng viên hoặc phòng học" aria-label="Tìm môn học">
             </div>
 
-            <!-- Bảng danh sách môn học (các dòng sẽ do monhoc.js tạo ra) -->
             <div class="table-wrap">
                 <table class="subject-table">
                     <thead>
@@ -68,13 +60,11 @@
                 </table>
             </div>
 
-            <!-- Hiện khi chưa có môn học nào hoặc tìm không thấy -->
             <p class="empty-text" id="emptyText" hidden>Chưa có môn học nào. Bấm "Thêm môn học" để bắt đầu.</p>
 
         </div>
     </main>
 
-    <!-- HỘP THOẠI: THÊM / SỬA MÔN HỌC -->
     <div class="modal" id="formModal" hidden>
         <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="formTitle">
             <div class="modal-head">
@@ -83,7 +73,7 @@
             </div>
 
             <form id="subjectForm" novalidate>
-                <!-- Lưu id của môn đang sửa (để trống khi thêm mới) -->
+
                 <input type="hidden" id="fId">
 
                 <div class="field-row">
@@ -126,7 +116,6 @@
         </div>
     </div>
 
-    <!-- HỘP THOẠI: XÁC NHẬN XÓA -->
     <div class="modal" id="confirmModal" hidden>
         <div class="modal-box small" role="alertdialog" aria-modal="true" aria-labelledby="confirmText">
             <div class="result-icon warn"><i class="fa-solid fa-triangle-exclamation"></i></div>
@@ -138,14 +127,12 @@
         </div>
     </div>
 
-    <!-- FOOTER DÙNG CHUNG -->
     <footer>
         <p>&copy; 2026 Quản lý lịch học. Tất cả các quyền được bảo lưu.</p>
     </footer>
 
-    <!-- File JavaScript dùng chung -->
     <script src="js/main.js"></script>
-    <!-- JavaScript riêng của trang Môn học -->
+
     <script src="js/monhoc.js"></script>
 </body>
 
