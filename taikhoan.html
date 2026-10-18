@@ -1,149 +1,253 @@
 <!DOCTYPE html>
 <html lang="vi">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="css/taikhoan.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    </head>
-    <body>
-        <main>
-            <section class="banner">
-                <div class="banner-avatar">
-                    <i class="fa-solid fa-user"></i>
-                </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUẢN LÝ LỊCH HỌC</title>
+    <!-- Thư viện Icon FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- 1. CSS DÙNG CHUNG (BẮT BUỘC) -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/taikhoan.css">
+</head>
+<body>
 
-                <div class="banner-info">
-                    <h1><i>"Chúc bạn một ngày<br>
-                     mới học tập thật tốt"</i></h1>
+<header class="navbar">
+    <div class="logo">
+        <i class="fa-solid fa-graduation-cap"></i>
+        <span>QUẢN LÝ LỊCH HỌC</span>
+    </div>
 
-                    <p>
-                        Họ tên: Nguyễn Văn A
-                    </p>
+    <nav class="nav-links">
+        <a href="html/index.html">Trang chủ</a>
+        <a href="html/lichhoc.html">Lịch học</a>
+        <a href="html/monhoc.html">Môn học</a>
+        <a href="html/thongbao.html">Thông báo</a>
+        <a href="taikhoan.html" id="accountLink" hidden>
+        Tài khoản
+        </a>
+    </nav>
+        <div class="nav-actions">
+        <!-- Hiển thị khi chưa đăng nhập -->
+            <a href="dangnhap.html" class="in-login" id="loginBtn">
+                <i class="fa-regular fa-user"></i>
+                Đăng nhập
+            </a>
 
-                    <p>
-                        Lớp: CNTT2
-                    </p>
+        <!-- Hiển thị khi đã đăng nhập -->
+            <button type="button" class="out-login" id="logoutBtn" hidden>
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Đăng xuất
+            </button>
+        </div>    
+</header>
 
-                    <p>
-                        Mã sinh viên: 251230809
-                    </p>
+<main class="container">
+    <div class="container-card">
 
-                    <p>
-                        Khoa: Công nghệ Thông tin
-                    </p>
-                </div>
-            </section>
-            <section class="content">
-                <div class="information">
-                    <section class="card personal-card">
-                        <div class="card-title">
-                            <i class="fa-regular fa-user"></i>
-                            <h2>Thông tin cá nhân</h2>
-                        </div>
-                        <div class="personal-content">
-                            <div class="personal-detalis">
-                                <div class="info">
-                                    <span>Họ và tên:</span>
-                                    <h4>Nguyễn Văn A</h4>
+        <!-- Banner -->
+        <section class="banner">
+            <h1>Quản lý thông tin cá nhân</h1>
+        </section>
+
+        <div class="content-grid">
+                <!-- Thông tin cá nhân -->
+                <section class="card">
+                    <div class="card-title">
+                        <h2>Thông tin cá nhân</h2>
+                    </div>
+
+                    <div class="profile-content">
+                        <div class="profile-fields">
+
+                            <div class="info-row">
+                                <div>
+                                    <div class="info-label">Họ và tên</div>
+                                    <div class="info-value" data-field="name">
+                                        Nguyễn Văn A
+                                    </div>
                                 </div>
-                                <div class="info">
-                                    <span>Mã sinh viên:</span>
-                                    <h4>251230809</h4>
+                            </div>
+
+                            <div class="info-row">
+                                <div>
+                                    <div class="info-label">Mã sinh viên</div>
+                                    <div class="info-value">
+                                        A102 - B203
+                                    </div>
                                 </div>
-                                <div class="info">
-                                    <span>Lớp:</span>
-                                    <h4>CNTT2</h4>
+                            </div>
+
+                            <div class="info-row">
+                                <div>
+                                    <div class="info-label">Email</div>
+                                    <div class="info-value" data-field="email">
+                                        nguyenvana@univ.edu.vn
+                                    </div>
                                 </div>
-                                <div class="info">
-                                    <span>Khoa:</span>
-                                    <h4>Công nghệ Thông tin</h4>
+                            </div>
+
+                            <div class="info-row">
+                                <div>
+                                    <div class="info-label">Trường</div>
+                                    <div class="info-value" data-field="school">
+                                        Đại học Khoa học Tự nhiên
+                                    </div>
                                 </div>
-                                <div class="info">
-                                    <span>Giới tính:</span>
-                                    <h4>Nam</h4>
+                            </div>
+
+                            <div class="info-row">
+                                <div>
+                                    <div class="info-label">Khoa</div>
+                                    <div class="info-value" data-field="faculty">
+                                        Khoa Công nghệ thông tin
+                                    </div>
                                 </div>
-                                <div class="info">
-                                    <span>Ngày sinh:</span>
-                                    <h4>13/08/2007</h4>
-                                </div>
-                                <div class="info">
-                                    <span>Email:</span>
-                                    <h4>khoangu@gmail.com</h4>
+                            </div>
+
+                            <div class="info-row">
+                                <div>
+                                    <div class="info-label">Lớp</div>
+                                    <div class="info-value" data-field="className">
+                                        Kỹ thuật phần mềm - K62
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </section>
-                    <section class="card settings-card" id="settingsPanel">
-                        <div class="card-title">
-                             <i class="fa-solid fa-gear"></i>
-                            <h2>Cài đặt tài khoản</h2>
-                        </div>
-                        <button class="setting-row" type="button"
-                                data-setting="password">
-                            <i class="fa-solid fa-lock"></i>
-                            <span>Đổi mật khẩu</span>
-                            <i class="fa-solid fa-chevron-right arrow"></i>
-                        </button>
-                        <button class="setting-row" type="button"
-                                data-setting="profile">
-                            <i class="fa-solid fa-pen"></i>
-                            <span>Cập nhật thông tin</span>
-                            <i class="fa-solid fa-chevron-right arrow"></i>
-                        </button>
-                    </section>
-                </div>
-                <div class="card subject-card">
+                    </div>
+                </section>
+
+                <section class="card">
                     <div class="card-title">
-                         <i class="fa-solid fa-book-open"></i>
-                        <h2>Môn đang theo học</h2>
+                        <h2>Cài đặt</h2>
                     </div>
-                    <div class="subject-list">
-                        <div class="subject">
-                            <h3>Kiến trúc và tổ chức máy
-                                <span>Giảng viên: Nguyễn Thanh Toàn</span>
-                            </h3>
-                        </div>
-                        <div class="subject">
-                            <h3>
-                                Thiết kế Web
-                                <span>Giảng viên: Nguyễn Hữu Luân</span>
-                            </h3>
-                        </div>
-                        <div class="subject">
-                           <h3>
-                                Giáo dục thể chất
-                                <span>Giảng viên: Đặng Văn An</span>
-                           </h3>
-                        </div>
-                        <div class="subject">
-                            <h3>
-                                Toán rời rạc
-                                <span>GIảng viên: Bùi Minh Thảo</span>
-                            </h3>
-                        </div>
-                        <div class="subject">
-                            <h3>
-                                Cấu trúc dữ liệu và giải thuật
-                                <span>Giảng viên: Lê Đức Huy</span>
-                            </h3>
-                        </div>
-                        <div class="subject">
-                            <h3>
-                                Lập trình hướng đối tượng
-                                <span>Giảng viên: Nguyễn Hữu Cường</span>
-                            </h3>
-                        </div>
-                        <div class="subject">
-                            <h3>
-                                Tư tưởng Hồ Chí Minh
-                                <span>Giảng viên: Nguyễn Ngọc Hà</span>
-                            </h3>
-                        </div>
+
+                    <div class="settings-list">
+
+                        <button class="setting-item" data-modal="editModal">
+                            <span class="setting-icon">✎</span>
+                            <span class="setting-info">
+                                <span class="setting-name">
+                                    Chỉnh sửa thông tin
+                                </span>
+                            </span>
+                            <span class="chevron">›</span>
+                        </button>
+
+                        <button class="setting-item" data-modal="passwordModal">
+                            <span class="setting-icon">🔒</span>
+                            <span class="setting-info">
+                                <span class="setting-name">Đổi mật khẩu</span>
+                            </span>
+                            <span class="chevron">›</span>
+                        </button>
+
                     </div>
-                </div>
-            </section>
-        </main>
-        <script src="script.js"></script>
-    </body>
+                </section>
+        </div>
+    </div>    
+</main>
+
+<!-- Modal chỉnh sửa thông tin -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal" role="dialog" aria-modal="true">
+        <div class="modal-header">
+            <h3>Chỉnh sửa thông tin</h3>
+            <button type="button" class="close-btn">×</button>
+        </div>
+
+        <form id="editForm">
+            <div class="form-group">
+                <label for="editName">Họ và tên</label>
+                <input id="editName" name="name"
+                       value="Nguyễn Văn A" required>
+            </div>
+
+            <div class="form-group">
+                <label for="editEmail">Email</label>
+                <input id="editEmail" name="email" type="email"
+                       value="nguyenvana@univ.edu.vn" required>
+            </div>
+
+            <div class="form-group">
+                <label for="editSchool">Trường</label>
+                <input id="editSchool" name="school"
+                       value="Đại học Khoa học Tự nhiên" required>
+            </div>
+
+            <div class="form-group">
+                <label for="editFaculty">Khoa</label>
+                <input id="editFaculty" name="faculty"
+                       value="Khoa Công nghệ thông tin" required>
+            </div>
+
+            <div class="form-group">
+                <label for="editClass">Lớp</label>
+                <input id="editClass" name="className"
+                       value="Kỹ thuật phần mềm - K62" required>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-cancel" data-close>
+                    Hủy
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Lưu thay đổi
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal đổi mật khẩu -->
+<div class="modal-overlay" id="passwordModal">
+    <div class="modal" role="dialog" aria-modal="true">
+        <div class="modal-header">
+            <h3>Đổi mật khẩu</h3>
+            <button type="button" class="close-btn">×</button>
+        </div>
+
+        <form id="passwordForm">
+            <div class="form-group">
+                <label for="currentPassword">Mật khẩu hiện tại</label>
+                <input id="currentPassword" type="password" required>
+            </div>
+
+            <div class="form-group">
+                <label for="newPassword">Mật khẩu mới</label>
+                <input id="newPassword" type="password"
+                       minlength="8" required>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">
+                    Xác nhận mật khẩu mới
+                </label>
+                <input id="confirmPassword" type="password"
+                       minlength="8" required>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn btn-cancel" data-close>
+                    Hủy
+                </button>
+                <button type="submit" class="btn btn-primary">
+                    Cập nhật mật khẩu
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<footer>
+    <p>&copy; 2026 Quản lý lịch học. Tất cả các quyền được bảo lưu.</p>
+</footer>
+<script src="js/taikhoan.js"></script>
+<script src="js/main.js"></script>
+
+
+</body>
 </html>
+
