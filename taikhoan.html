@@ -246,7 +246,11 @@
 </footer>
 <script src="js/taikhoan.js"></script>
 <script src="js/main.js"></script>
-
+<script>
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+    window.location.replace("dangnhap.html");
+    }
+</script>
 
 </body>
 </html>
