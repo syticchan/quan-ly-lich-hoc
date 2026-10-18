@@ -69,7 +69,7 @@ body {
     background-color: rgba(255, 255, 255, 0.15);
 }
 
-.btn-login {
+.in-login {
     background-color: var(--accent-color);
     color: white;
     padding: 8px 18px;
@@ -80,7 +80,7 @@ body {
     transition: background 0.2s ease;
 }
 
-.btn-login:hover {
+.in-login:hover {
     background-color: var(--accent-hover);
 }
 
@@ -99,6 +99,44 @@ footer {
     padding: 15px 0;
     font-size: 13px;
 }
+.nav-actions {
+    display: flex;
+    align-items: center;
+}
+
+.out-login {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+
+    color: #164a7d;
+    background: #e0efff;
+    border: 1px solid #b9dcff;
+    border-radius: 8px;
+
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: background-color 0.3s ease,
+                color 0.3s ease,
+                transform 0.3s ease;
+}
+
+.out-login:hover {
+    background: #c5e2ff;
+    color: #0b3764;
+    transform: translateY(-2px);
+}
+
+/* Không hiển thị phần tử đang ẩn */
+[hidden] {
+    display: none !important;
+}
+
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
