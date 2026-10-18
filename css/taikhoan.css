@@ -296,63 +296,11 @@ button {
 .toast.show {
     display: block;
 }
-
-/* Responsive */
-
-@media (max-width: 1100px) {
-    .navbar {
-        flex-wrap: wrap;
-        padding: 12px 18px;
-    }
-
-    .nav-links {
-        order: 3;
-        width: 100%;
-        justify-content: center;
-        gap: 12px;
-        overflow-x: auto;
-    }
-
-    .nav-links a {
-        padding: 12px 5px;
-        white-space: nowrap;
-    }
-
-    .content-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .courses-card {
-        grid-row: 1;
-    }
-}
-
-
 /* ========================================
    RESPONSIVE 1: Màn hình <= 900px
    Tablet ngang, laptop nhỏ
 ======================================== */
 @media (max-width: 900px) {
-    /* Navbar */
-    .navbar {
-        flex-wrap: wrap;
-        gap: 12px;
-        padding: 14px 20px;
-    }
-
-    .nav-links {
-        order: 3;
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
-    .nav-links a {
-        padding: 10px 12px;
-        white-space: nowrap;
-    }
-
     /* Container */
     .container-card {
         width: 100%;
@@ -482,34 +430,6 @@ button {
    Điện thoại
 ======================================== */
 @media (max-width: 600px) {
-    /* Navbar */
-    .navbar {
-        padding: 12px;
-        gap: 10px;
-    }
-
-    .logo {
-        font-size: 15px;
-    }
-
-    .logo-icon {
-        font-size: 26px;
-    }
-
-    .nav-links {
-        justify-content: flex-start;
-        flex-wrap: nowrap;
-        gap: 6px;
-        overflow-x: auto;
-        padding-bottom: 4px;
-    }
-
-    .nav-links a {
-        flex-shrink: 0;
-        padding: 9px 10px;
-        font-size: 13px;
-    }
-
     /* Container và banner */
     .container-card {
         margin: 12px auto 24px;
