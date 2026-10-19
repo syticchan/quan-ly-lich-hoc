@@ -5,16 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QUẢN LÝ LỊCH HỌC</title>
     <!-- Thư viện Icon FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> 
     <!-- 1. CSS DÙNG CHUNG (BẮT BUỘC) -->
     <link rel="stylesheet" href="css/style.css">
-    
-    <!-- 2. CSS RIÊNG (Thay tên file CSS tương ứng của từng trang) -->
-    <link rel="stylesheet" href="css/home.css">
 </head>
 <body>
-
     <!-- NAV / HEADER DÙNG CHUNG -->
     <header class="navbar">
         <div class="logo">
@@ -22,7 +17,7 @@
             <span>QUẢN LÝ LỊCH HỌC</span>
         </div>
         <nav class="nav-links">
-            <a href="index.html" class="active">Trang chủ</a>
+            <a href="trangchu.html" class="active">Trang chủ</a>
             <a href="lichhoc.html">Lịch học</a>
             <a href="monhoc.html">Môn học</a>
             <a href="thongbao.html">Thông báo</a>
@@ -42,11 +37,12 @@
             </button>
         </div>
     </header>
-<main class="container">
-        
-    </main>
+
+
     <!-- THÂN TRANG (MỖI BẠN VIẾT NỘI DUNG VÀO ĐÂY) -->
-    
+    <main class="content">
+        <!-- Nội dung riêng của từng trang sẽ nằm ở đây -->
+    </main>
 
     <!-- FOOTER DÙNG CHUNG -->
     <footer>
@@ -55,5 +51,13 @@
 
     <!-- File JavaScript dùng chung -->
     <script src="js/main.js"></script>
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+        window.location.replace("dangnhap.html");
+        }
+        if (localStorage.getItem("isLoggedIn") === "true") {
+            window.location.replace("trangchu.html");
+        }
+    </script>
 </body>
 </html>

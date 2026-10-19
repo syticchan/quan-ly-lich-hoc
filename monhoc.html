@@ -21,12 +21,25 @@
             <span>QUẢN LÝ LỊCH HỌC</span>
         </div>
         <nav class="nav-links">
-            <a href="index.html">Trang chủ</a>
+            <a href="trangchu.html">Trang chủ</a>
             <a href="lichhoc.html">Lịch học</a>
             <a href="monhoc.html" class="active">Môn học</a>
             <a href="thongbao.html">Thông báo</a>
+            <a href="taikhoan.html">Tài khoản</a>
         </nav>
-        <a href="dangnhap.html" class="btn-login"><i class="fa-regular fa-user"></i> Đăng nhập</a>
+        <div class="nav-actions">
+        <!-- Hiển thị khi chưa đăng nhập -->
+            <a href="dangnhap.html" class="in-login" id="loginBtn">
+                <i class="fa-regular fa-user"></i>
+                Đăng nhập
+            </a>
+
+        <!-- Hiển thị khi đã đăng nhập -->
+            <button type="button" class="out-login" id="logoutBtn" hidden>
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Đăng xuất
+            </button>
+        </div>
     </header>
 
     <main class="content">
@@ -134,6 +147,12 @@
     <script src="js/main.js"></script>
 
     <script src="js/monhoc.js"></script>
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+        window.location.replace("dangnhap.html");
+        }
+    </script>
+
 </body>
 
 </html>

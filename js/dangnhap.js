@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Chuyển đến trang chủ
       window.setTimeout(function () {
-        window.location.href = "index.html";
+        window.location.href = "trangchu.html";
       }, 700);
 
     } else {

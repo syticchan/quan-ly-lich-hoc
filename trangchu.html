@@ -17,12 +17,12 @@
 
     <!-- NAV / HEADER DÙNG CHUNG -->
     <header class="navbar">
-        <div class="logo">
+        <div class="logo" >
             <i class="fa-solid fa-graduation-cap"></i>
             <span>QUẢN LÝ LỊCH HỌC</span>
         </div>
         <nav class="nav-links">
-            <a href="index.html" class="active">Trang chủ</a>
+            <a href="trangchu.html" class="active">Trang chủ</a>
             <a href="lichhoc.html">Lịch học</a>
             <a href="monhoc.html">Môn học</a>
             <a href="thongbao.html">Thông báo</a>
@@ -42,7 +42,7 @@
             </button>
         </div>
     </header>
-<main class="container">
+<main class="content">
         <section class="hero-banner">
             <div class="banner-text">
                 <h1>Đồng hành cùng bạn trên <br>
@@ -218,5 +218,11 @@
 
     <!-- File JavaScript dùng chung -->
     <script src="js/main.js"></script>
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+        window.location.replace("dangnhap.html");
+        }
+    </script>
+
 </body>
 </html>
