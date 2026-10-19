@@ -26,14 +26,27 @@
             <a href="lichhoc.html">Lịch học</a>
             <a href="monhoc.html">Môn học</a>
             <a href="thongbao.html">Thông báo</a>
+            <a href="taikhoan.html">Tài khoản</a>
         </nav>
-        <a href="dangnhap.html" class="btn-login"><i class="fa-regular fa-user"></i> Đăng nhập</a>
-    </header>
+        <div class="nav-actions">
+        <!-- Hiển thị khi chưa đăng nhập -->
+            <a href="dangnhap.html" class="in-login" id="loginBtn">
+                <i class="fa-regular fa-user"></i>
+                Đăng nhập
+            </a>
 
-    <!-- THÂN TRANG (MỖI BẠN VIẾT NỘI DUNG VÀO ĐÂY) -->
-    <main class="content">
-        <!-- Nội dung riêng của từng trang sẽ nằm ở đây -->
+        <!-- Hiển thị khi đã đăng nhập -->
+            <button type="button" class="out-login" id="logoutBtn" hidden>
+                <i class="fa-solid fa-right-from-bracket"></i>
+                Đăng xuất
+            </button>
+        </div>
+    </header>
+<main class="container">
+        
     </main>
+    <!-- THÂN TRANG (MỖI BẠN VIẾT NỘI DUNG VÀO ĐÂY) -->
+    
 
     <!-- FOOTER DÙNG CHUNG -->
     <footer>
