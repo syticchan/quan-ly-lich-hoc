@@ -42,7 +42,172 @@
             </button>
         </div>
     </header>
+<main class="container">
+        <section class="hero-banner">
+            <div class="banner-text">
+                <h1>Đồng hành cùng bạn trên <br>
+                <span>hành trình học tập</span></h1>
+                <p class="comment">Xem lịch học mọi lúc mọi nơi nhanh chóng, tiện lợi, chính xác.</p>
+            </div>
+            <div class="banner-images">
+                <img src="anh/54f7c65a-632e-49f1-9e76-487222873ab1.png" alt="Sinh viên học tập">
+            </div>
+        </section>
 
+        
+        <section class="feature-images">
+            
+            <a href="lichhoc.html" class="card-item card-blue">
+                <div class="card-icon-bg icon-blue">
+                    <i class="fa-regular fa-calendar-days"></i>
+                </div>
+                <div class="card-info">
+                    <h3>Lịch học</h3>
+                    <p>Xem thời khóa biểu, quản lý các lịch học của bạn</p>
+                </div>
+                <span class="card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+            </a>
+
+            <a href="monhoc.html" class="card-item card-green">
+                <div class="card-icon-bg icon-green">
+                    <i class="fa-solid fa-book-open"></i>
+                </div>
+                <div class="card-info">
+                    <h3>Môn học</h3>
+                    <p>Danh sách các môn học, thông tin chi tiết từng môn</p>
+                </div>
+                <span class="card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+            </a>
+
+            <a href="thongbao.html" class="card-item card-orange">
+                <div class="card-icon-bg icon-orange">
+                    <i class="fa-solid fa-bell"></i>
+                </div>
+                <div class="card-info">
+                    <h3>Thông báo</h3>
+                    <p>Cập nhật các thông báo mới nhất về học tập</p>
+                </div>
+                <span class="card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+            </a>
+
+        </section>
+        <div class="dashboard-grid">
+            <p id="current-date"></p>
+        </div>
+       
+        <div class="dashboard-grid">
+            
+            <!-- Cột trái: Lịch học hôm nay -->
+            <section class="dashboard-box">
+                <div class="box-header">
+                    <h2><i class="fa-regular fa-calendar-days"></i> Lịch học hôm nay</h2>
+                    <a href="lichhoc.html" class="link-all">
+                        Xem tất cả <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <div class="schedule-list">
+
+                    <div class="schedule-row">
+                        <span class="time">
+                            <i class="fa-regular fa-clock"></i> 07:00 - 09:30
+                        </span>
+                        <div class="schedule-detail">
+                            <h4>Cấu trúc dữ liệu và giải thuật</h4>
+                            <p>Phòng học: 104-A5 | Giảng viên: Lê Đức Huy</p>
+                        </div>
+                        <span class="badge badge-blue">Ca 1</span>
+                    </div>
+
+                    <div class="schedule-row">
+                        <span class="time">
+                            <i class="fa-regular fa-clock"></i> 09:30 - 11:00
+                        </span>
+                        <div class="schedule-detail">
+                            <h4>Lập trình web</h4>
+                            <p>Phòng học: 104-A5 | Giảng viên: Nguyễn Hữu Luân</p>
+                        </div>
+                        <span class="badge badge-blue">Ca 2</span>
+                    </div>
+
+                    <div class="schedule-row">
+                        <span class="time">
+                            <i class="fa-regular fa-clock"></i> 13:00 - 15:00
+                        </span>
+                        <div class="schedule-detail">
+                            <h4>Kiến trúc tổ chức máy</h4>
+                            <p>Phòng học: 405-A5 | Giảng viên: Nguyễn Thanh Toàn</p>
+                        </div>
+                        <span class="badge badge-blue">Ca 3</span>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- Cột phải: Thông báo mới -->
+            <section class="dashboard-box">
+                <div class="box-header">
+                    <h2><i class="fa-solid fa-bell"></i> Thông báo mới</h2>
+                     <a href="thongbao.html" class="link-all">
+                        Xem tất cả <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                
+                <div class="notice-list">
+
+                    <div class="notice-row">
+                        <span class="dot dot-red">●</span>
+                        <div class="notice-content">
+                            <h4>Thông báo nghỉ học tuần này</h4>
+                            <p>Nhà trường thông báo nghỉ học từ 10/10 đến 12/10....</p>
+                        </div>
+                        <div class="notice-meta">
+                            <span class="date">08/10/2026</span>
+                            <span class="tag-new">Mới</span>
+                        </div>
+                    </div>
+
+                    <div class="notice-row">
+                        <span class="dot dot-blue">●</span>
+                        <div class="notice-content">
+                            <h4>Cập nhật tài liệu bộ môn</h4>
+                            <p>Đã cập nhật tài liệu môn Lập trình web trên hệ thống.....</p>
+                        </div>
+                        <div class="notice-meta">
+                            <span class="date">05/10/2026</span>
+                            <span class="tag-new">Mới</span>
+                        </div>
+                    </div>
+
+                    <div class="notice-row">
+                        <span class="dot dot-green">●</span>
+                        <div class="notice-content">
+                            <h4>Lịch thi giữa kỳ</h4>
+                            <p>Lịch thi giữa kỳ học kỳ I năm học 2026 - 2027 đã được công bố...</p>
+                        </div>
+                        <div class="notice-meta">
+                            <span class="date">06/10/2026</span>
+                            <span class="tag-new">Mới</span>
+                        </div>
+                    </div>
+
+                    <div class="notice-row">
+                        <span class="dot dot-gray">●</span>
+                        <div class="notice-content">
+                            <h4>Thông báo về học bổng</h4>
+                            <p>Trường Đại học thông báo chương trình học bổng khuyến khích học tập...</p>
+                        </div>
+                        <div class="notice-meta">
+                            <span class="date">03/10/2026</span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+    </main>
     <!-- THÂN TRANG (MỖI BẠN VIẾT NỘI DUNG VÀO ĐÂY) -->
     <main class="content">
         <!-- Nội dung riêng của từng trang sẽ nằm ở đây -->
