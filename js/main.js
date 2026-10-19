@@ -22,13 +22,13 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.removeItem("isLoggedIn");
 
             // Xóa thông tin phiên nếu dự án có sử dụng
-            window.location.href = "index.html";
+            window.location.href = "dangnhap.html";
         });
     }
 
     // Đánh dấu trang hiện tại trên navbar
     const currentPage = window.location.pathname.split("/").pop()
-        || "index.html";
+        || "trangchu.html";
 
     document.querySelectorAll(".nav-links a").forEach(link => {
         const linkPage = link.getAttribute("href");
