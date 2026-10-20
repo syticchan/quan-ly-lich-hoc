@@ -204,44 +204,6 @@
     opacity: 0.8;                      /* Mờ nhẹ khi rê chuột vào */
 }
 
-/* 3. ĐỊNH DẠNG HÀNG LỊCH HỌC (CỘT TRÁI) */
-.schedule-row {
-    display: flex;                     /* Flexbox xếp Giờ - Tên môn - Ca học nằm 1 hàng */
-    align-items: center;               /* Căn giữa chiều dọc */
-    justify-content: space-between;    /* Đẩy Ca học sang tận cùng bên phải */
-    background-color: #f8fafc;         /* Màu nền xám phớt cực dịu */
-    padding: 14px 18px;                /* Khoảng đệm bên trong hàng */
-    border-radius: 14px;               /* Bo tròn góc hàng */
-    margin-bottom: 12px;               /* Khoảng cách giữa các hàng lịch học */
-}
-
-.schedule-row .time {
-    font-size: 13px;                   /* Kích thước chữ giờ học */
-    color: #1a73e8;                    /* Màu chữ xanh dương */
-    font-weight: 600;                  /* Độ đậm vừa */
-    width: 120px;                      /* Cố định độ rộng cột Giờ học để thẳng hàng */
-    display: flex;
-    align-items: center;
-    gap: 6px;                          /* Khoảng cách giữa Icon đồng hồ và số giờ */
-}
-
-.schedule-detail {
-    flex: 1;                           /* Chiếm phần không gian ở giữa */
-    padding: 0 10px;
-}
-
-.schedule-detail h4 {
-    font-size: 14px;                   /* Kích thước tên môn học */
-    color: #1d2939;                    /* Màu chữ đậm */
-    font-weight: 700;
-    margin-bottom: 3px;
-}
-
-.schedule-detail p {
-    font-size: 12px;                   /* Kích thước chữ Phòng học & Giảng viên */
-    color: #667085;                    /* Màu xám */
-}
-
 /* Nhãn Ca 1, Ca 2, Ca 3 góc phải */
 .badge {
     font-size: 12px;                   /* Kích thước chữ nhãn */
@@ -253,63 +215,6 @@
 .badge-blue { background-color: #e8f0fe; color: #1a73e8; }   /* Ca 1 màu xanh */
 .badge-green { background-color: #e6f4ea; color: #137333; }  /* Ca 2 màu xanh lá */
 .badge-orange { background-color: #fef7e0; color: #b06000; } /* Ca 3 màu cam */
-
-/* 4. ĐỊNH DẠNG HÀNG THÔNG BÁO (CỘT PHẢI) */
-.notice-row {
-    display: flex;                     /* Flexbox xếp Chấm tròn - Nội dung - Ngày tháng 1 hàng */
-    align-items: flex-start;           /* Căn lề các phần tử lên sát mép trên */
-    gap: 12px;                         /* Khoảng cách giữa các phần tử */
-    padding-bottom: 14px;              /* Khoảng đệm dưới */
-    margin-bottom: 14px;               /* Khoảng cách giữa các hàng */
-    border-bottom: 1px solid #f1f5f9;  /* Đường gạch ngang phân cách giữa các thông báo */
-}
-
-.notice-row:last-child {
-    border-bottom: none;               /* Xóa đường gạch ngang ở thông báo cuối cùng */
-    margin-bottom: 0;
-}
-
-/* Chấm tròn màu phân loại thông báo */
-.dot {
-    font-size: 8px;                    /* Kích thước chấm tròn */
-    margin-top: 6px;                   /* Căn chỉnh chấm tròn nằm ngang hàng với dòng tiêu đề */
-}
-
-.dot-red { color: #ea4335; }    /* Chấm đỏ: Thông báo khẩn/nghỉ học */
-.dot-blue { color: #1a73e8; }   /* Chấm xanh: Thông báo lịch thi */
-.dot-green { color: #34a853; }  /* Chấm xanh lá: Thông báo tài liệu */
-.dot-gray { color: #98a2b3; }   /* Chấm xám: Thông báo chung */
-
-.notice-content {
-    flex: 1;                           /* Chiếm phần lớn không gian ở giữa */
-}
-
-.notice-content h4 {
-    font-size: 14px;                   /* Tiêu đề thông báo */
-    color: #1d2939;
-    font-weight: 600;
-    margin-bottom: 3px;
-}
-
-.notice-content p {
-    font-size: 12px;                   /* Dòng mô tả ngắn thông báo */
-    color: #667085;
-    line-height: 1.4;
-}
-
-/* Cột Ngày đăng & Tag "MỚI" bên phải */
-.notice-meta {
-    display: flex;
-    flex-direction: column;            /* Xếp Ngày tháng ở trên, Tag Mới ở dưới */
-    align-items: flex-end;             /* Căn lề phải */
-    gap: 4px;
-    min-width: 75px;
-}
-
-.notice-meta .date {
-    font-size: 11px;                   /* Kích thước ngày tháng */
-    color: #98a2b3;                    /* Màu chữ xám mờ */
-}
 
 /* Tag "MỚI" màu đỏ */
 .tag-new {
@@ -387,17 +292,6 @@
 
     .card-item {
         padding: 16px;                   /* TÁC DỤNG: Giảm khoảng đệm trong Card giúp Card gọn gàng hơn */
-    }
-
-    /* TẦNG 3: Tối ưu hàng Lịch học trên điện thoại */
-    .schedule-row {
-        flex-direction: column;          /* TÁC DỤNG: Chuyển hàng lịch học thành cột (Giờ -> Tên môn -> Nhãn ca) */
-        align-items: flex-start;         /* TÁC DỤNG: Căn thẳng lề trái các thông tin */
-        gap: 8px;                        /* TÁC DỤNG: Khoảng cách giữa các dòng thông tin lịch */
-    }
-
-    .schedule-row .time {
-        width: auto;                     /* TÁC DỤNG: Bỏ cố định độ rộng 120px của giờ học */
     }
 
     .badge {
