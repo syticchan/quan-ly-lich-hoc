@@ -94,7 +94,7 @@ button {
     white-space: nowrap;
 }
 .info-value {
-    color: var(--blue);
+    color: var(--accent-color);
     font-size: 16px;
     font-weight: 600;
     line-height: 1.4;
@@ -147,7 +147,7 @@ button {
 
 .chevron {
     font-size: 25px;
-    color: var(--blue);
+    color: var(--accent-color);
 }
 /* Modal */
 .modal-overlay {
@@ -214,7 +214,7 @@ button {
     outline: none;
 }
 .form-group input:focus {
-    border-color: var(--blue);
+    border-color: var(--accent-color);
     box-shadow: 0 0 0 3px #e4f2ff;
 }
 
@@ -238,7 +238,7 @@ button {
 }
 
 .btn-primary {
-    background: var(--blue);
+    background: var(--accent-color);
     color: white;
 }
 

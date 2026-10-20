@@ -167,7 +167,7 @@
 }
 
 .nutdadoc {
-    background-color: #0b497e;
+    background-color: var(--accent-color);
     color: white;
     border: none;
     padding: 8px 16px;
@@ -180,7 +180,7 @@
 }
 
 .nutdadoc:hover {
-    background-color: #08375e;
+    background-color: var(--accent-hover);
 }
 
 .hopmodal {
@@ -279,12 +279,12 @@
 }
 
 .nutthem {
-    background: #0b497e;
+    background: var(--accent-color);
     color: #ffffff;
 }
 
 .nutthem:hover {
-    background: #08375e;
+    background: var(--accent-hover);
 }
 
 @media screen and (max-width: 900px) {
