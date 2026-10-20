@@ -26,20 +26,19 @@
 
     const f = {
         id: $('fId'), code: $('fCode'), name: $('fName'),
-        teacher: $('fTeacher'), room: $('fRoom'), credit: $('fCredit')
+        teacher: $('fTeacher'), credit: $('fCredit')
     };
 
     function render() {
         const keyword = searchInput.value.trim().toLowerCase();
         const list = subjects.filter(s =>
-            [s.code, s.name, s.teacher, s.room].join(' ').toLowerCase().includes(keyword));
+            [s.code, s.name, s.teacher].join(' ').toLowerCase().includes(keyword));
 
         subjectBody.innerHTML = list.map((s, i) => `<tr>
             <td>${i + 1}</td>
             <td>${esc(s.code)}</td>
             <td>${esc(s.name)}</td>
             <td>${esc(s.teacher)}</td>
-            <td>${esc(s.room)}</td>
             <td>${s.credit}</td>
             <td>
                 <button type="button" class="action-btn edit" data-id="${s.id}" title="Sửa" aria-label="Sửa môn ${esc(s.name)}"><i class="fa-solid fa-pen"></i></button>
@@ -83,7 +82,6 @@
 
         if (!data.name) errs.name = 'Vui lòng nhập tên môn học';
         if (!data.teacher) errs.teacher = 'Vui lòng nhập tên giảng viên';
-        if (!data.room) errs.room = 'Vui lòng nhập phòng học';
 
         if (!/^\d+$/.test(f.credit.value.trim()) || data.credit < 1 || data.credit > 10)
             errs.credit = 'Số tín chỉ từ 1 đến 10';
@@ -103,7 +101,6 @@
         f.code.value = s.code || '';
         f.name.value = s.name || '';
         f.teacher.value = s.teacher || '';
-        f.room.value = s.room || '';
         f.credit.value = s.credit || 3;
 
         openModal(formModal);
@@ -117,7 +114,6 @@
             code: f.code.value.trim().toUpperCase(),
             name: f.name.value.trim(),
             teacher: f.teacher.value.trim(),
-            room: f.room.value.trim(),
             credit: Number(f.credit.value)
         };
 

@@ -46,6 +46,11 @@
     const loadEvents = () => { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch (e) { return []; } };
     const saveEvents = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
 
+    const SUBJECT_KEY = 'data_mon_hoc';
+    const loadSubjects = () => {
+        try { return JSON.parse(localStorage.getItem(SUBJECT_KEY)) || []; } catch (e) { return []; }
+    };
+
     let events = loadEvents();
     const findEvent = id => events.find(e => e.id === id);
 
@@ -188,6 +193,19 @@
         return '';
     }
 
+    function fillSubjectOptions(selected = '') {
+        const subjects = loadSubjects();
+        let html = '<option value="">-- Chọn môn học --</option>' +
+            subjects.map(s => `<option value="${esc(s.name)}">${esc(s.code)} - ${esc(s.name)}</option>`).join('');
+
+        if (selected && !subjects.some(s => s.name === selected)) {
+            html += `<option value="${esc(selected)}">${esc(selected)}</option>`;
+        }
+
+        f.name.innerHTML = html;
+        f.name.value = selected;
+    }
+
     function openForm(opts = {}) {
         showErrors();
         currentId = opts.id || null;
@@ -199,7 +217,7 @@
         const today = new Date();
         const inWeek = today >= weekStart && today < addDays(weekStart, 7) && dayIndex(today) < DAYS_SHOWN;
 
-        f.name.value = ev.name || '';
+        fillSubjectOptions(ev.name || '');
         f.date.value = ev.date || opts.date || toISO(inWeek ? today : weekStart);
         f.ca.value = ev.ca || opts.ca || '';
         f.room.value = ev.room || '';
@@ -243,7 +261,7 @@
         else if (dayIndex(parsedDate) >= DAYS_SHOWN) dateErr = 'Chỉ xếp lịch từ Thứ 2 đến Thứ 7';
 
         const errs = {
-            name: name ? '' : 'Vui lòng nhập tên môn học',
+            name: name ? '' : (loadSubjects().length ? 'Vui lòng chọn môn học' : 'Không có môn học'),
             date: dateErr,
             ca: dateErr ? (ca ? '' : 'Vui lòng chọn ca học') : checkCa(date, ca, weeks, isEditAll),
             room: f.room.value.trim() ? '' : 'Vui lòng nhập phòng học',
