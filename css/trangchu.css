@@ -154,13 +154,6 @@
    TẦNG 3: DASHBOARD 2 CỘT (LỊCH HỌC & THÔNG BÁO)
    ========================================== */
 
-/* 1. Khung chứa Dashboard chia 2 cột */
-.dashboard-grid {
-    display: grid;                     /* Dùng Grid chia 2 cột */
-    grid-template-columns: 1fr 1fr;    /* Chia làm 2 cột bằng nhau (cột trái Lịch học, cột phải Thông báo) */
-    gap: 24px;                         /* Khoảng cách giữa 2 cột là 24px */
-}
-
 /* Khung nền trắng cho từng cột */
 .dashboard-box {
     background-color: #ffffff;         /* Nền trắng */

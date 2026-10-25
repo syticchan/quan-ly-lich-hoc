@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Môn học - QUẢN LÝ LỊCH HỌC</title>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <link rel="stylesheet" href="css/style.css">
-
     <link rel="stylesheet" href="css/monhoc.css">
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.replace("dangnhap.html");
+        }
+    </script>
 </head>
-
 <body>
 
     <header class="navbar">
@@ -28,13 +28,10 @@
             <a href="taikhoan.html">Tài khoản</a>
         </nav>
         <div class="nav-actions">
-        <!-- Hiển thị khi chưa đăng nhập -->
             <a href="dangnhap.html" class="in-login" id="loginBtn">
                 <i class="fa-regular fa-user"></i>
                 Đăng nhập
             </a>
-
-        <!-- Hiển thị khi đã đăng nhập -->
             <button type="button" class="out-login" id="logoutBtn" hidden>
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Đăng xuất
@@ -53,7 +50,7 @@
             </div>
 
             <div class="subject-toolbar">
-                <input type="search" id="searchInput" placeholder="Tìm theo mã môn, tên môn, giảng viên hoặc phòng học" aria-label="Tìm môn học">
+                <input type="search" id="searchInput" placeholder="Tìm theo mã môn, tên môn hoặc giảng viên" aria-label="Tìm môn học">
             </div>
 
             <div class="table-wrap">
@@ -64,7 +61,6 @@
                             <th>Mã môn</th>
                             <th>Tên môn học</th>
                             <th>Giảng viên</th>
-                            <th>Phòng học</th>
                             <th>Số tín chỉ</th>
                             <th>Thao tác</th>
                         </tr>
@@ -86,7 +82,6 @@
             </div>
 
             <form id="subjectForm" novalidate>
-
                 <input type="hidden" id="fId">
 
                 <div class="field-row">
@@ -140,14 +135,7 @@
     </footer>
 
     <script src="js/main.js"></script>
-
     <script src="js/monhoc.js"></script>
-    <script>
-        if (localStorage.getItem("isLoggedIn") !== "true") {
-        window.location.replace("dangnhap.html");
-        }
-    </script>
 
 </body>
-
 </html>

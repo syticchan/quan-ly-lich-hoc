@@ -3,54 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUẢN LÝ LỊCH HỌC</title>
-    <!-- Thư viện Icon FontAwesome -->
+    <title>Tài khoản - QUẢN LÝ LỊCH HỌC</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- 1. CSS DÙNG CHUNG (BẮT BUỘC) -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/taikhoan.css">
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.replace("dangnhap.html");
+        }
+    </script>
 </head>
 <body>
 
-<header class="navbar">
-    <div class="logo">
-        <i class="fa-solid fa-graduation-cap"></i>
-        <span>QUẢN LÝ LỊCH HỌC</span>
-    </div>
-
-    <nav class="nav-links">
-        <a href="trangchu.html">Trang chủ</a>
-        <a href="lichhoc.html">Lịch học</a>
-        <a href="monhoc.html">Môn học</a>
-        <a href="thongbao.html">Thông báo</a>
-        <a href="taikhoan.html" class="active">Tài khoản</a>
-    </nav>
+    <header class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span>QUẢN LÝ LỊCH HỌC</span>
+        </div>
+        <nav class="nav-links">
+            <a href="trangchu.html">Trang chủ</a>
+            <a href="lichhoc.html">Lịch học</a>
+            <a href="monhoc.html">Môn học</a>
+            <a href="thongbao.html">Thông báo</a>
+            <a href="taikhoan.html" class="active">Tài khoản</a>
+        </nav>
         <div class="nav-actions">
-        <!-- Hiển thị khi chưa đăng nhập -->
             <a href="dangnhap.html" class="in-login" id="loginBtn">
                 <i class="fa-regular fa-user"></i>
                 Đăng nhập
             </a>
-
-        <!-- Hiển thị khi đã đăng nhập -->
             <button type="button" class="out-login" id="logoutBtn" hidden>
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Đăng xuất
             </button>
-        </div>    
-</header>
+        </div>
+    </header>
 
-<main class="content">
-    <div class="container-card">
+    <main class="content">
+        <div class="container-card">
 
-        <!-- Banner -->
-        <section class="banner">
-            <h1>Quản lý thông tin cá nhân</h1>
-        </section>
+            <section class="banner">
+                <h1>Quản lý thông tin cá nhân</h1>
+            </section>
 
-        <div class="content-grid">
-                <!-- Thông tin cá nhân -->
+            <div class="content-grid">
                 <section class="card">
                     <div class="card-title">
                         <h2>Thông tin cá nhân</h2>
@@ -62,56 +58,45 @@
                             <div class="info-row">
                                 <div>
                                     <div class="info-label">Họ và tên</div>
-                                    <div class="info-value" data-field="name">
-                                        Nguyễn Văn A
-                                    </div>
+                                    <div class="info-value" data-field="name">Nguyễn Văn A</div>
                                 </div>
                             </div>
 
                             <div class="info-row">
                                 <div>
                                     <div class="info-label">Mã sinh viên</div>
-                                    <div class="info-value">
-                                        251230809
-                                    </div>
+                                    <div class="info-value">251230809</div>
                                 </div>
                             </div>
 
                             <div class="info-row">
                                 <div>
                                     <div class="info-label">Email</div>
-                                    <div class="info-value" data-field="email">
-                                        sinhvien@gmail.com
-                                    </div>
+                                    <div class="info-value" data-field="email">sinhvien@gmail.com</div>
                                 </div>
                             </div>
 
                             <div class="info-row">
                                 <div>
                                     <div class="info-label">Trường</div>
-                                    <div class="info-value" data-field="school">
-                                        Đại học Giao thông vận tải
-                                    </div>
+                                    <div class="info-value" data-field="school">Đại học Giao thông vận tải</div>
                                 </div>
                             </div>
 
                             <div class="info-row">
                                 <div>
                                     <div class="info-label">Khoa</div>
-                                    <div class="info-value" data-field="faculty">
-                                        Khoa Công nghệ thông tin
-                                    </div>
+                                    <div class="info-value" data-field="faculty">Khoa Công nghệ thông tin</div>
                                 </div>
                             </div>
 
                             <div class="info-row">
                                 <div>
                                     <div class="info-label">Lớp</div>
-                                    <div class="info-value" data-field="className">
-                                        Công nghệ thông tin - K66
-                                    </div>
+                                    <div class="info-value" data-field="className">Công nghệ thông tin - K66</div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </section>
@@ -122,134 +107,107 @@
                     </div>
 
                     <div class="settings-list">
-
-                        <button class="setting-item" data-modal="editModal">
+                        <button type="button" class="setting-item" data-modal="editModal">
                             <i class="fa-solid fa-pen"></i>
                             <span class="setting-info">
-                                <span class="setting-name">
-                                    Chỉnh sửa thông tin
-                                </span>
+                                <span class="setting-name">Chỉnh sửa thông tin</span>
                             </span>
                             <span class="chevron">›</span>
                         </button>
 
-                        <button class="setting-item" data-modal="passwordModal">
+                        <button type="button" class="setting-item" data-modal="passwordModal">
                             <i class="fa-solid fa-lock"></i>
                             <span class="setting-info">
                                 <span class="setting-name">Đổi mật khẩu</span>
                             </span>
                             <span class="chevron">›</span>
                         </button>
-
                     </div>
                 </section>
+            </div>
         </div>
-    </div>    
-</main>
+    </main>
 
-<!-- Modal chỉnh sửa thông tin -->
-<div class="modal-overlay" id="editModal">
-    <div class="modal" role="dialog" aria-modal="true">
-        <div class="modal-header">
-            <h3>Chỉnh sửa thông tin</h3>
-            <button type="button" class="close-btn">×</button>
+    <div class="modal-overlay" id="editModal">
+        <div class="modal" role="dialog" aria-modal="true">
+            <div class="modal-header">
+                <h3>Chỉnh sửa thông tin</h3>
+                <button type="button" class="close-btn" aria-label="Đóng">×</button>
+            </div>
+
+            <form id="editForm">
+                <div class="form-group">
+                    <label for="editName">Họ và tên</label>
+                    <input id="editName" name="name" value="Nguyễn Văn A" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editEmail">Email</label>
+                    <input id="editEmail" name="email" type="email" value="nguyenvana@univ.edu.vn" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editSchool">Trường</label>
+                    <input id="editSchool" name="school" value="Đại học Khoa học Tự nhiên" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editFaculty">Khoa</label>
+                    <input id="editFaculty" name="faculty" value="Khoa Công nghệ thông tin" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editClass">Lớp</label>
+                    <input id="editClass" name="className" value="Kỹ thuật phần mềm - K62" required>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" data-close>Hủy</button>
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                </div>
+            </form>
         </div>
-
-        <form id="editForm">
-            <div class="form-group">
-                <label for="editName">Họ và tên</label>
-                <input id="editName" name="name"
-                       value="Nguyễn Văn A" required>
-            </div>
-
-            <div class="form-group">
-                <label for="editEmail">Email</label>
-                <input id="editEmail" name="email" type="email"
-                       value="nguyenvana@univ.edu.vn" required>
-            </div>
-
-            <div class="form-group">
-                <label for="editSchool">Trường</label>
-                <input id="editSchool" name="school"
-                       value="Đại học Khoa học Tự nhiên" required>
-            </div>
-
-            <div class="form-group">
-                <label for="editFaculty">Khoa</label>
-                <input id="editFaculty" name="faculty"
-                       value="Khoa Công nghệ thông tin" required>
-            </div>
-
-            <div class="form-group">
-                <label for="editClass">Lớp</label>
-                <input id="editClass" name="className"
-                       value="Kỹ thuật phần mềm - K62" required>
-            </div>
-
-            <div class="modal-actions">
-                <button type="button" class="btn btn-cancel" data-close>
-                    Hủy
-                </button>
-                <button type="submit" class="btn btn-primary">
-                    Lưu thay đổi
-                </button>
-            </div>
-        </form>
     </div>
-</div>
 
-<!-- Modal đổi mật khẩu -->
-<div class="modal-overlay" id="passwordModal">
-    <div class="modal" role="dialog" aria-modal="true">
-        <div class="modal-header">
-            <h3>Đổi mật khẩu</h3>
-            <button type="button" class="close-btn">×</button>
+    <div class="modal-overlay" id="passwordModal">
+        <div class="modal" role="dialog" aria-modal="true">
+            <div class="modal-header">
+                <h3>Đổi mật khẩu</h3>
+                <button type="button" class="close-btn" aria-label="Đóng">×</button>
+            </div>
+
+            <form id="passwordForm">
+                <div class="form-group">
+                    <label for="currentPassword">Mật khẩu hiện tại</label>
+                    <input id="currentPassword" type="password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="newPassword">Mật khẩu mới</label>
+                    <input id="newPassword" type="password" minlength="8" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Xác nhận mật khẩu mới</label>
+                    <input id="confirmPassword" type="password" minlength="8" required>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" data-close>Hủy</button>
+                    <button type="submit" class="btn btn-primary">Cập nhật mật khẩu</button>
+                </div>
+            </form>
         </div>
-
-        <form id="passwordForm">
-            <div class="form-group">
-                <label for="currentPassword">Mật khẩu hiện tại</label>
-                <input id="currentPassword" type="password" required>
-            </div>
-
-            <div class="form-group">
-                <label for="newPassword">Mật khẩu mới</label>
-                <input id="newPassword" type="password"
-                       minlength="8" required>
-            </div>
-
-            <div class="form-group">
-                <label for="confirmPassword">
-                    Xác nhận mật khẩu mới
-                </label>
-                <input id="confirmPassword" type="password"
-                       minlength="8" required>
-            </div>
-
-            <div class="modal-actions">
-                <button type="button" class="btn btn-cancel" data-close>
-                    Hủy
-                </button>
-                <button type="submit" class="btn btn-primary">
-                    Cập nhật mật khẩu
-                </button>
-            </div>
-        </form>
     </div>
-</div>
 
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-<footer>
-    <p>&copy; 2026 Quản lý lịch học. Tất cả các quyền được bảo lưu.</p>
-</footer>
-<script src="js/taikhoan.js"></script>
-<script src="js/main.js"></script>
-<script>
-    if (localStorage.getItem("isLoggedIn") !== "true") {
-    window.location.replace("dangnhap.html");
-    }
-</script>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <footer>
+        <p>&copy; 2026 Quản lý lịch học. Tất cả các quyền được bảo lưu.</p>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/taikhoan.js"></script>
 
 </body>
 </html>
-

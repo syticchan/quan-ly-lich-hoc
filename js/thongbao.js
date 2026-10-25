@@ -1,95 +1,130 @@
-let currentSelectedItem = null;
-let danhSachTB = JSON.parse(localStorage.getItem('danhSachTB_Data')) || [];
+const KHOA_LUU = 'danhSachTB_Data';
 
-function hienThiChiTiet(tieuDe, ngayGio, noiDung, element) {
-    document.getElementById('tieudecitiet').innerText = tieuDe;
-    document.getElementById('ngaygiochitiet').innerText = ngayGio;
-    document.getElementById('noidungchitiet').innerHTML = noiDung;
-    
+let danhSachTB = docDanhSach();
+let itemDangChon = null;
+let tabHienTai = 'tatca';
+
+function docDanhSach() {
+    try {
+        return JSON.parse(localStorage.getItem(KHOA_LUU)) || [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function luuDanhSach() {
+    localStorage.setItem(KHOA_LUU, JSON.stringify(danhSachTB));
+}
+
+function ngayHomNay() {
+    const d = new Date();
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+}
+
+function dinhDangNgay(iso) {
+    const parts = iso.split('-');
+    return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : iso;
+}
+
+function taoItem(tb) {
+    const daDoc = tb.trangthai === 'dadoc';
+
+    const item = document.createElement('div');
+    item.className = `itemthongbao ${tb.trangthai}`;
+    item.dataset.id = tb.id;
+    item.dataset.title = tb.tieude;
+    item.dataset.time = `${tb.ngay} - 08:00`;
+    item.dataset.content = tb.noidung;
+
+    const noiDungItem = document.createElement('div');
+    noiDungItem.className = 'noidungitem';
+
+    if (!daDoc) {
+        const cham = document.createElement('div');
+        cham.className = 'chamchuadoc';
+        noiDungItem.appendChild(cham);
+    }
+
+    const textItem = document.createElement('div');
+    textItem.className = 'textitem';
+    if (daDoc) textItem.style.paddingLeft = '18px';
+
+    const h4 = document.createElement('h4');
+    h4.textContent = tb.tieude;
+    const p = document.createElement('p');
+    p.textContent = tb.noidung;
+    textItem.append(h4, p);
+    noiDungItem.appendChild(textItem);
+
+    const thongTinPhu = document.createElement('div');
+    thongTinPhu.className = 'thongtinphu';
+
+    const ngay = document.createElement('span');
+    ngay.className = 'ngaythang';
+    ngay.textContent = tb.ngay;
+
+    const nhan = document.createElement('span');
+    nhan.className = daDoc ? 'nhandandadoc' : 'nhandanchuadoc';
+    nhan.textContent = daDoc ? 'Đã đọc' : 'Chưa đọc';
+
+    thongTinPhu.append(ngay, nhan);
+    item.append(noiDungItem, thongTinPhu);
+    return item;
+}
+
+function hienThiChiTiet(item) {
+    document.getElementById('tieudecitiet').textContent = item.dataset.title;
+    document.getElementById('ngaygiochitiet').textContent = item.dataset.time;
+    document.getElementById('noidungchitiet').textContent = item.dataset.content;
+
     document.querySelectorAll('.itemthongbao').forEach(el => el.classList.remove('dang-chon'));
-    if (element) {
-        element.classList.add('dang-chon');
-    }
-    currentSelectedItem = element;
+    item.classList.add('dang-chon');
+    itemDangChon = item;
 
-    if (element && element.classList.contains('chuadoc')) {
-        element.classList.remove('chuadoc');
-        element.classList.add('dadoc');
-        
-        let cham = element.querySelector('.chamchuadoc');
-        if (cham) cham.style.display = 'none'; // Ẩn chấm đỏ
-        
-        let textItem = element.querySelector('.textitem');
-        if (textItem) textItem.style.paddingLeft = '18px'; // Căn lề giống các mục đã đọc sẵn
-
-        let nhanDan = element.querySelector('.nhandanchuadoc');
-        if (nhanDan) {
-            nhanDan.className = 'nhandandadoc';
-            nhanDan.innerText = 'Đã đọc';
-        }
-
-        const found = danhSachTB.find(tb => tb.tieude === tieuDe);
-        if (found) {
-            found.trangthai = 'dadoc';
-            localStorage.setItem('danhSachTB_Data', JSON.stringify(danhSachTB));
-        }
-
-        capNhatSoLuongTab();
-    }
+    danhDauDaDoc(item);
 }
 
-function danhDauDaDoc() {
-    if (currentSelectedItem) {
-        if (currentSelectedItem.classList.contains('chuadoc')) {
-            currentSelectedItem.classList.remove('chuadoc');
-            currentSelectedItem.classList.add('dadoc');
-            
-            let cham = currentSelectedItem.querySelector('.chamchuadoc');
-            if (cham) cham.style.display = 'none';
-            
-            let textItem = currentSelectedItem.querySelector('.textitem');
-            if (textItem) textItem.style.paddingLeft = '18px';
+function danhDauDaDoc(item) {
+    if (!item || !item.classList.contains('chuadoc')) return;
 
-            let nhanDan = currentSelectedItem.querySelector('.nhandanchuadoc');
-            if (nhanDan) {
-                nhanDan.className = 'nhandandadoc';
-                nhanDan.innerText = 'Đã đọc';
-            }
+    item.classList.remove('chuadoc');
+    item.classList.add('dadoc');
 
-            const tieuDeHienTai = document.getElementById('tieudecitiet').innerText;
-            const found = danhSachTB.find(tb => tb.tieude === tieuDeHienTai);
-            if (found) {
-                found.trangthai = 'dadoc';
-                localStorage.setItem('danhSachTB_Data', JSON.stringify(danhSachTB));
-            }
+    const cham = item.querySelector('.chamchuadoc');
+    if (cham) cham.remove();
 
-            capNhatSoLuongTab();
-        }
+    const textItem = item.querySelector('.textitem');
+    if (textItem) textItem.style.paddingLeft = '18px';
+
+    const nhan = item.querySelector('.nhandanchuadoc');
+    if (nhan) {
+        nhan.className = 'nhandandadoc';
+        nhan.textContent = 'Đã đọc';
     }
+
+    const found = danhSachTB.find(tb => tb.id === item.dataset.id);
+    if (found) {
+        found.trangthai = 'dadoc';
+        luuDanhSach();
+    }
+
+    capNhatSoLuongTab();
+    locTheoTab(tabHienTai);
 }
 
-function chuyenTab(loai, event) {
-    let buttons = document.querySelectorAll('.nutloc');
-    buttons.forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
+function locTheoTab(loai) {
+    tabHienTai = loai;
 
-    let items = document.querySelectorAll('.itemthongbao');
-    items.forEach(item => {
-        if (loai === 'tatca') {
-            item.style.display = 'flex';
-        } else if (loai === 'chuadoc') {
-            if (item.classList.contains('chuadoc')) {
-                item.style.display = 'flex';
-            } else {
-                item.style.display = 'none';
-            }
-        } else if (loai === 'dadoc') {
-            if (item.classList.contains('dadoc')) {
-                item.style.display = 'flex';
-            } else {
-                item.style.display = 'none';
-            }
-        }
+    document.querySelectorAll('.nutloc').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === loai);
+    });
+
+    document.querySelectorAll('.itemthongbao').forEach(item => {
+        const hienThi = loai === 'tatca' || item.classList.contains(loai);
+        item.style.display = hienThi ? 'flex' : 'none';
     });
 }
 
@@ -98,49 +133,49 @@ function capNhatSoLuongTab() {
     const tongChuaDoc = document.querySelectorAll('.itemthongbao.chuadoc').length;
     const tongDaDoc = document.querySelectorAll('.itemthongbao.dadoc').length;
 
-    const nutLocs = document.querySelectorAll('.nutloc');
-    if(nutLocs.length >= 3) {
-        nutLocs[0].innerText = `Tất cả (${tongTatCa})`;
-        nutLocs[1].innerText = `Chưa đọc (${tongChuaDoc})`;
-        nutLocs[2].innerText = `Đã đọc (${tongDaDoc})`;
-    }
+    const nhan = {
+        tatca: `Tất cả (${tongTatCa})`,
+        chuadoc: `Chưa đọc (${tongChuaDoc})`,
+        dadoc: `Đã đọc (${tongDaDoc})`
+    };
+
+    document.querySelectorAll('.nutloc').forEach(btn => {
+        btn.textContent = nhan[btn.dataset.tab];
+    });
 }
 
 function renderThongBaoDyna() {
-    const danhSachContainer = document.querySelector('.danhsachitem');
-    if (!danhSachContainer) return;
+    const container = document.querySelector('.danhsachitem');
+    if (!container) return;
 
-    danhSachTB.forEach(tb => {
-        const divItem = document.createElement('div');
-        divItem.className = `itemthongbao ${tb.trangthai}`;
-        divItem.setAttribute('onclick', `hienThiChiTiet(escapeHtml('${tb.tieude}'), '${tb.ngay} - 08:00', escapeHtml('${tb.noidung}'), this)`);
-        
-        divItem.innerHTML = `
-            <div class="noidungitem">
-                ${tb.trangthai === 'chuadoc' ? '<div class="chamchuadoc"></div>' : ''}
-                <div class="textitem" ${tb.trangthai === 'dadoc' ? 'style="padding-left: 18px;"' : ''}>
-                    <h4>${tb.tieude}</h4>
-                    <p>${tb.noidung}</p>
-                </div>
-            </div>
-            <div class="thongtinphu">
-                <span class="ngaythang">${tb.ngay}</span>
-                <span class="${tb.trangthai === 'chuadoc' ? 'nhandanchuadoc' : 'nhandandadoc'}">
-                    ${tb.trangthai === 'chuadoc' ? 'Chưa đọc' : 'Đã đọc'}
-                </span>
-            </div>
-        `;
-        danhSachContainer.prepend(divItem);
-    });
+    danhSachTB.forEach(tb => container.prepend(taoItem(tb)));
     capNhatSoLuongTab();
-}
-
-function escapeHtml(text) {
-    return text.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     renderThongBaoDyna();
+
+    const container = document.querySelector('.danhsachitem');
+    const thanhLoc = document.querySelector('.thanhboloc');
+    const nutDaDoc = document.getElementById('nutDanhDauDaDoc');
+
+    if (container) {
+        container.addEventListener('click', e => {
+            const item = e.target.closest('.itemthongbao');
+            if (item) hienThiChiTiet(item);
+        });
+    }
+
+    if (thanhLoc) {
+        thanhLoc.addEventListener('click', e => {
+            const btn = e.target.closest('.nutloc');
+            if (btn) locTheoTab(btn.dataset.tab);
+        });
+    }
+
+    if (nutDaDoc) {
+        nutDaDoc.addEventListener('click', () => danhDauDaDoc(itemDangChon));
+    }
 
     const modalEl = document.getElementById('modalThemTB');
     const formEl = document.getElementById('formThemTB');
@@ -148,59 +183,54 @@ document.addEventListener('DOMContentLoaded', () => {
     const nutDongModal = document.getElementById('nutDongModal');
     const nutHuyModal = document.getElementById('nutHuyModal');
 
-    const moModal = () => { 
-        if (modalEl) {
-            modalEl.hidden = false; 
-            const nhapNgay = document.getElementById('nhapNgay');
-            if (nhapNgay) {
-                nhapNgay.value = new Date().toISOString().split('T')[0];
-            }
-        }
+    const moModal = () => {
+        if (!modalEl) return;
+        modalEl.hidden = false;
+        const nhapNgay = document.getElementById('nhapNgay');
+        if (nhapNgay) nhapNgay.value = ngayHomNay();
     };
 
-    const dongModal = () => { 
-        if (modalEl) modalEl.hidden = true; 
-        if (formEl) formEl.reset(); 
+    const dongModal = () => {
+        if (modalEl) modalEl.hidden = true;
+        if (formEl) formEl.reset();
     };
 
     if (nutMoModal) nutMoModal.addEventListener('click', moModal);
     if (nutDongModal) nutDongModal.addEventListener('click', dongModal);
     if (nutHuyModal) nutHuyModal.addEventListener('click', dongModal);
-    
+
     if (modalEl) {
-        modalEl.addEventListener('click', e => { 
-            if (e.target === modalEl) dongModal(); 
+        modalEl.addEventListener('click', e => {
+            if (e.target === modalEl) dongModal();
         });
     }
 
     if (formEl) {
         formEl.addEventListener('submit', e => {
             e.preventDefault();
+
             const tieude = document.getElementById('nhapTieuDe').value.trim();
             const noidung = document.getElementById('nhapNoiDung').value.trim();
-            const ngayRaw = document.getElementById('nhapNgay').value;
+            const ngayRaw = document.getElementById('nhapNgay').value || ngayHomNay();
 
-            let ngayFormatted = ngayRaw;
-            if (ngayRaw) {
-                const parts = ngayRaw.split('-');
-                if (parts.length === 3) {
-                    ngayFormatted = `${parts[2]}/${parts[1]}/${parts[0]}`;
-                }
-            }
+            if (!tieude || !noidung) return;
 
             const thongBaoMoi = {
                 id: String(Date.now()),
                 tieude,
                 noidung,
-                ngay: ngayFormatted || '06/10/2026',
+                ngay: dinhDangNgay(ngayRaw),
                 trangthai: 'chuadoc'
             };
 
             danhSachTB.push(thongBaoMoi);
-            localStorage.setItem('danhSachTB_Data', JSON.stringify(danhSachTB));
-            
+            luuDanhSach();
+
+            if (container) container.prepend(taoItem(thongBaoMoi));
+            capNhatSoLuongTab();
+            locTheoTab(tabHienTai);
+
             dongModal();
-            location.reload();
         });
     }
 });

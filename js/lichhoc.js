@@ -50,6 +50,10 @@
     const loadSubjects = () => {
         try { return JSON.parse(localStorage.getItem(SUBJECT_KEY)) || []; } catch (e) { return []; }
     };
+    const getTeacher = ev => {
+        const s = loadSubjects().find(x => x.name === ev.name);
+        return s ? s.teacher : (ev.teacher || '');
+    };
 
     let events = loadEvents();
     const findEvent = id => events.find(e => e.id === id);
@@ -67,8 +71,7 @@
     const form = $('scheduleForm');
     const f = {
         name: $('fName'), date: $('fDate'), ca: $('fCa'),
-        room: $('fRoom'), teacher:$('fTeacher'),
-        repeat: $('fRepeat')
+        room: $('fRoom'), repeat: $('fRepeat')
     };
 
     function renderEvent(e) {
@@ -221,7 +224,6 @@
         f.date.value = ev.date || opts.date || toISO(inWeek ? today : weekStart);
         f.ca.value = ev.ca || opts.ca || '';
         f.room.value = ev.room || '';
-        f.teacher.value = ev.teacher || '';
         f.repeat.value = 1;
         
         $('repeatField').hidden = !!currentId;
@@ -272,8 +274,7 @@
 
         const data = {
             name, date, ca,
-            room: f.room.value.trim(),
-            teacher: f.teacher.value.trim()
+            room: f.room.value.trim()
         };
 
         if (currentId) {
@@ -287,7 +288,6 @@
                     item.name = data.name;
                     item.ca = data.ca;
                     item.room = data.room;
-                    item.teacher = data.teacher;
                     item.date = toISO(addDays(first, index * 7));
                 });
             } else {
@@ -316,7 +316,7 @@
             <dt>Ngày học</dt><dd>${DAY_NAMES[dayIndex(d)]}, ${fmtDM(d)}/${d.getFullYear()}</dd>
             <dt>Ca học</dt><dd>Ca ${c.ca} (${c.start} - ${c.end}) - Tiết ${c.tiet}</dd>
             <dt>Phòng học</dt><dd>${ev.room ? esc(ev.room) : '-'}</dd>
-            <dt>Giảng viên</dt><dd>${ev.teacher ? esc(ev.teacher) : '-'}</dd>
+            <dt>Giảng viên</dt><dd>${getTeacher(ev) ? esc(getTeacher(ev)) : '-'}</dd>
             <dt>Trạng thái</dt><dd><span class="badge ${done ? 'done' : 'todo'}">${done ? 'Đã học' : 'Chưa học'}</span></dd>`;
         openModal(detailModal);
     }

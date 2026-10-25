@@ -4,18 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lịch học - QUẢN LÝ LỊCH HỌC</title>
-    <!-- Thư viện Icon FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- 1. CSS DÙNG CHUNG (BẮT BUỘC) -->
     <link rel="stylesheet" href="css/style.css">
-
-    <!-- 2. CSS RIÊNG của trang Lịch học -->
     <link rel="stylesheet" href="css/lichhoc.css">
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.replace("dangnhap.html");
+        }
+    </script>
 </head>
 <body>
 
-    <!-- NAV / HEADER DÙNG CHUNG -->
     <header class="navbar">
         <div class="logo">
             <i class="fa-solid fa-graduation-cap"></i>
@@ -29,21 +28,17 @@
             <a href="taikhoan.html">Tài khoản</a>
         </nav>
         <div class="nav-actions">
-        <!-- Hiển thị khi chưa đăng nhập -->
             <a href="dangnhap.html" class="in-login" id="loginBtn">
                 <i class="fa-regular fa-user"></i>
                 Đăng nhập
             </a>
-
-        <!-- Hiển thị khi đã đăng nhập -->
             <button type="button" class="out-login" id="logoutBtn" hidden>
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Đăng xuất
             </button>
-        </div>    
+        </div>
     </header>
 
-    <!-- THÂN TRANG -->
     <main class="content">
         <div class="schedule-page">
 
@@ -127,10 +122,6 @@
                         <input type="text" id="fRoom" placeholder="Ví dụ: 101-A1" maxlength="20">
                         <small class="err" data-err="room"></small>
                     </div>
-                    <div class="field">
-                        <label for="fTeacher">Giảng viên</label>
-                        <input type="text" id="fTeacher" placeholder="Nhập tên giảng viên" maxlength="60">
-                    </div>
                 </div>
 
                 <div class="field" id="repeatField">
@@ -140,7 +131,7 @@
                 </div>
 
                 <label class="check" id="editAllWrap" hidden>
-                    <input type="checkbox" id="editAll" checked="true"> 
+                    <input type="checkbox" id="editAll" checked>
                     <span id="editAllText"></span>
                 </label>
 
@@ -171,7 +162,7 @@
             <div class="result-icon warn"><i class="fa-solid fa-triangle-exclamation"></i></div>
             <p class="result-text" id="confirmText">Bạn có chắc muốn xóa lịch học này?</p>
             <label class="check" id="deleteAllWrap" hidden>
-                <input type="checkbox" id="deleteAll" checked="true">
+                <input type="checkbox" id="deleteAll" checked>
                 <span id="deleteAllText"></span>
             </label>
             <div class="modal-actions center">
@@ -181,20 +172,12 @@
         </div>
     </div>
 
-    <!-- FOOTER DÙNG CHUNG -->
     <footer>
         <p>&copy; 2026 Quản lý lịch học. Tất cả các quyền được bảo lưu.</p>
     </footer>
 
-    <!-- File JavaScript dùng chung -->
     <script src="js/main.js"></script>
-    <!-- JavaScript riêng của trang Lịch học -->
     <script src="js/lichhoc.js"></script>
-    <script>
-        if (localStorage.getItem("isLoggedIn") !== "true") {
-        window.location.replace("dangnhap.html");
-        }
-    </script>
 
 </body>
 </html>

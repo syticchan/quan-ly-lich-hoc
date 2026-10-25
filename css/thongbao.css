@@ -164,6 +164,7 @@
     color: #334155;
     line-height: 1.6;
     margin-bottom: 25px;
+    white-space: pre-line;
 }
 
 .nutdadoc {

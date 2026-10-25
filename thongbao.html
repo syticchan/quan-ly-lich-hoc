@@ -3,10 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUẢN LÝ LỊCH HỌC</title>
+    <title>Thông báo - QUẢN LÝ LỊCH HỌC</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/thongbao.css">
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.replace("dangnhap.html");
+        }
+    </script>
 </head>
 <body>
 
@@ -23,18 +28,15 @@
             <a href="taikhoan.html">Tài khoản</a>
         </nav>
         <div class="nav-actions">
-        <!-- Hiển thị khi chưa đăng nhập -->
             <a href="dangnhap.html" class="in-login" id="loginBtn">
                 <i class="fa-regular fa-user"></i>
                 Đăng nhập
             </a>
-
-        <!-- Hiển thị khi đã đăng nhập -->
             <button type="button" class="out-login" id="logoutBtn" hidden>
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Đăng xuất
             </button>
-        </div>    
+        </div>
     </header>
 
     <main class="content">
@@ -44,7 +46,7 @@
                     <i class="fa-solid fa-bell"></i>
                     <span>THÔNG BÁO</span>
                 </div>
-                <button id="nutMoModal" class="nutdadoc">
+                <button type="button" id="nutMoModal" class="nutdadoc">
                     <i class="fa-solid fa-plus"></i> Thêm thông báo
                 </button>
             </div>
@@ -52,13 +54,13 @@
             <div class="luoitruyenthong">
                 <div class="cotdanhsach">
                     <div class="thanhboloc">
-                        <button class="nutloc active" onclick="chuyenTab('tatca', event)">Tất cả (5)</button>
-                        <button class="nutloc" onclick="chuyenTab('chuadoc', event)">Chưa đọc (3)</button>
-                        <button class="nutloc" onclick="chuyenTab('dadoc', event)">Đã đọc (2)</button>
+                        <button type="button" class="nutloc active" data-tab="tatca">Tất cả (5)</button>
+                        <button type="button" class="nutloc" data-tab="chuadoc">Chưa đọc (3)</button>
+                        <button type="button" class="nutloc" data-tab="dadoc">Đã đọc (2)</button>
                     </div>
 
                     <div class="danhsachitem">
-                        <div class="itemthongbao chuadoc" onclick="hienThiChiTiet('Thay đổi phòng học môn Lập trình C++', '06/10/2026 - 10:30', 'Môn Lập trình C++ sẽ được chuyển sang phòng A102 từ tuần sau (bắt đầu từ ngày 12/10/2026).<br>Sinh viên vui lòng lưu ý để không bỏ lỡ buổi học.', this)">
+                        <div class="itemthongbao chuadoc" data-title="Thay đổi phòng học môn Lập trình C++" data-time="06/10/2026 - 10:30" data-content="Môn Lập trình C++ sẽ được chuyển sang phòng A102 từ tuần sau (bắt đầu từ ngày 12/10/2026).&#10;Sinh viên vui lòng lưu ý để không bỏ lỡ buổi học.">
                             <div class="noidungitem">
                                 <div class="chamchuadoc"></div>
                                 <div class="textitem">
@@ -72,7 +74,7 @@
                             </div>
                         </div>
 
-                        <div class="itemthongbao chuadoc" onclick="hienThiChiTiet('Lịch học tuần mới', '05/10/2026 - 08:00', 'Cập nhật thời khóa biểu chiều 06/10 - 12/10/2026.', this)">
+                        <div class="itemthongbao chuadoc" data-title="Lịch học tuần mới" data-time="05/10/2026 - 08:00" data-content="Cập nhật thời khóa biểu chiều 06/10 - 12/10/2026.">
                             <div class="noidungitem">
                                 <div class="chamchuadoc"></div>
                                 <div class="textitem">
@@ -86,7 +88,7 @@
                             </div>
                         </div>
 
-                        <div class="itemthongbao chuadoc" onclick="hienThiChiTiet('Thông báo nghỉ học', '05/10/2026 - 07:30', 'Ngày 06/10/2026 (Thứ 2) các lớp nghỉ học theo thông báo của ban cán sự.', this)">
+                        <div class="itemthongbao chuadoc" data-title="Thông báo nghỉ học" data-time="05/10/2026 - 07:30" data-content="Ngày 06/10/2026 (Thứ 2) các lớp nghỉ học theo thông báo của ban cán sự.">
                             <div class="noidungitem">
                                 <div class="chamchuadoc"></div>
                                 <div class="textitem">
@@ -100,7 +102,7 @@
                             </div>
                         </div>
 
-                        <div class="itemthongbao dadoc" onclick="hienThiChiTiet('Kết thúc học phần', '30/09/2026 - 15:00', 'Học phần đã kết thúc. Sinh viên kiểm tra lại điểm số trên hệ thống.', this)">
+                        <div class="itemthongbao dadoc" data-title="Kết thúc học phần" data-time="30/09/2026 - 15:00" data-content="Học phần đã kết thúc. Sinh viên kiểm tra lại điểm số trên hệ thống.">
                             <div class="noidungitem">
                                 <div class="textitem" style="padding-left: 18px;">
                                     <h4>Kết thúc học phần</h4>
@@ -113,7 +115,7 @@
                             </div>
                         </div>
 
-                        <div class="itemthongbao dadoc" onclick="hienThiChiTiet('Thông báo về tài liệu học tập', '28/09/2026 - 14:20', 'Tài liệu học tập đã được cập nhật lên hệ thống.', this)">
+                        <div class="itemthongbao dadoc" data-title="Thông báo về tài liệu học tập" data-time="28/09/2026 - 14:20" data-content="Tài liệu học tập đã được cập nhật lên hệ thống.">
                             <div class="noidungitem">
                                 <div class="textitem" style="padding-left: 18px;">
                                     <h4>Thông báo về tài liệu học tập</h4>
@@ -131,10 +133,8 @@
                 <div class="cotchitiet" id="khungchitiet">
                     <h3 id="tieudecitiet">Thay đổi phòng học môn Lập trình C++</h3>
                     <p class="thoigianchitiet"><i class="fa-regular fa-clock"></i> <span id="ngaygiochitiet">06/10/2026 - 10:30</span></p>
-                    <div class="noidungchitiet" id="noidungchitiet">
-                        Môn Lập trình C++ sẽ được chuyển sang phòng A102 từ tuần sau (bắt đầu từ ngày 12/10/2026).<br>Sinh viên vui lòng lưu ý để không bỏ lỡ buổi học.
-                    </div>
-                    <button class="nutdadoc" onclick="danhDauDaDoc()"><i class="fa-solid fa-check"></i> Đã đọc</button>
+                    <div class="noidungchitiet" id="noidungchitiet">Môn Lập trình C++ sẽ được chuyển sang phòng A102 từ tuần sau (bắt đầu từ ngày 12/10/2026).&#10;Sinh viên vui lòng lưu ý để không bỏ lỡ buổi học.</div>
+                    <button type="button" class="nutdadoc" id="nutDanhDauDaDoc"><i class="fa-solid fa-check"></i> Đã đọc</button>
                 </div>
             </div>
         </div>
@@ -144,7 +144,7 @@
         <div class="hopnoidung" role="dialog" aria-modal="true">
             <div class="modal-head">
                 <h2>Thêm thông báo mới</h2>
-                <button type="button" class="icon-dong" id="nutDongModal"><i class="fa-solid fa-xmark"></i></button>
+                <button type="button" class="icon-dong" id="nutDongModal" aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <form id="formThemTB">
                 <div class="nhaplieu">
@@ -173,11 +173,6 @@
 
     <script src="js/main.js"></script>
     <script src="js/thongbao.js"></script>
-    <script>
-        if (localStorage.getItem("isLoggedIn") !== "true") {
-        window.location.replace("dangnhap.html");
-        }
-    </script>
 
 </body>
 </html>

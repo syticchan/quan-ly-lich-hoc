@@ -3,21 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QUẢN LÝ LỊCH HỌC</title>
-    <!-- Thư viện Icon FontAwesome -->
+    <title>Trang chủ - QUẢN LÝ LỊCH HỌC</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- 1. CSS DÙNG CHUNG (BẮT BUỘC) -->
     <link rel="stylesheet" href="css/style.css">
-    
-    <!-- 2. CSS RIÊNG (Thay tên file CSS tương ứng của từng trang) -->
     <link rel="stylesheet" href="css/trangchu.css">
 </head>
 <body>
 
-    <!-- NAV / HEADER DÙNG CHUNG -->
     <header class="navbar">
-        <div class="logo" >
+        <div class="logo">
             <i class="fa-solid fa-graduation-cap"></i>
             <span>QUẢN LÝ LỊCH HỌC</span>
         </div>
@@ -29,20 +23,18 @@
             <a href="taikhoan.html">Tài khoản</a>
         </nav>
         <div class="nav-actions">
-        <!-- Hiển thị khi chưa đăng nhập -->
             <a href="dangnhap.html" class="in-login" id="loginBtn">
                 <i class="fa-regular fa-user"></i>
                 Đăng nhập
             </a>
-
-        <!-- Hiển thị khi đã đăng nhập -->
             <button type="button" class="out-login" id="logoutBtn" hidden>
                 <i class="fa-solid fa-right-from-bracket"></i>
                 Đăng xuất
             </button>
         </div>
     </header>
-<main class="content">
+
+    <main class="content">
         <section class="hero-banner">
             <div class="banner-text">
                 <h1>Đồng hành cùng bạn trên <br>
@@ -54,9 +46,7 @@
             </div>
         </section>
 
-        
         <section class="feature-images">
-            
             <a href="lichhoc.html" class="card-item card-blue">
                 <div class="card-icon-bg icon-blue">
                     <i class="fa-regular fa-calendar-days"></i>
@@ -89,27 +79,14 @@
                 </div>
                 <span class="card-arrow"><i class="fa-solid fa-arrow-right"></i></span>
             </a>
-
         </section>
-        <div class="dashboard-grid">
-            <p id="current-date"></p>
-        </div>
     </main>
-    <!-- THÂN TRANG (MỖI BẠN VIẾT NỘI DUNG VÀO ĐÂY) -->
-    
 
-    <!-- FOOTER DÙNG CHUNG -->
     <footer>
         <p>&copy; 2026 Quản lý lịch học. Tất cả các quyền được bảo lưu.</p>
     </footer>
 
-    <!-- File JavaScript dùng chung -->
     <script src="js/main.js"></script>
-    <script>
-        if (localStorage.getItem("isLoggedIn") !== "true") {
-        window.location.replace("dangnhap.html");
-        }
-    </script>
 
 </body>
 </html>
