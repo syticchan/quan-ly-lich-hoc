@@ -1,64 +1,45 @@
-
 .hero-banner {
     background: linear-gradient(135deg, #e8f2ff 0%, #d8e8ff 100%);
     padding: 30px 35px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 25px;
-
     margin-bottom: 30px;
     border-radius: 20px;
     overflow: hidden;
     box-sizing: border-box;
 }
 
-
 .banner-text {
     flex: 1;
     min-width: 0;
     padding-right: 10px;
 }
-
-.banner-text .sub-title {
-    font-size: 12px;
-    font-weight: 600;
-    color: #1a73e8;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-}
-
 .banner-text h1 {
     font-size: 36px;
-    color: #0f172a;
+    color: var(--text-color);
     line-height: 1.3;
     font-weight: 700;
     margin: 0 0 14px;
 }
-
 .banner-text h1 span {
-    color: #1a73e8;
+    color: var(--accent-color);
 }
-
 .banner-text .comment {
-    color: #64748b;
+    color: var(--muted-color);
     font-size: 15px;
     line-height: 1.7;
     margin: 0;
 }
 
-/* Phần ảnh bên phải */
 .banner-images {
     flex: 0 1 400px;
     min-width: 0;
-
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
 .banner-images img {
     display: block;
     width: 100%;
@@ -69,234 +50,160 @@
     filter: contrast(130%);
 }
 
-/* Hiển thị trên điện thoại */
 .feature-images {
-    display: grid;                     /* Dùng mô hình Grid để chia lưới */
-    grid-template-columns: repeat(3, 1fr); /* Chia thành 3 cột có độ rộng bằng nhau (1fr) */
-    gap: 20px;                         /* Khoảng cách giữa các Card là 20px */
-    margin-bottom: 35px;               /* Khoảng cách từ Tầng 2 xuống Tầng 3 */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 35px;
 }
 
-/* 2. Định dạng thẻ Card chung */
 .card-item {
-    display: flex;                     /* Dùng Flexbox xếp Icon - Chữ - Mũi tên nằm 1 hàng ngang */
-    align-items: center;               /* Căn giữa các thành phần theo chiều dọc */
-    padding: 24px;                     /* Khoảng đệm bên trong Card */
-    border-radius: 20px;               /* Bo tròn 4 góc của Card */
-    text-decoration: none;             /* Xóa gạch chân mặc định của thẻ link <a> */
-    color: #1d2939;                    /* Màu chữ xanh đen đậm */
-    gap: 16px;                         /* Khoảng cách giữa Icon và Khối chữ */
-    transition: all 0.3s ease;         /* Tạo hiệu ứng chuyển động mượt mà khi di chuột (hover) */
+    display: flex;
+    align-items: center;
+    padding: 24px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: var(--text-color);
+    gap: 16px;
+    transition: all 0.3s ease;
 }
-
-/* Hiệu ứng khi rê chuột vào Card (Nổi nhẹ lên trên) */
 .card-item:hover {
-    transform: translateY(-5px);       /* Đẩy Card nhích lên trên 5px */
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06); /* Đổ bóng mờ nhẹ dưới chân Card */
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
 }
 
-/* Màu nền riêng cho 3 Card theo mẫu */
-.card-blue { background-color: #ebf3ff; }   /* Màu nền xanh nhạt cho Card Lịch học */
-.card-green { background-color: #eaf8f0; }  /* Màu nền xanh lá nhạt cho Card Môn học */
-.card-orange { background-color: #fff4e5; } /* Màu nền cam nhạt cho Card Thông báo */
+.card-blue {
+    background-color: #ebf3ff;
+}
+.card-green {
+    background-color: #eaf8f0;
+}
+.card-orange {
+    background-color: #fff4e5;
+}
 
-/* 3. Ô tròn chứa Icon góc trái Card */
 .card-icon-bg {
-    width: 52px;                       /* Chiều rộng ô tròn chứa Icon */
-    height: 52px;                      /* Chiều cao ô tròn */
-    border-radius: 50%;                /* Bo tròn 100% để tạo thành hình tròn hoàn hảo */
-    display: flex;                     /* Dùng Flexbox để căn Icon */
-    align-items: center;               /* Căn Icon vào giữa theo chiều dọc */
-    justify-content: center;           /* Căn Icon vào giữa theo chiều ngang */
-    font-size: 22px;                   /* Kích thước Icon FontAwesome */
-    flex-shrink: 0;                    /* Giữ cố định kích thước ô tròn, không bị móp khi thu nhỏ màn hình */
-}
-
-/* Màu nền ô tròn chứa Icon */
-.icon-blue { background-color: #4285f4; color: #ffffff; }   /* Xanh dương + Icon trắng */
-.icon-green { background-color: #34a853; color: #ffffff; }  /* Xanh lá + Icon trắng */
-.icon-orange { background-color: #fb8c00; color: #ffffff; } /* Cam + Icon trắng */
-
-/* 4. Khối chữ bên trong Card */
-.card-info h3 {
-    font-size: 18px;                   /* Kích thước chữ tiêu đề Card */
-    font-weight: 700;                  /* Độ đậm chữ */
-    margin-bottom: 4px;                /* Khoảng cách xuống dòng mô tả nhỏ */
-    color: #101828;
-}
-
-.card-info p {
-    font-size: 13px;                   /* Kích thước chữ mô tả nhỏ */
-    color: #667085;                    /* Màu chữ xám nhạt */
-    line-height: 1.4;                  /* Độ thoáng giữa các dòng chữ */
-}
-
-/* 5. Nút Mũi tên góc phải Card */
-.card-arrow {
-    width: 32px;                       /* Chiều rộng hình tròn mũi tên */
-    height: 32px;                      /* Chiều cao hình tròn mũi tên */
-    border-radius: 50%;                /* Bo tròn hoàn hảo */
-    display: flex;                     /* Căn mũi tên vào giữa */
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;                   /* Kích thước mũi tên */
-    margin-left: auto;                 /* Tự động đẩy nút mũi tên về tận cùng bên phải Card */
-    color: #ffffff;                    /* Màu mũi tên trắng */
+    font-size: 22px;
+    flex-shrink: 0;
+    color: #fff;
+}
+.icon-blue {
+    background-color: #4285f4;
+}
+.icon-green {
+    background-color: #34a853;
+}
+.icon-orange {
+    background-color: #fb8c00;
 }
 
-/* Màu nút mũi tên tương ứng màu thương hiệu */
-.card-blue .card-arrow { background-color: #1a73e8; }
-.card-green .card-arrow { background-color: #34a853; }
-.card-orange .card-arrow { background-color: #fb8c00; }
-
-
-/* ==========================================
-   TẦNG 3: DASHBOARD 2 CỘT (LỊCH HỌC & THÔNG BÁO)
-   ========================================== */
-
-/* Khung nền trắng cho từng cột */
-.dashboard-box {
-    background-color: #ffffff;         /* Nền trắng */
-    border-radius: 20px;               /* Bo tròn góc khung */
-    padding: 24px;                     /* Khoảng đệm bên trong */
-    border: 1px solid #f2f4f7;         /* Viền màu xám cực nhạt giúp khung rõ nét */
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02); /* Đổ bóng siêu dịu */
+.card-info h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-color);
+}
+.card-info p {
+    font-size: 13px;
+    color: var(--muted-color);
+    line-height: 1.4;
 }
 
-/* 2. Tiêu đề góc trên của mỗi Khung (Box Header) */
-.box-header {
-    display: flex;                     /* Dùng Flexbox căn tiêu đề bên trái, link "Xem tất cả" bên phải */
-    justify-content: space-between;    /* Đẩy 2 phần về 2 đầu */
-    align-items: center;               /* Căn giữa chiều dọc */
-    margin-bottom: 20px;               /* Khoảng cách xuống nội dung bên dưới */
-}
-
-.box-header h2 {
-    font-size: 18px;                   /* Kích thước tiêu đề bảng */
-    color: #101828;                    /* Màu xanh đen đậm */
-    font-weight: 700;                  /* Độ đậm chữ */
-    display: flex;                     /* Flexbox xếp Icon và Chữ nằm 1 hàng */
+.card-arrow {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
     align-items: center;
-    gap: 10px;                         /* Khoảng cách giữa Icon và Chữ tiêu đề */
+    justify-content: center;
+    font-size: 12px;
+    margin-left: auto;
+    color: #fff;
+}
+.card-blue .card-arrow {
+    background-color: var(--accent-color);
+}
+.card-green .card-arrow {
+    background-color: #34a853;
+}
+.card-orange .card-arrow {
+    background-color: #fb8c00;
 }
 
-.box-header h2 i {
-    color: #1a73e8;                    /* Màu xanh dương cho Icon tiêu đề */
-}
-
-/* Link "Xem tất cả ->" góc phải */
-.link-all {
-    text-decoration: none;             /* Xóa gạch chân */
-    font-size: 13px;                   /* Kích thước chữ nhỏ */
-    color: #1a73e8;                    /* Màu xanh dương */
-    font-weight: 600;                  /* Độ đậm vừa */
-    transition: opacity 0.2s;
-}
-
-.link-all:hover {
-    opacity: 0.8;                      /* Mờ nhẹ khi rê chuột vào */
-}
-
-/* Nhãn Ca 1, Ca 2, Ca 3 góc phải */
-.badge {
-    font-size: 12px;                   /* Kích thước chữ nhãn */
-    padding: 4px 12px;                 /* Khoảng đệm cho nhãn */
-    border-radius: 20px;               /* Bo tròn nhãn */
-    font-weight: 600;                  /* Chữ đậm */
-}
-
-.badge-blue { background-color: #e8f0fe; color: #1a73e8; }   /* Ca 1 màu xanh */
-.badge-green { background-color: #e6f4ea; color: #137333; }  /* Ca 2 màu xanh lá */
-.badge-orange { background-color: #fef7e0; color: #b06000; } /* Ca 3 màu cam */
-
-/* Tag "MỚI" màu đỏ */
-.tag-new {
-    background-color: #ea4335;         /* Nền màu đỏ nổi bật */
-    color: #ffffff;                    /* Chữ trắng */
-    font-size: 9px;                    /* Kích thước chữ siêu nhỏ */
-    padding: 2px 6px;                  /* Khoảng đệm nhãn */
-    border-radius: 4px;                /* Bo nhẹ góc nhãn */
-    font-weight: 700;                  /* Chữ siêu đậm */
-    text-transform: uppercase;         /* In hoa chữ MỚI */
-}
-@media(max-width:992px){
-    .hero-banner{
-        padding:35px 30px;
-    }
-    .banner-text{
-        font-size: 30px;                 /* TÁC DỤNG: Hạ kích thước tiêu đề chính xuống 30px để không bị vỡ dòng */
-    }
-
-    .banner-images {
-        flex: 0 0 320px;                 /* TÁC DỤNG: Thu hẹp độ rộng khung ảnh xuống 320px */
-    }
-
-    /* TẦNG 2: Chuyển 3 Card chức năng từ 3 cột thành 2 cột */
-    .feature-images {
-        grid-template-columns: repeat(2, 1fr); /* TÁC DỤNG: Chia lại lưới thành 2 cột trên một hàng */
-    }
-
-    /* TẦNG 3: Chuyển Dashboard từ 2 cột thành 1 cột */
-    .dashboard-grid {
-        grid-template-columns: 1fr;      /* TÁC DỤNG: Xếp Lịch học ở trên, Thông báo xuống bên dưới */
-    }
-}
-
-
-/* 2. MÀN HÌNH ĐIỆN THOẠI DI ĐỘNG (Chiều rộng dưới 768px) */
-@media (max-width: 768px) {
-    
-    /* KHUNG CONTAINER CHÍNH */
-    .container {
-        padding: 15px 12px;              /* TÁC DỤNG: Thu hẹp mép lề 2 bên điện thoại xuống 12px để tận dụng tối đa màn hình */
-    }
-
-    /* TẦNG 1: Dựng dọc Banner (Chữ nằm trên, Ảnh nằm dưới) */
+@media (max-width: 900px) {
     .hero-banner {
-        flex-direction: column;          /* TÁC DỤNG: Chuyển Flexbox từ hàng ngang thành hàng dọc */
-        text-align: center;              /* TÁC DỤNG: Căn giữa toàn bộ chữ cho đẹp mắt trên điện thoại */
+        padding: 35px 30px;
+    }
+    .banner-text h1 {
+        font-size: 30px;
+    }
+    .banner-images {
+        flex: 0 0 320px;
+    }
+    .feature-images {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-banner {
+        flex-direction: column;
+        text-align: center;
         padding: 30px 20px;
     }
-
     .banner-text {
-        padding-right: 0;                /* TÁC DỤNG: Bỏ khoảng đệm bên phải vì ảnh đã chuyển xuống dưới */
-        margin-bottom: 25px;             /* TÁC DỤNG: Tạo khoảng cách từ chữ xuống ảnh bên dưới */
+        padding-right: 0;
+        margin-bottom: 25px;
     }
-
     .banner-text h1 {
-        font-size: 26px;                 /* TÁC DỤNG: Giảm kích thước chữ h1 xuống 26px vừa vặn màn hình di động */
+        font-size: 26px;
     }
-
     .banner-images {
-        flex: 0 0 auto;                  /* TÁC DỤNG: Tự động co giãn theo kích thước ảnh */
-        width: 100%;                     /* TÁC DỤNG: Mở rộng khung chứa ảnh ra full chiều rộng */
-        justify-content: center;         /* TÁC DỤNG: Căn bức ảnh vào chính giữa màn hình */
+        flex: 0 0 auto;
+        width: 100%;
     }
-
     .banner-images img {
-        max-width: 280px;                /* TÁC DỤNG: Thu nhỏ ảnh xuống 280px để không bị tràn màn hình điện thoại */
+        max-width: 280px;
     }
-
-    /* TẦNG 2: Dựng dọc 3 Card chức năng thành 1 cột duy nhất */
     .feature-images {
-        grid-template-columns: 1fr;      /* TÁC DỤNG: Xếp lần lượt Card Lịch học -> Môn học -> Thông báo thành 1 cột dọc */
-        gap: 12px;                       /* TÁC DỤNG: Thu hẹp khoảng cách giữa các Card xuống 12px */
+        grid-template-columns: 1fr;
+        gap: 12px;
     }
-
     .card-item {
-        padding: 16px;                   /* TÁC DỤNG: Giảm khoảng đệm trong Card giúp Card gọn gàng hơn */
+        padding: 16px;
     }
+}
 
-    .badge {
-        align-self: flex-end;            /* TÁC DỤNG: Đẩy nhãn Ca 1, Ca 2 xuống góc dưới bên phải cho gọn */
+@media (max-width: 600px) {
+    .hero-banner {
+        padding: 24px 16px;
+        border-radius: 14px;
     }
-}
-.dashboard-grid{
-    #current-date {
-    color: #64748b;
-    font-size: 14px;
-}
-    text-transform: capitalize;
-margin-top: 8px;    /* Giảm khoảng cách với phần phía trên */
-  margin-bottom: 8px;
+    .banner-text h1 {
+        font-size: 22px;
+    }
+    .banner-text .comment {
+        font-size: 14px;
+    }
+    .banner-images img {
+        max-width: 220px;
+    }
+    .card-item {
+        padding: 14px;
+        gap: 12px;
+    }
+    .card-icon-bg {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+    }
+    .card-info h3 {
+        font-size: 16px;
+    }
 }
