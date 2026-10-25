@@ -255,6 +255,17 @@ input {
     outline-offset: 3px;
 }
 
+.form-switch {
+    margin: 18px 0 0;
+    text-align: center;
+    color: var(--muted-color);
+    font-size: 13px;
+}
+.form-switch .text-button {
+    margin-left: 4px;
+    font-size: 13px;
+}
+
 .form-message {
     margin: 0;
     text-align: center;

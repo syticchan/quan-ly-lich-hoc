@@ -58,42 +58,42 @@
                             <div class="info-row">
                                 <div>
                                     <div class="info-label">Họ và tên</div>
-                                    <div class="info-value" data-field="name">Nguyễn Văn A</div>
+                                    <div class="info-value" data-field="name"></div>
                                 </div>
                             </div>
 
                             <div class="info-row">
                                 <div>
                                     <div class="info-label">Mã sinh viên</div>
-                                    <div class="info-value">251230809</div>
+                                    <div class="info-value" data-field="studentId"></div>
                                 </div>
                             </div>
 
                             <div class="info-row">
                                 <div>
                                     <div class="info-label">Email</div>
-                                    <div class="info-value" data-field="email">sinhvien@gmail.com</div>
+                                    <div class="info-value" data-field="email"></div>
                                 </div>
                             </div>
 
                             <div class="info-row">
                                 <div>
                                     <div class="info-label">Trường</div>
-                                    <div class="info-value" data-field="school">Đại học Giao thông vận tải</div>
+                                    <div class="info-value" data-field="school"></div>
                                 </div>
                             </div>
 
                             <div class="info-row">
                                 <div>
                                     <div class="info-label">Khoa</div>
-                                    <div class="info-value" data-field="faculty">Khoa Công nghệ thông tin</div>
+                                    <div class="info-value" data-field="faculty"></div>
                                 </div>
                             </div>
 
                             <div class="info-row">
                                 <div>
                                     <div class="info-label">Lớp</div>
-                                    <div class="info-value" data-field="className">Công nghệ thông tin - K66</div>
+                                    <div class="info-value" data-field="className"></div>
                                 </div>
                             </div>
 
@@ -128,72 +128,84 @@
         </div>
     </main>
 
-    <div class="modal-overlay" id="editModal">
-        <div class="modal" role="dialog" aria-modal="true">
-            <div class="modal-header">
-                <h3>Chỉnh sửa thông tin</h3>
-                <button type="button" class="close-btn" aria-label="Đóng">×</button>
+    <div class="modal" id="editModal" hidden>
+        <div class="modal-box" role="dialog" aria-modal="true">
+            <div class="modal-head">
+                <h2>Chỉnh sửa thông tin</h2>
+                <button type="button" class="icon-btn" data-close aria-label="Đóng">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
 
-            <form id="editForm">
-                <div class="form-group">
+            <form id="editForm" novalidate>
+                <div class="field">
                     <label for="editName">Họ và tên</label>
-                    <input id="editName" name="name" value="Nguyễn Văn A" required>
+                    <input id="editName" name="name">
+                    <span class="err"></span>
                 </div>
 
-                <div class="form-group">
+                <div class="field">
                     <label for="editEmail">Email</label>
-                    <input id="editEmail" name="email" type="email" value="nguyenvana@univ.edu.vn" required>
+                    <input id="editEmail" name="email" type="email">
+                    <span class="err"></span>
                 </div>
 
-                <div class="form-group">
+                <div class="field">
                     <label for="editSchool">Trường</label>
-                    <input id="editSchool" name="school" value="Đại học Khoa học Tự nhiên" required>
+                    <input id="editSchool" name="school" placeholder="Chưa có">
+                    <span class="err"></span>
                 </div>
 
-                <div class="form-group">
+                <div class="field">
                     <label for="editFaculty">Khoa</label>
-                    <input id="editFaculty" name="faculty" value="Khoa Công nghệ thông tin" required>
+                    <input id="editFaculty" name="faculty" placeholder="Chưa có">
+                    <span class="err"></span>
                 </div>
 
-                <div class="form-group">
+                <div class="field">
                     <label for="editClass">Lớp</label>
-                    <input id="editClass" name="className" value="Kỹ thuật phần mềm - K62" required>
+                    <input id="editClass" name="className" placeholder="Chưa có">
+                    <span class="err"></span>
                 </div>
 
                 <div class="modal-actions">
-                    <button type="button" class="btn btn-cancel" data-close>Hủy</button>
+                    <button type="button" class="btn btn-outline" data-close>Hủy</button>
                     <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div class="modal-overlay" id="passwordModal">
-        <div class="modal" role="dialog" aria-modal="true">
-            <div class="modal-header">
-                <h3>Đổi mật khẩu</h3>
-                <button type="button" class="close-btn" aria-label="Đóng">×</button>
+    <div class="modal" id="passwordModal" hidden>
+        <div class="modal-box" role="dialog" aria-modal="true">
+            <div class="modal-head">
+                <h2>Đổi mật khẩu</h2>
+                <button type="button" class="icon-btn" data-close aria-label="Đóng">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
 
-            <form id="passwordForm">
-                <div class="form-group">
+            <form id="passwordForm" novalidate>
+                <div class="field">
                     <label for="currentPassword">Mật khẩu hiện tại</label>
-                    <input id="currentPassword" type="password" required>
+                    <input id="currentPassword" type="password">
+                    <span class="err"></span>
                 </div>
 
-                <div class="form-group">
+                <div class="field">
                     <label for="newPassword">Mật khẩu mới</label>
-                    <input id="newPassword" type="password" minlength="8" required>
+                    <input id="newPassword" type="password" placeholder="Tối thiểu 8 ký tự, gồm a-z, A-Z, 0-9">
+                    <span class="err"></span>
                 </div>
 
-                <div class="form-group">
+                <div class="field">
                     <label for="confirmPassword">Xác nhận mật khẩu mới</label>
-                    <input id="confirmPassword" type="password" minlength="8" required>
+                    <input id="confirmPassword" type="password" placeholder="Nhập lại mật khẩu">
+                    <span class="err"></span>
                 </div>
 
                 <div class="modal-actions">
-                    <button type="button" class="btn btn-cancel" data-close>Hủy</button>
+                    <button type="button" class="btn btn-outline" data-close>Hủy</button>
                     <button type="submit" class="btn btn-primary">Cập nhật mật khẩu</button>
                 </div>
             </form>

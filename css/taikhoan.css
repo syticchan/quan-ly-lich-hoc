@@ -36,9 +36,6 @@
 .card {
     min-width: 0;
     padding: 20px;
-    background: rgba(255, 255, 255, 0.96);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
     box-shadow: 0 3px 12px rgba(39, 104, 174, 0.08);
 }
 .card-title {
@@ -132,80 +129,6 @@
 .chevron {
     font-size: 25px;
     color: var(--accent-color);
-}
-
-.modal-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: var(--overlay-color);
-}
-.modal-overlay.show {
-    display: flex;
-}
-.modal-overlay .modal {
-    position: static;
-    display: block;
-    width: 100%;
-    max-width: 480px;
-    max-height: 90vh;
-    overflow-y: auto;
-    padding: 24px;
-    background: #fff;
-    border-radius: 14px;
-    box-shadow: var(--shadow-modal);
-}
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-}
-.modal-header h3 {
-    color: var(--text-color);
-    font-size: 22px;
-}
-.close-btn {
-    width: 34px;
-    height: 34px;
-    border: none;
-    border-radius: 50%;
-    background: #edf5ff;
-    color: var(--text-color);
-    font-size: 22px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    margin-bottom: 15px;
-}
-.form-group label {
-    color: #557397;
-    font-size: 14px;
-    font-weight: 600;
-}
-.form-group input {
-    width: 100%;
-    padding: 11px 12px;
-    border: 1px solid #d4e4f7;
-    border-radius: 8px;
-    outline: none;
-}
-.form-group input:focus {
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px #e4f2ff;
-}
-
-.btn-cancel {
-    background: #edf3fa;
-    color: #426181;
 }
 
 .toast {
@@ -351,22 +274,6 @@
     }
     .chevron {
         font-size: 20px;
-    }
-    .modal-overlay {
-        padding: 12px;
-    }
-    .modal-overlay .modal {
-        padding: 18px;
-        max-height: 85vh;
-    }
-    .modal-header h3 {
-        font-size: 19px;
-    }
-    .modal-actions {
-        flex-wrap: wrap;
-    }
-    .modal-actions .btn {
-        flex: 1;
     }
     .toast {
         right: 12px;

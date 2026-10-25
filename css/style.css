@@ -163,7 +163,8 @@ footer {
 .week-panel,
 .table-wrap,
 .cotdanhsach,
-.cotchitiet {
+.cotchitiet,
+.card {
     background: #fff;
     border: 1px solid var(--border-color);
     border-radius: 10px;
