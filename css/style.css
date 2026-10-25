@@ -8,17 +8,17 @@
     --bg-light: #f4f6f9;        /* Nền xám nhạt toàn trang */
     --text-color: #1e293b;      /* Màu chữ chính */
     --border-color: #e2e8f0;    /* Màu viền các khung */
-    --muted-color: #64748b;
-    --faint-color: #94a3b8;
-    --label-color: #475569;
-    --surface-soft: #f8fafc;
-    --accent-soft: #eff6ff;
-    --success-color: #22c55e;
-    --warning-color: #f59e0b;
-    --danger-color: #dc2626;
-    --danger-hover: #b91c1c;
-    --overlay-color: rgba(15, 23, 42, 0.45);
-    --shadow-modal: 0 20px 50px rgba(15, 23, 42, 0.3);
+    --muted-color: #64748b;     /* Màu chữ phụ, mô tả */
+    --faint-color: #94a3b8;     /* Màu chữ mờ, ngày tháng, icon phụ */
+    --label-color: #475569;     /* Màu nhãn của ô nhập liệu */
+    --surface-soft: #f8fafc;    /* Nền xám rất nhạt cho tiêu đề bảng, ô khi di chuột */
+    --accent-soft: #eff6ff;     /* Nền xanh rất nhạt cho mục đang chọn */
+    --success-color: #22c55e;   /* Xanh lá cho trạng thái đã học */
+    --warning-color: #f59e0b;   /* Màu cam cho biểu tượng cảnh báo */
+    --danger-color: #dc2626;    /* Đỏ cho nút xóa và thông báo lỗi */
+    --danger-hover: #b91c1c;    /* Đỏ đậm hơn khi di chuột vào nút xóa */
+    --overlay-color: rgba(15, 23, 42, 0.45);   /* Lớp nền tối phía sau hộp thoại */
+    --shadow-modal: 0 20px 50px rgba(15, 23, 42, 0.3); /* Đổ bóng cho hộp thoại */
 }
 
 /* 2. Reset CSS cơ bản */
@@ -34,7 +34,7 @@ body {
     color: var(--text-color);
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Giúp footer luôn nằm sát dưới cùng màn hình */
+    min-height: 100vh;
 }
 
 button,
@@ -159,8 +159,19 @@ footer {
     display: none !important;
 }
 
+.sidebar,
+.week-panel,
+.table-wrap,
+.cotdanhsach,
+.cotchitiet {
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+}
+
 .schedule-page,
-.subject-page {
+.subject-page,
+.notice-page {
     max-width: 1280px;
     margin: 0 auto;
     padding: 24px 32px 40px;
@@ -239,8 +250,7 @@ footer {
     outline-offset: 2px;
 }
 
-.modal,
-.hopmodal {
+.modal {
     position: fixed;
     inset: 0;
     z-index: 50;
@@ -251,8 +261,7 @@ footer {
     background: var(--overlay-color);
 }
 
-.modal-box,
-.hopnoidung {
+.modal-box {
     width: 100%;
     max-width: 520px;
     max-height: 100%;
@@ -291,8 +300,7 @@ footer {
     color: var(--primary-color);
 }
 
-.modal-actions,
-.modal-hanh-dong {
+.modal-actions {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
@@ -302,8 +310,7 @@ footer {
     justify-content: center;
 }
 
-.field,
-.nhaplieu {
+.field {
     margin-bottom: 12px;
     flex: 1;
     min-width: 0;
@@ -312,8 +319,7 @@ footer {
     display: flex;
     gap: 12px;
 }
-.field label,
-.nhaplieu label {
+.field label {
     display: block;
     margin-bottom: 4px;
     font-size: 12px;
@@ -322,8 +328,7 @@ footer {
 }
 .field input,
 .field select,
-.nhaplieu input,
-.nhaplieu textarea {
+.field textarea {
     width: 100%;
     padding: 8px 10px;
     border: 1px solid var(--border-color);
@@ -332,10 +337,12 @@ footer {
     color: var(--text-color);
     background: #fff;
 }
+.field textarea {
+    resize: vertical;
+}
 .field input:focus,
 .field select:focus,
-.nhaplieu input:focus,
-.nhaplieu textarea:focus {
+.field textarea:focus {
     border-color: var(--accent-color);
 }
 .field input.invalid,
@@ -371,7 +378,8 @@ footer {
         padding: 12px 20px;
     }
     .schedule-page,
-    .subject-page {
+    .subject-page,
+    .notice-page {
         padding: 16px;
     }
     .field-row {
@@ -409,7 +417,8 @@ footer {
         padding: 5px 8px;
     }
     .schedule-page,
-    .subject-page {
+    .subject-page,
+    .notice-page {
         padding: 10px 8px;
     }
     .page-head h1 {
@@ -435,16 +444,13 @@ footer {
         flex-wrap: wrap;
         gap: 10px;
     }
-    .modal,
-    .hopmodal {
+    .modal {
         padding: 10px;
     }
-    .modal-box,
-    .hopnoidung {
+    .modal-box {
         padding: 16px;
     }
-    .modal-actions,
-    .modal-hanh-dong {
+    .modal-actions {
         flex-wrap: wrap;
     }
     footer {
@@ -454,8 +460,7 @@ footer {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .modal-box,
-    .hopnoidung {
+    .modal-box {
         animation: none;
     }
 }

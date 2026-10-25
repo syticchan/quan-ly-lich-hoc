@@ -16,9 +16,6 @@
 
 .table-wrap {
     overflow-x: auto;
-    background: #fff;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
 }
 
 .subject-table {

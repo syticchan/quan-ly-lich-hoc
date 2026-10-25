@@ -40,13 +40,11 @@
     </header>
 
     <main class="content">
-        <div class="khungthongbao">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <div class="tieudetrang">
-                    <i class="fa-solid fa-bell"></i>
-                    <span>THÔNG BÁO</span>
-                </div>
-                <button type="button" id="nutMoModal" class="nutdadoc">
+        <div class="notice-page">
+
+            <div class="page-head">
+                <h1><i class="fa-solid fa-bell"></i> THÔNG BÁO</h1>
+                <button type="button" class="btn btn-primary" id="btnAdd">
                     <i class="fa-solid fa-plus"></i> Thêm thông báo
                 </button>
             </div>
@@ -54,116 +52,74 @@
             <div class="luoitruyenthong">
                 <div class="cotdanhsach">
                     <div class="thanhboloc">
-                        <button type="button" class="nutloc active" data-tab="tatca">Tất cả (5)</button>
-                        <button type="button" class="nutloc" data-tab="chuadoc">Chưa đọc (3)</button>
-                        <button type="button" class="nutloc" data-tab="dadoc">Đã đọc (2)</button>
+                        <button type="button" class="nutloc active" data-tab="tatca">Tất cả (0)</button>
+                        <button type="button" class="nutloc" data-tab="chuadoc">Chưa đọc (0)</button>
+                        <button type="button" class="nutloc" data-tab="dadoc">Đã đọc (0)</button>
                     </div>
 
-                    <div class="danhsachitem">
-                        <div class="itemthongbao chuadoc" data-title="Thay đổi phòng học môn Lập trình C++" data-time="06/10/2026 - 10:30" data-content="Môn Lập trình C++ sẽ được chuyển sang phòng A102 từ tuần sau (bắt đầu từ ngày 12/10/2026).&#10;Sinh viên vui lòng lưu ý để không bỏ lỡ buổi học.">
-                            <div class="noidungitem">
-                                <div class="chamchuadoc"></div>
-                                <div class="textitem">
-                                    <h4>Thay đổi phòng học môn Lập trình C++</h4>
-                                    <p>Môn Lập trình C++ sẽ được chuyển sang phòng A102 từ tuần sau.</p>
-                                </div>
-                            </div>
-                            <div class="thongtinphu">
-                                <span class="ngaythang">06/10/2026</span>
-                                <span class="nhandanchuadoc">Chưa đọc</span>
-                            </div>
-                        </div>
-
-                        <div class="itemthongbao chuadoc" data-title="Lịch học tuần mới" data-time="05/10/2026 - 08:00" data-content="Cập nhật thời khóa biểu chiều 06/10 - 12/10/2026.">
-                            <div class="noidungitem">
-                                <div class="chamchuadoc"></div>
-                                <div class="textitem">
-                                    <h4>Lịch học tuần mới</h4>
-                                    <p>Cập nhật thời khóa biểu chiều 06/10 - 12/10/2026.</p>
-                                </div>
-                            </div>
-                            <div class="thongtinphu">
-                                <span class="ngaythang">05/10/2026</span>
-                                <span class="nhandanchuadoc">Chưa đọc</span>
-                            </div>
-                        </div>
-
-                        <div class="itemthongbao chuadoc" data-title="Thông báo nghỉ học" data-time="05/10/2026 - 07:30" data-content="Ngày 06/10/2026 (Thứ 2) các lớp nghỉ học theo thông báo của ban cán sự.">
-                            <div class="noidungitem">
-                                <div class="chamchuadoc"></div>
-                                <div class="textitem">
-                                    <h4>Thông báo nghỉ học</h4>
-                                    <p>Ngày 06/10/2026 (Thứ 2) nghỉ học theo thông báo.</p>
-                                </div>
-                            </div>
-                            <div class="thongtinphu">
-                                <span class="ngaythang">05/10/2026</span>
-                                <span class="nhandanchuadoc">Chưa đọc</span>
-                            </div>
-                        </div>
-
-                        <div class="itemthongbao dadoc" data-title="Kết thúc học phần" data-time="30/09/2026 - 15:00" data-content="Học phần đã kết thúc. Sinh viên kiểm tra lại điểm số trên hệ thống.">
-                            <div class="noidungitem">
-                                <div class="textitem" style="padding-left: 18px;">
-                                    <h4>Kết thúc học phần</h4>
-                                    <p>Học phần đã kết thúc. Sinh viên kiểm tra lại điểm số...</p>
-                                </div>
-                            </div>
-                            <div class="thongtinphu">
-                                <span class="ngaythang">30/09/2026</span>
-                                <span class="nhandandadoc">Đã đọc</span>
-                            </div>
-                        </div>
-
-                        <div class="itemthongbao dadoc" data-title="Thông báo về tài liệu học tập" data-time="28/09/2026 - 14:20" data-content="Tài liệu học tập đã được cập nhật lên hệ thống.">
-                            <div class="noidungitem">
-                                <div class="textitem" style="padding-left: 18px;">
-                                    <h4>Thông báo về tài liệu học tập</h4>
-                                    <p>Tài liệu học tập đã được cập nhật lên hệ thống.</p>
-                                </div>
-                            </div>
-                            <div class="thongtinphu">
-                                <span class="ngaythang">28/09/2026</span>
-                                <span class="nhandandadoc">Đã đọc</span>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="danhsachitem" id="danhSachItem"></div>
                 </div>
 
                 <div class="cotchitiet" id="khungchitiet">
-                    <h3 id="tieudecitiet">Thay đổi phòng học môn Lập trình C++</h3>
-                    <p class="thoigianchitiet"><i class="fa-regular fa-clock"></i> <span id="ngaygiochitiet">06/10/2026 - 10:30</span></p>
-                    <div class="noidungchitiet" id="noidungchitiet">Môn Lập trình C++ sẽ được chuyển sang phòng A102 từ tuần sau (bắt đầu từ ngày 12/10/2026).&#10;Sinh viên vui lòng lưu ý để không bỏ lỡ buổi học.</div>
-                    <button type="button" class="nutdadoc" id="nutDanhDauDaDoc"><i class="fa-solid fa-check"></i> Đã đọc</button>
+                    <h3 id="tieudecitiet"></h3>
+                    <p class="thoigianchitiet" id="thoigianchitiet" hidden><i class="fa-regular fa-clock"></i> <span id="ngaygiochitiet"></span></p>
+                    <div class="noidungchitiet" id="noidungchitiet"></div>
+                    <div id="hanhdongchitiet" style="display:flex;gap:10px;flex-wrap:wrap" hidden>
+                        <button type="button" class="btn btn-outline" id="btnToggleRead">
+                            <i class="fa-regular fa-envelope"></i> Đánh dấu chưa đọc
+                        </button>
+                        <button type="button" class="btn btn-outline" id="btnDelete">
+                            <i class="fa-regular fa-trash-can"></i> Xóa
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <div class="hopmodal" id="modalThemTB" hidden>
-        <div class="hopnoidung" role="dialog" aria-modal="true">
+    <!-- Modal thêm thông báo -->
+    <div class="modal" id="formModal" hidden>
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="formTitle">
             <div class="modal-head">
-                <h2>Thêm thông báo mới</h2>
-                <button type="button" class="icon-dong" id="nutDongModal" aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+                <h2 id="formTitle">Thêm thông báo mới</h2>
+                <button type="button" class="icon-btn" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <form id="formThemTB">
-                <div class="nhaplieu">
-                    <label for="nhapTieuDe">Tiêu đề thông báo</label>
-                    <input type="text" id="nhapTieuDe" placeholder="Nhập tiêu đề thông báo..." required>
+            <form id="noticeForm" novalidate>
+                <div class="field">
+                    <label for="fTitle">Tiêu đề thông báo</label>
+                    <input type="text" id="fTitle" placeholder="Nhập tiêu đề thông báo..." maxlength="150">
+                    <small data-err="title" style="color:var(--danger-color);font-size:12px"></small>
                 </div>
-                <div class="nhaplieu">
-                    <label for="nhapNoiDung">Nội dung chi tiết</label>
-                    <textarea id="nhapNoiDung" rows="4" placeholder="Nhập nội dung thông báo..." required></textarea>
+                <div class="field">
+                    <label for="fContent">Nội dung chi tiết</label>
+                    <textarea id="fContent" rows="4" placeholder="Nhập nội dung thông báo..."></textarea>
+                    <small data-err="content" style="color:var(--danger-color);font-size:12px"></small>
                 </div>
-                <div class="nhaplieu">
-                    <label for="nhapNgay">Ngày đăng</label>
-                    <input type="date" id="nhapNgay" required>
+                <div class="field">
+                    <label for="fDate">Ngày đăng</label>
+                    <input type="date" id="fDate">
+                    <small data-err="date" style="color:var(--danger-color);font-size:12px"></small>
                 </div>
-                <div class="modal-hanh-dong">
-                    <button type="button" class="nutbam nut-huy" id="nutHuyModal">Hủy</button>
-                    <button type="submit" class="nutbam nutthem">Thêm thông báo</button>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" data-close>Hủy</button>
+                    <button type="submit" class="btn btn-primary" id="btnSubmit">Thêm thông báo</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Modal xác nhận xóa -->
+    <div class="modal" id="confirmModal" hidden>
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+            <div class="modal-head">
+                <h2 id="confirmTitle">Xác nhận xóa</h2>
+                <button type="button" class="icon-btn" data-close aria-label="Đóng"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p id="confirmText"></p>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" data-close>Hủy</button>
+                <button type="button" class="btn btn-primary" id="confirmYes">Xóa</button>
+            </div>
         </div>
     </div>
 

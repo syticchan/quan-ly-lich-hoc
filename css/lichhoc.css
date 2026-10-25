@@ -6,9 +6,6 @@
 }
 
 .sidebar {
-    background: #fff;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
     padding: 16px;
 }
 
@@ -119,9 +116,6 @@
 }
 
 .week-panel {
-    background: #fff;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
     padding: 16px;
     min-width: 0;
 }

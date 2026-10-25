@@ -1,45 +1,17 @@
-.khungthongbao {
-    max-width: 1200px;
-    margin: 25px auto;
-    padding: 0 20px;
-}
-
-.tieudetrang {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--primary-color);
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-.tieudetrang i,
-.tieudetrang svg {
-    font-size: 22px;
-    color: var(--primary-color);
-}
-
 .luoitruyenthong {
     display: grid;
     grid-template-columns: minmax(0, 2fr) minmax(0, 1.2fr);
     gap: 20px;
+    align-items: start;
 }
 
-.cotdanhsach,
-.cotchitiet {
-    min-width: 0;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
 .cotdanhsach {
+    min-width: 0;
     padding: 20px;
 }
 .cotchitiet {
+    min-width: 0;
     padding: 25px;
-    height: fit-content;
 }
 
 .thanhboloc {
@@ -60,7 +32,7 @@
     font-weight: 500;
 }
 .nutloc.active {
-    background-color: #f1f5f9;
+    background-color: var(--accent-soft);
     color: var(--primary-color);
     font-weight: bold;
 }
@@ -74,10 +46,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
     padding: 12px 15px;
     border-radius: 6px;
-    background-color: #fafafa;
-    border: 1px solid #edf2f7;
+    background-color: var(--surface-soft);
+    border: 1px solid var(--border-color);
     cursor: pointer;
     transition: all 0.2s;
 }
@@ -97,15 +70,18 @@
     gap: 10px;
 }
 .chamchuadoc {
+    flex-shrink: 0;
     width: 8px;
     height: 8px;
     background-color: #ef4444;
     border-radius: 50%;
     margin-top: 6px;
-    flex-shrink: 0;
 }
 .textitem {
     min-width: 0;
+}
+.itemthongbao.dadoc .textitem {
+    padding-left: 18px;
 }
 .textitem h4 {
     font-size: 14px;
@@ -167,58 +143,7 @@
     overflow-wrap: anywhere;
 }
 
-.nutdadoc {
-    background-color: var(--accent-color);
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.nutdadoc:hover {
-    background-color: var(--accent-hover);
-}
-
-.icon-dong {
-    background: transparent;
-    border: none;
-    font-size: 18px;
-    color: var(--muted-color);
-    cursor: pointer;
-}
-
-.nutbam {
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-}
-.nut-huy {
-    background: var(--border-color);
-    color: #334155;
-}
-.nut-huy:hover {
-    background: #cbd5e1;
-}
-.nutthem {
-    background: var(--accent-color);
-    color: #fff;
-}
-.nutthem:hover {
-    background: var(--accent-hover);
-}
-
 @media (max-width: 900px) {
-    .khungthongbao {
-        max-width: 100%;
-        padding: 0 15px;
-    }
     .luoitruyenthong {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         gap: 15px;
@@ -226,20 +151,12 @@
 }
 
 @media (max-width: 768px) {
-    .khungthongbao {
-        padding: 0 10px;
-        margin: 10px auto;
-    }
     .luoitruyenthong {
         grid-template-columns: minmax(0, 1fr);
     }
 }
 
 @media (max-width: 600px) {
-    .khungthongbao {
-        padding: 0 8px;
-        margin: 8px auto;
-    }
     .cotdanhsach,
     .cotchitiet {
         padding: 15px;
@@ -269,9 +186,5 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-    }
-    .hopnoidung {
-        padding: 15px 18px;
-        margin: 0;
     }
 }

@@ -1,236 +1,236 @@
-const KHOA_LUU = 'danhSachTB_Data';
+(function () {
+    'use strict';
 
-let danhSachTB = docDanhSach();
-let itemDangChon = null;
-let tabHienTai = 'tatca';
+    const STORAGE_KEY = 'data_thong_bao';
 
-function docDanhSach() {
-    try {
-        return JSON.parse(localStorage.getItem(KHOA_LUU)) || [];
-    } catch (e) {
-        return [];
+    const NOTICE_TEMPLATES = [
+        {
+            title: 'Thay đổi phòng học',
+            content: 'Phòng học 204-A5 hiện đang sửa, các lớp chuyển sang phòng 203-A5.\nBắt đầu áp dụng từ ca 3 (12:30-15:00) ngày 26/10/2026 (Thứ 2).',
+            date: '2026-10-26', time: '8:30', read: false
+        },
+        {
+            title: 'Giao diện mới',
+            content: 'Giao diện trang web đã được thay mới hoàn toàn.',
+            date: '2026-10-25', time: '15:26', read: false
+        },
+        {
+            title: 'Thông báo nghỉ học',
+            content: 'Ngày 29/10/2026 (Thứ 5), các lớp nghỉ học.',
+            date: '2026-10-25', time: '10:37', read: true
+        },
+        {
+            title: 'Thông báo về tài liệu học tập',
+            content: 'Tài liệu học tập đã được cập nhật lên hệ thống.',
+            date: '2026-09-23', time: '14:55', read: true
+        }
+    ];
+
+    const pad = n => String(n).padStart(2, '0');
+    const esc = s => String(s).replace(/[&<>"']/g, c =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    const toISO = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    const parseISO = s => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+    const toHM = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    const fmtDMY = iso => { const [y, m, d] = iso.split('-'); return `${d}/${m}/${y}`; };
+
+    const sortKey = n => `${n.date}T${n.time}`;
+    const sortNotices = list => list.sort((a, b) => sortKey(b).localeCompare(sortKey(a)));
+
+    function loadNotices() {
+        try {
+            const raw = localStorage.getItem(STORAGE_KEY);
+            if (raw === null) {
+                const seeded = NOTICE_TEMPLATES.map((t, i) => ({ id: `tpl-${i}`, ...t }));
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(seeded));
+                return seeded;
+            }
+            return JSON.parse(raw) || [];
+        } catch (e) { return []; }
     }
-}
+    const saveNotices = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(notices));
 
-function luuDanhSach() {
-    localStorage.setItem(KHOA_LUU, JSON.stringify(danhSachTB));
-}
+    let notices = loadNotices();
+    const findNotice = id => notices.find(n => n.id === id);
 
-function ngayHomNay() {
-    const d = new Date();
-    const yyyy = d.getFullYear();
-    const mm = String(d.getMonth() + 1).padStart(2, '0');
-    const dd = String(d.getDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
-}
+    let currentTab = 'tatca';
+    let selectedId = null;
 
-function dinhDangNgay(iso) {
-    const parts = iso.split('-');
-    return parts.length === 3 ? `${parts[2]}/${parts[1]}/${parts[0]}` : iso;
-}
+    const $ = id => document.getElementById(id);
+    const listEl = $('danhSachItem');
+    const formModal = $('formModal');
+    const confirmModal = $('confirmModal');
+    const form = $('noticeForm');
+    const f = { title: $('fTitle'), content: $('fContent'), date: $('fDate') };
 
-function taoItem(tb) {
-    const daDoc = tb.trangthai === 'dadoc';
-
-    const item = document.createElement('div');
-    item.className = `itemthongbao ${tb.trangthai}`;
-    item.dataset.id = tb.id;
-    item.dataset.title = tb.tieude;
-    item.dataset.time = `${tb.ngay} - 08:00`;
-    item.dataset.content = tb.noidung;
-
-    const noiDungItem = document.createElement('div');
-    noiDungItem.className = 'noidungitem';
-
-    if (!daDoc) {
-        const cham = document.createElement('div');
-        cham.className = 'chamchuadoc';
-        noiDungItem.appendChild(cham);
-    }
-
-    const textItem = document.createElement('div');
-    textItem.className = 'textitem';
-    if (daDoc) textItem.style.paddingLeft = '18px';
-
-    const h4 = document.createElement('h4');
-    h4.textContent = tb.tieude;
-    const p = document.createElement('p');
-    p.textContent = tb.noidung;
-    textItem.append(h4, p);
-    noiDungItem.appendChild(textItem);
-
-    const thongTinPhu = document.createElement('div');
-    thongTinPhu.className = 'thongtinphu';
-
-    const ngay = document.createElement('span');
-    ngay.className = 'ngaythang';
-    ngay.textContent = tb.ngay;
-
-    const nhan = document.createElement('span');
-    nhan.className = daDoc ? 'nhandandadoc' : 'nhandanchuadoc';
-    nhan.textContent = daDoc ? 'Đã đọc' : 'Chưa đọc';
-
-    thongTinPhu.append(ngay, nhan);
-    item.append(noiDungItem, thongTinPhu);
-    return item;
-}
-
-function hienThiChiTiet(item) {
-    document.getElementById('tieudecitiet').textContent = item.dataset.title;
-    document.getElementById('ngaygiochitiet').textContent = item.dataset.time;
-    document.getElementById('noidungchitiet').textContent = item.dataset.content;
-
-    document.querySelectorAll('.itemthongbao').forEach(el => el.classList.remove('dang-chon'));
-    item.classList.add('dang-chon');
-    itemDangChon = item;
-
-    danhDauDaDoc(item);
-}
-
-function danhDauDaDoc(item) {
-    if (!item || !item.classList.contains('chuadoc')) return;
-
-    item.classList.remove('chuadoc');
-    item.classList.add('dadoc');
-
-    const cham = item.querySelector('.chamchuadoc');
-    if (cham) cham.remove();
-
-    const textItem = item.querySelector('.textitem');
-    if (textItem) textItem.style.paddingLeft = '18px';
-
-    const nhan = item.querySelector('.nhandanchuadoc');
-    if (nhan) {
-        nhan.className = 'nhandandadoc';
-        nhan.textContent = 'Đã đọc';
+    function matchTab(n) {
+        return currentTab === 'tatca' || (currentTab === 'chuadoc' ? !n.read : n.read);
     }
 
-    const found = danhSachTB.find(tb => tb.id === item.dataset.id);
-    if (found) {
-        found.trangthai = 'dadoc';
-        luuDanhSach();
+    function renderItem(n) {
+        const selected = n.id === selectedId ? ' dang-chon' : '';
+        return `<div class="itemthongbao ${n.read ? 'dadoc' : 'chuadoc'}${selected}" data-id="${esc(n.id)}">
+                    <div class="noidungitem">
+                        ${n.read ? '' : '<div class="chamchuadoc"></div>'}
+                        <div class="textitem">
+                            <h4>${esc(n.title)}</h4>
+                            <p>${esc(n.content.replace(/\s*\n\s*/g, ' '))}</p>
+                        </div>
+                    </div>
+                    <div class="thongtinphu">
+                        <span class="ngaythang">${fmtDMY(n.date)}</span>
+                        <span class="${n.read ? 'nhandandadoc' : 'nhandanchuadoc'}">${n.read ? 'Đã đọc' : 'Chưa đọc'}</span>
+                    </div>
+                </div>`;
     }
 
-    capNhatSoLuongTab();
-    locTheoTab(tabHienTai);
-}
+    function renderList() {
+        const shown = sortNotices([...notices]).filter(n => matchTab(n) || n.id === selectedId);
+        listEl.innerHTML = shown.length
+            ? shown.map(renderItem).join('')
+            : '<div class="textitem"><p style="padding:20px;text-align:center">Không có thông báo nào.</p></div>';
+    }
 
-function locTheoTab(loai) {
-    tabHienTai = loai;
+    function renderTabs() {
+        const unread = notices.filter(n => !n.read).length;
+        const label = {
+            tatca: `Tất cả (${notices.length})`,
+            chuadoc: `Chưa đọc (${unread})`,
+            dadoc: `Đã đọc (${notices.length - unread})`
+        };
+        document.querySelectorAll('.nutloc').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.tab === currentTab);
+            btn.textContent = label[btn.dataset.tab];
+        });
+    }
 
-    document.querySelectorAll('.nutloc').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.tab === loai);
+    function renderDetail() {
+        const n = selectedId ? findNotice(selectedId) : null;
+        $('thoigianchitiet').hidden = !n;
+        $('hanhdongchitiet').hidden = !n;
+
+        if (!n) {
+            $('tieudecitiet').textContent = 'Chi tiết thông báo';
+            $('noidungchitiet').textContent = 'Chọn một thông báo để xem chi tiết.';
+            return;
+        }
+
+        $('tieudecitiet').textContent = n.title;
+        $('ngaygiochitiet').textContent = `${fmtDMY(n.date)} - ${n.time}`;
+        $('noidungchitiet').textContent = n.content;
+        $('btnToggleRead').innerHTML = n.read
+            ? '<i class="fa-regular fa-envelope"></i> Đánh dấu chưa đọc'
+            : '<i class="fa-regular fa-envelope-open"></i> Đánh dấu đã đọc';
+    }
+
+    function render() { renderTabs(); renderList(); renderDetail(); }
+
+    const openModal = m => { m.hidden = false; };
+    const closeModal = m => { m.hidden = true; };
+
+    document.querySelectorAll('.modal').forEach(m => {
+        m.addEventListener('mousedown', e => { if (e.target === m) closeModal(m); });
+        m.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closeModal(m)));
     });
 
-    document.querySelectorAll('.itemthongbao').forEach(item => {
-        const hienThi = loai === 'tatca' || item.classList.contains(loai);
-        item.style.display = hienThi ? 'flex' : 'none';
+    const inputs = { title: [f.title], content: [f.content], date: [f.date] };
+    function showErrors(errs = {}) {
+        Object.keys(inputs).forEach(k => {
+            const errEl = form.querySelector(`[data-err="${k}"]`);
+            if (errEl) errEl.textContent = errs[k] || '';
+            inputs[k].forEach(i => i.classList.toggle('invalid', !!errs[k]));
+        });
+    }
+
+    function selectNotice(id) {
+        const n = findNotice(id);
+        if (!n) return;
+        selectedId = id;
+        if (!n.read) {
+            n.read = true;
+            saveNotices();
+        }
+        render();
+    }
+
+    function openForm() {
+        showErrors();
+        form.reset();
+        f.date.value = toISO(new Date());
+        openModal(formModal);
+    }
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+
+        const title = f.title.value.trim();
+        const content = f.content.value.trim();
+        const date = f.date.value;
+        const parsedDate = date ? parseISO(date) : null;
+
+        let dateErr = '';
+        if (!date) dateErr = 'Ngày đăng không hợp lệ';
+        else if (parsedDate.getFullYear() < 2000) dateErr = 'Năm đăng không hợp lệ';
+
+        const errs = {
+            title: title ? '' : 'Vui lòng nhập tiêu đề',
+            content: content ? '' : 'Vui lòng nhập nội dung',
+            date: dateErr
+        };
+        showErrors(errs);
+        if (Object.values(errs).some(Boolean)) return;
+
+        notices.push({
+            id: String(Date.now()),
+            title, content, date,
+            time: toHM(new Date()),
+            read: false
+        });
+
+        saveNotices();
+        closeModal(formModal);
+        currentTab = 'tatca';
+        render();
     });
-}
 
-function capNhatSoLuongTab() {
-    const tongTatCa = document.querySelectorAll('.itemthongbao').length;
-    const tongChuaDoc = document.querySelectorAll('.itemthongbao.chuadoc').length;
-    const tongDaDoc = document.querySelectorAll('.itemthongbao.dadoc').length;
+    function askDelete(id) {
+        const n = findNotice(id);
+        if (!n) return;
+        $('confirmText').textContent = `Xóa thông báo "${n.title}"?`;
+        openModal(confirmModal);
+    }
 
-    const nhan = {
-        tatca: `Tất cả (${tongTatCa})`,
-        chuadoc: `Chưa đọc (${tongChuaDoc})`,
-        dadoc: `Đã đọc (${tongDaDoc})`
-    };
-
-    document.querySelectorAll('.nutloc').forEach(btn => {
-        btn.textContent = nhan[btn.dataset.tab];
+    $('confirmYes').addEventListener('click', () => {
+        notices = notices.filter(n => n.id !== selectedId);
+        selectedId = null;
+        saveNotices();
+        closeModal(confirmModal);
+        render();
     });
-}
 
-function renderThongBaoDyna() {
-    const container = document.querySelector('.danhsachitem');
-    if (!container) return;
+    $('btnToggleRead').addEventListener('click', () => {
+        const n = findNotice(selectedId);
+        if (!n) return;
+        n.read = !n.read;
+        saveNotices();
+        render();
+    });
 
-    danhSachTB.forEach(tb => container.prepend(taoItem(tb)));
-    capNhatSoLuongTab();
-}
+    $('btnDelete').addEventListener('click', () => askDelete(selectedId));
+    $('btnAdd').addEventListener('click', openForm);
 
-document.addEventListener('DOMContentLoaded', () => {
-    renderThongBaoDyna();
+    listEl.addEventListener('click', e => {
+        const item = e.target.closest('.itemthongbao');
+        if (item) selectNotice(item.dataset.id);
+    });
 
-    const container = document.querySelector('.danhsachitem');
-    const thanhLoc = document.querySelector('.thanhboloc');
-    const nutDaDoc = document.getElementById('nutDanhDauDaDoc');
+    document.querySelector('.thanhboloc').addEventListener('click', e => {
+        const btn = e.target.closest('.nutloc');
+        if (!btn) return;
+        currentTab = btn.dataset.tab;
+        render();
+    });
 
-    if (container) {
-        container.addEventListener('click', e => {
-            const item = e.target.closest('.itemthongbao');
-            if (item) hienThiChiTiet(item);
-        });
-    }
-
-    if (thanhLoc) {
-        thanhLoc.addEventListener('click', e => {
-            const btn = e.target.closest('.nutloc');
-            if (btn) locTheoTab(btn.dataset.tab);
-        });
-    }
-
-    if (nutDaDoc) {
-        nutDaDoc.addEventListener('click', () => danhDauDaDoc(itemDangChon));
-    }
-
-    const modalEl = document.getElementById('modalThemTB');
-    const formEl = document.getElementById('formThemTB');
-    const nutMoModal = document.getElementById('nutMoModal');
-    const nutDongModal = document.getElementById('nutDongModal');
-    const nutHuyModal = document.getElementById('nutHuyModal');
-
-    const moModal = () => {
-        if (!modalEl) return;
-        modalEl.hidden = false;
-        const nhapNgay = document.getElementById('nhapNgay');
-        if (nhapNgay) nhapNgay.value = ngayHomNay();
-    };
-
-    const dongModal = () => {
-        if (modalEl) modalEl.hidden = true;
-        if (formEl) formEl.reset();
-    };
-
-    if (nutMoModal) nutMoModal.addEventListener('click', moModal);
-    if (nutDongModal) nutDongModal.addEventListener('click', dongModal);
-    if (nutHuyModal) nutHuyModal.addEventListener('click', dongModal);
-
-    if (modalEl) {
-        modalEl.addEventListener('click', e => {
-            if (e.target === modalEl) dongModal();
-        });
-    }
-
-    if (formEl) {
-        formEl.addEventListener('submit', e => {
-            e.preventDefault();
-
-            const tieude = document.getElementById('nhapTieuDe').value.trim();
-            const noidung = document.getElementById('nhapNoiDung').value.trim();
-            const ngayRaw = document.getElementById('nhapNgay').value || ngayHomNay();
-
-            if (!tieude || !noidung) return;
-
-            const thongBaoMoi = {
-                id: String(Date.now()),
-                tieude,
-                noidung,
-                ngay: dinhDangNgay(ngayRaw),
-                trangthai: 'chuadoc'
-            };
-
-            danhSachTB.push(thongBaoMoi);
-            luuDanhSach();
-
-            if (container) container.prepend(taoItem(thongBaoMoi));
-            capNhatSoLuongTab();
-            locTheoTab(tabHienTai);
-
-            dongModal();
-        });
-    }
-});
+    render();
+})();
