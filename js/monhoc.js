@@ -2,11 +2,29 @@
     'use strict';
 
     const STORAGE_KEY = 'data_mon_hoc';
+    const SCHEDULE_KEY = 'data_lich_hoc';
 
     const loadSubjects = () => {
         try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch (e) { return []; }
     };
+    const loadSchedules = () => {
+        try { return JSON.parse(localStorage.getItem(SCHEDULE_KEY)) || []; } catch (e) { return []; }
+    };
     const saveSubjects = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(subjects));
+    const saveSchedules = list => localStorage.setItem(SCHEDULE_KEY, JSON.stringify(list));
+    const isOfSubject = (e, s) => e.subjectId ? e.subjectId === s.id : e.name === s.name;
+    const countSchedules = s => loadSchedules().filter(e => isOfSubject(e, s)).length;
+    const removeSchedules = s => saveSchedules(loadSchedules().filter(e => !isOfSubject(e, s)));
+    const syncSchedules = (s, data) => {
+        const list = loadSchedules();
+        list.forEach(e => {
+            if (isOfSubject(e, s)) {
+                e.subjectId = s.id;
+                e.name = data.name;
+            }
+        });
+        saveSchedules(list);
+    };
 
     let subjects = loadSubjects();
     let currentId = null;
@@ -122,7 +140,9 @@
         if (Object.keys(errs).length) return;
 
         if (currentId) {
-            Object.assign(subjects.find(s => s.id === currentId), data);
+            const s = subjects.find(x => x.id === currentId);
+            syncSchedules(s, data);
+            Object.assign(s, data);
         } else {
             subjects.push({ id: String(Date.now()), ...data });
         }
@@ -136,12 +156,17 @@
     function askDelete(id) {
         const s = subjects.find(x => x.id === id);
         currentId = id;
-        $('confirmText').textContent = `Xóa môn học "${s.name}" (${s.code})?`;
+        const n = countSchedules(s);
+        $('confirmText').textContent = n > 0
+            ? `Xóa môn học "${s.name}" (${s.code})? ${n} lịch học của môn này cũng sẽ bị xóa.`
+            : `Xóa môn học "${s.name}" (${s.code})?`;
         openModal(confirmModal);
     }
 
     $('confirmYes').addEventListener('click', () => {
-        subjects = subjects.filter(s => s.id !== currentId);
+        const s = subjects.find(x => x.id === currentId);
+        if (s) removeSchedules(s);
+        subjects = subjects.filter(x => x.id !== currentId);
         saveSubjects();
         closeModal(confirmModal);
         render();

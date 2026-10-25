@@ -244,10 +244,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (confirmPassword === "") {
-        setError("confirmPassword", "Vui lòng xác nhận lại mật khẩu");
+        regConfirmError.textContent = "Vui lòng xác nhận lại mật khẩu";
         isValid = false;
-    } else if (confirmPassword !== newPassword) {
-        setError("confirmPassword", "Mật khẩu không trùng khớp");
+    } else if (confirmPassword !== password) {
+        regConfirmError.textContent = "Mật khẩu không trùng khớp";
         isValid = false;
     }
 

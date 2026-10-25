@@ -50,8 +50,18 @@
     const loadSubjects = () => {
         try { return JSON.parse(localStorage.getItem(SUBJECT_KEY)) || []; } catch (e) { return []; }
     };
+        const ORPHAN = '__old__';
+    const findSubject = ev => {
+        const list = loadSubjects();
+        return list.find(s => s.id === ev.subjectId) ||
+            list.find(s => !ev.subjectId && s.name === ev.name);
+    };
+    const displayName = ev => {
+        const s = findSubject(ev);
+        return s ? `${s.name} - ${s.code}` : ev.name;
+    };
     const getTeacher = ev => {
-        const s = loadSubjects().find(x => x.name === ev.name);
+        const s = findSubject(ev);
         return s ? s.teacher : (ev.teacher || '');
     };
 
@@ -75,10 +85,10 @@
     };
 
     function renderEvent(e) {
-        const p = PALETTE[colorIndexFor(e.name)];
+        const p = PALETTE[colorIndexFor(e.subjectId || e.name)];
         return `<div class="ev${isDone(e) ? ' is-done' : ''}" data-id="${e.id}"
                      style="--bg:${p.bg};--bd:${p.bd};--tx:${p.tx}">
-                    <span class="ev-title">${esc(e.name)}</span>
+                    <span class="ev-title">${esc(displayName(e))}</span>
                     ${e.room ? `<span class="ev-meta">${esc(e.room)}</span>` : ''}
                 </div>`;
     }
@@ -190,23 +200,24 @@
             const c = events.find(e => !skip(e) && e.date === dStr && Number(e.ca) === ca);
             if (c) {
                 const cc = getCa(c.ca);
-                return `Trùng ca với: ${c.name} (${fmtDM(parseISO(c.date))}, Ca ${c.ca}: ${cc.start} - ${cc.end})`;
+                return `Trùng ca với: ${displayName(c)} (${fmtDM(parseISO(c.date))}, Ca ${c.ca}: ${cc.start} - ${cc.end})`;
             }
         }
         return '';
     }
 
-    function fillSubjectOptions(selected = '') {
+    function fillSubjectOptions(ev = {}) {
         const subjects = loadSubjects();
+        const current = findSubject(ev);
         let html = '<option value="">-- Chọn môn học --</option>' +
-            subjects.map(s => `<option value="${esc(s.name)}">${esc(s.code)} - ${esc(s.name)}</option>`).join('');
+            subjects.map(s => `<option value="${esc(s.id)}">${esc(s.code)} - ${esc(s.name)}</option>`).join('');
 
-        if (selected && !subjects.some(s => s.name === selected)) {
-            html += `<option value="${esc(selected)}">${esc(selected)}</option>`;
+        if (ev.name && !current) {
+            html += `<option value="${ORPHAN}">${esc(ev.name)}</option>`;
         }
 
         f.name.innerHTML = html;
-        f.name.value = selected;
+        f.name.value = current ? current.id : (ev.name ? ORPHAN : '');
     }
 
     function openForm(opts = {}) {
@@ -220,7 +231,7 @@
         const today = new Date();
         const inWeek = today >= weekStart && today < addDays(weekStart, 7) && dayIndex(today) < DAYS_SHOWN;
 
-        fillSubjectOptions(ev.name || '');
+        fillSubjectOptions(ev);
         f.date.value = ev.date || opts.date || toISO(inWeek ? today : weekStart);
         f.ca.value = ev.ca || opts.ca || '';
         f.room.value = ev.room || '';
@@ -247,7 +258,8 @@
     form.addEventListener('submit', e => {
         e.preventDefault();
 
-        const name = f.name.value.trim();
+        const subject = loadSubjects().find(s => s.id === f.name.value);
+        const name = subject ? subject.name : (f.name.value === ORPHAN && currentId ? findEvent(currentId).name : '');
         const date = f.date.value;
         const ca = Number(f.ca.value);
         const editAllCheckbox = $('editAll');
@@ -273,7 +285,9 @@
         if (Object.values(errs).some(Boolean)) return;
 
         const data = {
-            name, date, ca,
+            name,
+            subjectId: subject ? subject.id : undefined,
+            date, ca,
             room: f.room.value.trim()
         };
 
@@ -286,6 +300,7 @@
 
                 groupEvents.forEach((item, index) => {
                     item.name = data.name;
+                    item.subjectId = data.subjectId;
                     item.ca = data.ca;
                     item.room = data.room;
                     item.date = toISO(addDays(first, index * 7));
@@ -312,7 +327,7 @@
         const c = getCa(ev.ca);
         const done = isDone(ev);
         $('detailBody').innerHTML = `
-            <dt>Môn học</dt><dd>${esc(ev.name)}</dd>
+            <dt>Môn học</dt><dd>${esc(displayName(ev))}</dd>
             <dt>Ngày học</dt><dd>${DAY_NAMES[dayIndex(d)]}, ${fmtDM(d)}/${d.getFullYear()}</dd>
             <dt>Ca học</dt><dd>Ca ${c.ca} (${c.start} - ${c.end}) - Tiết ${c.tiet}</dd>
             <dt>Phòng học</dt><dd>${ev.room ? esc(ev.room) : '-'}</dd>
@@ -325,7 +340,7 @@
         const ev = findEvent(id);
         const c = getCa(ev.ca);
         currentId = id;
-        $('confirmText').textContent = `Xóa lịch học "${ev.name}" (${fmtDM(parseISO(ev.date))}, Ca ${c.ca}: ${c.start} - ${c.end})?`;
+        $('confirmText').textContent = `Xóa lịch học "${displayName(ev)}" (${fmtDM(parseISO(ev.date))}, Ca ${c.ca}: ${c.start} - ${c.end})?`;
         const n = events.filter(e => e.group && e.group === ev.group).length;
         $('deleteAllWrap').hidden = n < 2;
         $('deleteAll').checked = true;
