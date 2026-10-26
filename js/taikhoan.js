@@ -58,6 +58,7 @@ function clearErrors(form) {
 function fillEditForm(user) {
     document.getElementById("editName").value = user.name;
     document.getElementById("editEmail").value = user.email;
+    document.getElementById("editStudentId").value = user.studentId;
 
     document.getElementById("editSchool").value =
         user.school === EMPTY_VALUE ? "" : user.school;

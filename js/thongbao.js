@@ -10,14 +10,9 @@
             date: '2026-10-26', time: '08:30', read: false
         },
         {
-            title: 'Giao diện mới',
-            content: 'Giao diện trang web đã được thay mới hoàn toàn.',
-            date: '2026-10-25', time: '15:26', read: false
-        },
-        {
             title: 'Thông báo nghỉ học',
             content: 'Ngày 29/10/2026 (Thứ 5), các lớp nghỉ học.',
-            date: '2026-10-25', time: '10:37', read: true
+            date: '2026-10-25', time: '10:37', read: false
         },
         {
             title: 'Thông báo về tài liệu học tập',
