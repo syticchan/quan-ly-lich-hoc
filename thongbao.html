@@ -87,18 +87,18 @@
             <form id="noticeForm" novalidate>
                 <div class="field">
                     <label for="fTitle">Tiêu đề thông báo</label>
-                    <input type="text" id="fTitle" placeholder="Nhập tiêu đề thông báo..." maxlength="150">
-                    <small data-err="title" style="color:var(--danger-color);font-size:12px"></small>
+                    <input type="text" id="fTitle" placeholder="Nhập tiêu đề thông báo..." maxlength="100">
+                    <small class="err" data-err="title"></small>
                 </div>
                 <div class="field">
                     <label for="fContent">Nội dung chi tiết</label>
-                    <textarea id="fContent" rows="4" placeholder="Nhập nội dung thông báo..."></textarea>
-                    <small data-err="content" style="color:var(--danger-color);font-size:12px"></small>
+                    <textarea id="fContent" rows="4" placeholder="Nhập nội dung thông báo..." maxlength="200"></textarea>
+                    <small class="err" data-err="content"></small>
                 </div>
                 <div class="field">
                     <label for="fDate">Ngày đăng</label>
                     <input type="date" id="fDate">
-                    <small data-err="date" style="color:var(--danger-color);font-size:12px"></small>
+                    <small class="err" data-err="date"></small>
                 </div>
                 <div class="modal-actions">
                     <button type="button" class="btn btn-outline" data-close>Hủy</button>

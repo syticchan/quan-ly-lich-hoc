@@ -1,15 +1,11 @@
 (function () {
     'use strict';
 
-    const STORAGE_KEY = 'data_mon_hoc';
-    const SCHEDULE_KEY = 'data_lich_hoc';
+    const STORAGE_KEY = userKey('data_mon_hoc');
+    const SCHEDULE_KEY = userKey('data_lich_hoc');
 
-    const loadSubjects = () => {
-        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch (e) { return []; }
-    };
-    const loadSchedules = () => {
-        try { return JSON.parse(localStorage.getItem(SCHEDULE_KEY)) || []; } catch (e) { return []; }
-    };
+    const loadSubjects = () => loadList(STORAGE_KEY);
+    const loadSchedules = () => loadList(SCHEDULE_KEY);
     const saveSubjects = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(subjects));
     const saveSchedules = list => localStorage.setItem(SCHEDULE_KEY, JSON.stringify(list));
     const isOfSubject = (e, s) => e.subjectId ? e.subjectId === s.id : e.name === s.name;
@@ -29,10 +25,8 @@
     let subjects = loadSubjects();
     let currentId = null;
 
-    const esc = s => String(s).replace(/[&<>"']/g, c =>
-        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-
     const $ = id => document.getElementById(id);
+    const squash = s => String(s).normalize('NFC').trim().replace(/\s+/g, ' ');
 
     const subjectBody = $('subjectBody');
     const emptyText = $('emptyText');
@@ -43,7 +37,7 @@
     const form = $('subjectForm');
 
     const f = {
-        id: $('fId'), code: $('fCode'), name: $('fName'),
+        code: $('fCode'), name: $('fName'),
         teacher: $('fTeacher'), credit: $('fCredit')
     };
 
@@ -71,38 +65,26 @@
             : 'Không tìm thấy môn học phù hợp.';
     }
 
-    const openModal = m => { m.hidden = false; };
-    const closeModal = m => { m.hidden = true; };
-
-    document.querySelectorAll('.modal').forEach(m => {
-        m.addEventListener('mousedown', e => { if (e.target === m) closeModal(m); });
-        m.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closeModal(m)));
-    });
-
-    document.addEventListener('keydown', e => {
-        if (e.key === 'Escape') document.querySelectorAll('.modal').forEach(closeModal);
-    });
-
-    function showErrors(errs = {}) {
-        Object.keys(f).forEach(k => {
-            const errEl = form.querySelector(`[data-err="${k}"]`);
-            if (errEl) errEl.textContent = errs[k] || '';
-            f[k].classList.toggle('invalid', !!errs[k]);
-        });
-    }
+    const showErrors = (errs = {}) => showFormErrors(form, f, errs);
 
     function validate(data) {
         const errs = {};
 
         if (!data.code) errs.code = 'Vui lòng nhập mã môn';
+        else if (!/^[A-Z0-9_-]+$/.test(data.code))
+            errs.code = 'Mã môn chỉ gồm chữ cái, chữ số, dấu "-" hoặc "_" (không có khoảng trắng)';
         else if (subjects.some(s => s.id !== currentId && s.code.toLowerCase() === data.code.toLowerCase()))
             errs.code = 'Mã môn đã tồn tại';
 
         if (!data.name) errs.name = 'Vui lòng nhập tên môn học';
+
         if (!data.teacher) errs.teacher = 'Vui lòng nhập tên giảng viên';
+        else if (/\d/.test(data.teacher)) errs.teacher = 'Tên giảng viên không được chứa chữ số';
+        else if (!/^\p{L}[\p{L}\s.]*$/u.test(data.teacher))
+            errs.teacher = 'Tên giảng viên chỉ được chứa chữ cái, khoảng trắng và dấu chấm';
 
         if (!/^\d+$/.test(f.credit.value.trim()) || data.credit < 1 || data.credit > 10)
-            errs.credit = 'Số tín chỉ từ 1 đến 10';
+            errs.credit = 'Số tín chỉ phải là số nguyên từ 1 đến 10';
 
         return errs;
     }
@@ -115,7 +97,6 @@
         $('formTitle').textContent = currentId ? 'Sửa môn học' : 'Thêm môn học';
         $('btnSubmit').textContent = currentId ? 'Lưu thay đổi' : 'Thêm môn học';
 
-        f.id.value = s.id || '';
         f.code.value = s.code || '';
         f.name.value = s.name || '';
         f.teacher.value = s.teacher || '';
@@ -130,8 +111,8 @@
 
         const data = {
             code: f.code.value.trim().toUpperCase(),
-            name: f.name.value.trim(),
-            teacher: f.teacher.value.trim(),
+            name: squash(f.name.value),
+            teacher: squash(f.teacher.value),
             credit: Number(f.credit.value)
         };
 

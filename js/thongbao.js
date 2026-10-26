@@ -1,13 +1,13 @@
 (function () {
     'use strict';
 
-    const STORAGE_KEY = 'data_thong_bao';
+    const STORAGE_KEY = userKey('data_thong_bao');
 
     const NOTICE_TEMPLATES = [
         {
             title: 'Thay đổi phòng học',
             content: 'Phòng học 204-A5 hiện đang sửa, các lớp chuyển sang phòng 203-A5.\nBắt đầu áp dụng từ ca 3 (12:30-15:00) ngày 26/10/2026 (Thứ 2).',
-            date: '2026-10-26', time: '8:30', read: false
+            date: '2026-10-26', time: '08:30', read: false
         },
         {
             title: 'Giao diện mới',
@@ -35,7 +35,7 @@
     const toHM = d => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
     const fmtDMY = iso => { const [y, m, d] = iso.split('-'); return `${d}/${m}/${y}`; };
 
-    const sortKey = n => `${n.date}T${n.time}`;
+    const sortKey = n => `${n.date}T${String(n.time).padStart(5, '0')}`;
     const sortNotices = list => list.sort((a, b) => sortKey(b).localeCompare(sortKey(a)));
 
     function loadNotices() {

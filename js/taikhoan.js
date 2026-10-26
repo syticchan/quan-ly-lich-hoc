@@ -1,4 +1,3 @@
-const modals = document.querySelectorAll(".modal");
 const toast = document.getElementById("toast");
 const editForm = document.getElementById("editForm");
 const passwordForm = document.getElementById("passwordForm");
@@ -19,9 +18,7 @@ function renderProfile() {
     if (!user) return;
 
     profileFields.forEach(key => {
-        const target = document.querySelector(
-            `[data-field="${key}"]`
-        );
+        const target = document.querySelector(`[data-field="${key}"]`);
 
         if (target) {
             target.textContent = user[key] || EMPTY_VALUE;
@@ -72,8 +69,8 @@ function fillEditForm(user) {
         user.className === EMPTY_VALUE ? "" : user.className;
 }
 
-// Mở modal
-function openModal(id) {
+// Mở modal cài đặt (đóng modal do main.js xử lý: nút X, Hủy, nhấn nền, Escape)
+function openSettingModal(id) {
     const modal = document.getElementById(id);
     const user = getCurrentUser();
 
@@ -89,7 +86,7 @@ function openModal(id) {
         form.reset();
     }
 
-    modal.hidden = false;
+    openModal(modal);
 
     const input = modal.querySelector("input");
 
@@ -98,42 +95,10 @@ function openModal(id) {
     }
 }
 
-// Đóng modal
-function closeModal(modal) {
-    if (modal) {
-        modal.hidden = true;
-    }
-}
-
-// Mở modal khi nhấn mục cài đặt
 document.querySelectorAll("[data-modal]").forEach(button => {
     button.addEventListener("click", () => {
-        openModal(button.dataset.modal);
+        openSettingModal(button.dataset.modal);
     });
-});
-
-// Đóng modal bằng nút X hoặc nút Hủy
-document.querySelectorAll("[data-close]")
-    .forEach(button => {
-        button.addEventListener("click", () => {
-            closeModal(button.closest(".modal"));
-        });
-    });
-
-// Đóng modal khi nhấn bên ngoài
-modals.forEach(modal => {
-    modal.addEventListener("click", event => {
-        if (event.target === modal) {
-            closeModal(modal);
-        }
-    });
-});
-
-// Đóng bằng phím Escape
-document.addEventListener("keydown", event => {
-    if (event.key === "Escape") {
-        modals.forEach(modal => closeModal(modal));
-    }
 });
 
 // Cập nhật thông tin cá nhân
@@ -147,7 +112,6 @@ editForm.addEventListener("submit", event => {
     clearErrors(editForm);
 
     const formData = new FormData(event.currentTarget);
-
     const values = {};
 
     profileFields.forEach(key => {
@@ -161,27 +125,27 @@ editForm.addEventListener("submit", event => {
 
     let isValid = true;
 
-    if (!isValidName(values.name)) {
-        setError("editName", "Họ và tên không hợp lệ");
+    const nameError = validateName(values.name);
+    if (nameError) {
+        setError("editName", nameError);
         isValid = false;
     }
 
-    if (!isValidEmail(values.email)) {
-        setError("editEmail", "Email không hợp lệ");
+    const emailError = validateEmail(values.email);
+    if (emailError) {
+        setError("editEmail", emailError);
         isValid = false;
     } else if (users.some(item =>
         item.studentId !== user.studentId &&
         item.email.toLowerCase() === values.email
     )) {
-        setError("editEmail", "Email đã được sử dụng");
+        setError("editEmail", "Email này đã được tài khoản khác sử dụng");
         isValid = false;
     }
 
     if (!isValid) return;
 
-    const index = users.findIndex(
-        item => item.studentId === user.studentId
-    );
+    const index = users.findIndex(item => item.studentId === user.studentId);
 
     users[index] = Object.assign({}, users[index], {
         name: values.name,
@@ -209,24 +173,23 @@ passwordForm.addEventListener("submit", event => {
 
     clearErrors(passwordForm);
 
-    const currentPassword =
-        document.getElementById("currentPassword").value;
-
-    const newPassword =
-        document.getElementById("newPassword").value;
-
-    const confirmPassword =
-        document.getElementById("confirmPassword").value;
+    const currentPassword = document.getElementById("currentPassword").value;
+    const newPassword = document.getElementById("newPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
 
     let isValid = true;
 
-    if (currentPassword !== user.password) {
+    if (currentPassword === "") {
+        setError("currentPassword", "Vui lòng nhập mật khẩu hiện tại");
+        isValid = false;
+    } else if (currentPassword !== user.password) {
         setError("currentPassword", "Mật khẩu hiện tại không đúng");
         isValid = false;
     }
 
-    if (!isValidPassword(newPassword)) {
-        setError("newPassword", "Mật khẩu mới không hợp lệ");
+    const passwordError = validatePassword(newPassword);
+    if (passwordError) {
+        setError("newPassword", passwordError);
         isValid = false;
     } else if (newPassword === user.password) {
         setError("newPassword", "Mật khẩu mới phải khác mật khẩu hiện tại");
@@ -234,20 +197,17 @@ passwordForm.addEventListener("submit", event => {
     }
 
     if (confirmPassword === "") {
-        setError("confirmPassword", "Vui lòng xác nhận lại mật khẩu");
+        setError("confirmPassword", "Vui lòng xác nhận lại mật khẩu mới");
         isValid = false;
     } else if (confirmPassword !== newPassword) {
-        setError("confirmPassword", "Mật khẩu không trùng khớp");
+        setError("confirmPassword", "Mật khẩu xác nhận không trùng khớp");
         isValid = false;
     }
 
     if (!isValid) return;
 
     const users = getUsers();
-
-    const index = users.findIndex(
-        item => item.studentId === user.studentId
-    );
+    const index = users.findIndex(item => item.studentId === user.studentId);
 
     users[index].password = newPassword;
 
@@ -259,11 +219,5 @@ passwordForm.addEventListener("submit", event => {
 
     showToast("Đổi mật khẩu thành công");
 });
-
-if (!getCurrentUser()) {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("loggedInUser");
-    window.location.replace("dangnhap.html");
-}
 
 renderProfile();

@@ -1,6 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  ensureTemplateUser();
-
   const loginForm = document.getElementById("loginForm");
   const registerForm = document.getElementById("registerForm");
   const headingTitle = document.getElementById("headingTitle");
@@ -46,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Tải email đã ghi nhớ
+  // Tải email/mã sinh viên đã ghi nhớ
   try {
     const savedLogin = localStorage.getItem("rememberedLogin");
 
@@ -58,7 +56,6 @@ document.addEventListener("DOMContentLoaded", function () {
     console.warn("Không thể đọc thông tin đã ghi nhớ");
   }
 
-  // Hàm hiển thị thông báo
   function showMessage(element, message, type) {
     element.textContent = message;
     element.className = "form-message " + type;
@@ -128,27 +125,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const identifier = loginId.value.trim();
     const password = loginPassword.value;
+    const isEmail = identifier.includes("@");
 
     let isValid = true;
 
     // Kiểm tra email hoặc mã sinh viên
     if (identifier === "") {
-      loginIdError.textContent =
-        "Vui lòng nhập email hoặc mã sinh viên";
-
+      loginIdError.textContent = "Vui lòng nhập email hoặc mã sinh viên";
       isValid = false;
-    } else if (!isValidEmail(identifier) && !isValidStudentId(identifier)) {
+    } else if (isEmail) {
+      const emailError = validateEmail(identifier);
+      if (emailError) {
+        loginIdError.textContent = emailError;
+        isValid = false;
+      }
+    } else if (/^\d+$/.test(identifier)) {
+      const idError = validateStudentId(identifier);
+      if (idError) {
+        loginIdError.textContent = idError;
+        isValid = false;
+      }
+    } else {
       loginIdError.textContent =
-        "Email hoặc mã sinh viên không hợp lệ";
-
+        "Nhập email (có ký tự @) hoặc mã sinh viên gồm 9 chữ số";
       isValid = false;
     }
 
     // Kiểm tra mật khẩu
     if (password === "") {
-      loginPasswordError.textContent =
-        "Vui lòng nhập mật khẩu";
-
+      loginPasswordError.textContent = "Vui lòng nhập mật khẩu";
       isValid = false;
     }
 
@@ -156,46 +161,40 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const user = getUsers().find(function (item) {
-      const matchedId = isValidStudentId(identifier)
-        ? item.studentId === identifier
-        : item.email.toLowerCase() === identifier.toLowerCase();
-
-      return matchedId && item.password === password;
+    const account = getUsers().find(function (item) {
+      return isEmail
+        ? item.email.toLowerCase() === identifier.toLowerCase()
+        : item.studentId === identifier;
     });
 
-    if (user) {
-      try {
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("loggedInUser", user.studentId);
-
-        if (rememberMe.checked) {
-          localStorage.setItem("rememberedLogin", identifier);
-        } else {
-          localStorage.removeItem("rememberedLogin");
-        }
-      } catch (error) {
-        console.warn("Không thể lưu trạng thái đăng nhập");
-      }
-
-      showMessage(
-        loginMessage,
-        "Đăng nhập thành công! Đang chuyển trang...",
-        "success"
-      );
-
-      // Chuyển đến trang chủ
-      window.setTimeout(function () {
-        window.location.href = "trangchu.html";
-      }, 700);
-
-    } else {
-      showMessage(
-        loginMessage,
-        "Email, mã sinh viên hoặc mật khẩu không chính xác. Vui lòng thử lại",
-        "error"
-      );
+    if (!account || account.password !== password) {
+      loginPasswordError.textContent =
+        "Email/mã sinh viên hoặc mật khẩu không đúng";
+      return;
     }
+
+    try {
+      localStorage.setItem("isLoggedIn", "true");
+      localStorage.setItem("loggedInUser", account.studentId);
+
+      if (rememberMe.checked) {
+        localStorage.setItem("rememberedLogin", identifier);
+      } else {
+        localStorage.removeItem("rememberedLogin");
+      }
+    } catch (error) {
+      console.warn("Không thể lưu trạng thái đăng nhập");
+    }
+
+    showMessage(
+      loginMessage,
+      "Đăng nhập thành công! Đang chuyển trang...",
+      "success"
+    );
+
+    window.setTimeout(function () {
+      window.location.href = "trangchu.html";
+    }, 700);
   });
 
   // Xử lý đăng ký
@@ -213,42 +212,46 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let isValid = true;
 
-    if (!isValidName(name)) {
-      regNameError.textContent = "Họ tên không hợp lệ";
+    const nameError = validateName(name);
+    if (nameError) {
+      regNameError.textContent = nameError;
       isValid = false;
     }
 
-    if (!isValidEmail(email)) {
-      regEmailError.textContent = "Email không hợp lệ";
+    const emailError = validateEmail(email);
+    if (emailError) {
+      regEmailError.textContent = emailError;
       isValid = false;
     } else if (users.some(function (user) {
       return user.email.toLowerCase() === email;
     })) {
-      regEmailError.textContent = "Email đã được đăng ký";
+      regEmailError.textContent = "Email này đã được đăng ký";
       isValid = false;
     }
 
-    if (!isValidStudentId(studentId)) {
-      regStudentIdError.textContent = "Mã sinh viên không hợp lệ";
+    const idError = validateStudentId(studentId);
+    if (idError) {
+      regStudentIdError.textContent = idError;
       isValid = false;
     } else if (users.some(function (user) {
       return user.studentId === studentId;
     })) {
-      regStudentIdError.textContent = "Mã sinh viên đã được đăng ký";
+      regStudentIdError.textContent = "Mã sinh viên này đã được đăng ký";
       isValid = false;
     }
 
-    if (!isValidPassword(password)) {
-      regPasswordError.textContent = "Mật khẩu không hợp lệ";
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      regPasswordError.textContent = passwordError;
       isValid = false;
     }
 
     if (confirmPassword === "") {
-        regConfirmError.textContent = "Vui lòng xác nhận lại mật khẩu";
-        isValid = false;
+      regConfirmError.textContent = "Vui lòng xác nhận lại mật khẩu";
+      isValid = false;
     } else if (confirmPassword !== password) {
-        regConfirmError.textContent = "Mật khẩu không trùng khớp";
-        isValid = false;
+      regConfirmError.textContent = "Mật khẩu xác nhận không trùng khớp";
+      isValid = false;
     }
 
     if (!isValid) {

@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    const STORAGE_KEY = 'data_lich_hoc';
+    const STORAGE_KEY = userKey('data_lich_hoc');
 
     const DAY_NAMES = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ nhật'];
     const DAYS_SHOWN = 6;
@@ -13,7 +13,8 @@
         { ca: 4, start: '15:00', end: '17:30', tiet: '10 - 12' },
         { ca: 5, start: '17:30', end: '20:00', tiet: '13 - 15' }
     ];
-    const getCa = n => CA_LIST.find(c => c.ca === Number(n));
+    const getCa = n => CA_LIST.find(c => c.ca === Number(n)) ||
+        { ca: '?', start: '--:--', end: '--:--', tiet: '-', unknown: true };
 
     const PALETTE = [
         { bg: '#dbeafe', bd: '#3b82f6', tx: '#1e3a8a' },
@@ -34,8 +35,12 @@
     const dayIndex = d => (d.getDay() + 6) % 7;
     const startOfWeek = d => addDays(d, -dayIndex(d));
     const fmtDM = d => `${pad(d.getDate())}/${pad(d.getMonth() + 1)}`;
+    const dayDiff = (a, b) => Math.round((b - a) / 86400000);
 
-    const isDone = ev => new Date() >= new Date(`${ev.date}T${getCa(ev.ca).end}`);
+    const isDone = ev => {
+        const c = getCa(ev.ca);
+        return !c.unknown && new Date() >= new Date(`${ev.date}T${c.end}`);
+    };
 
     function colorIndexFor(name) {
         let h = 0;
@@ -46,7 +51,7 @@
     const loadEvents = () => { try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch (e) { return []; } };
     const saveEvents = () => localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
 
-    const SUBJECT_KEY = 'data_mon_hoc';
+    const SUBJECT_KEY = userKey('data_mon_hoc');
     const loadSubjects = () => {
         try { return JSON.parse(localStorage.getItem(SUBJECT_KEY)) || []; } catch (e) { return []; }
     };
@@ -137,7 +142,7 @@
         });
 
         const todayISO = toISO(new Date());
-        const wkEnd = addDays(weekStart, 6);
+        const wkEnd = addDays(weekStart, DAYS_SHOWN - 1);
         let html = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map(n => `<div class="mini-dow">${n}</div>`).join('');
 
         const first = startOfWeek(miniMonth);
@@ -149,7 +154,7 @@
             if (d >= weekStart && d <= wkEnd) {
                 cls.push('in-week');
                 if (dayIndex(d) === 0) cls.push('wk-start');
-                if (dayIndex(d) === 6) cls.push('wk-end');
+                if (dayIndex(d) === DAYS_SHOWN - 1) cls.push('wk-end');
             }
             if (iso === todayISO) cls.push('today');
             html += `<button type="button" class="${cls.join(' ')}" data-date="${iso}"><span>${d.getDate()}</span></button>`;
@@ -189,9 +194,11 @@
         const skip = isEditAll && ev ? e => e.group === ev.group : e => e.id === currentId;
         let dates = [];
         if (isEditAll && ev) {
-            const groupEvents = events.filter(e => e.group === ev.group).sort((a, b) => a.date.localeCompare(b.date));
-            const first = addDays(parseISO(date), -groupEvents.findIndex(e => e.id === ev.id) * 7);
-            dates = groupEvents.map((_, index) => toISO(addDays(first, index * 7)));
+            const delta = dayDiff(parseISO(ev.date), parseISO(date));
+            dates = events.filter(e => e.group === ev.group)
+                .map(e => toISO(addDays(parseISO(e.date), delta)));
+            const bad = dates.find(d => dayIndex(parseISO(d)) >= DAYS_SHOWN);
+            if (bad) return `Có buổi học trong nhóm bị dời sang Chủ nhật (${fmtDM(parseISO(bad))})`;
         } else {
             dates = Array.from({ length: Math.min(weeks || 0, 52) }, (_, i) => toISO(addDays(parseISO(date), i * 7)));
         }
@@ -222,6 +229,7 @@
 
     function openForm(opts = {}) {
         showErrors();
+        if (opts.id && !findEvent(opts.id)) { render(); return; }
         currentId = opts.id || null;
         const ev = findEvent(currentId) || {};
 
@@ -257,6 +265,12 @@
 
     form.addEventListener('submit', e => {
         e.preventDefault();
+
+        if (currentId && !findEvent(currentId)) {
+            closeModal(formModal);
+            render();
+            return;
+        }
 
         const subject = loadSubjects().find(s => s.id === f.name.value);
         const name = subject ? subject.name : (f.name.value === ORPHAN && currentId ? findEvent(currentId).name : '');
@@ -295,15 +309,15 @@
             const ev = findEvent(currentId);
             
             if (isEditAll && ev.group) {
-                const groupEvents = events.filter(e => e.group === ev.group).sort((a, b) => a.date.localeCompare(b.date));
-                const first = addDays(parseISO(date), -groupEvents.findIndex(e => e.id === ev.id) * 7);
+                const delta = dayDiff(parseISO(ev.date), parseISO(date));
+                const groupEvents = events.filter(e => e.group === ev.group);
 
-                groupEvents.forEach((item, index) => {
+                groupEvents.forEach(item => {
                     item.name = data.name;
                     item.subjectId = data.subjectId;
                     item.ca = data.ca;
                     item.room = data.room;
-                    item.date = toISO(addDays(first, index * 7));
+                    item.date = toISO(addDays(parseISO(item.date), delta));
                 });
             } else {
                 Object.assign(ev, data);
@@ -322,6 +336,7 @@
 
     function openDetail(id) {
         const ev = findEvent(id);
+        if (!ev) { render(); return; }
         currentId = id;
         const d = parseISO(ev.date);
         const c = getCa(ev.ca);
@@ -338,6 +353,7 @@
 
     function askDelete(id) {
         const ev = findEvent(id);
+        if (!ev) { render(); return; }
         const c = getCa(ev.ca);
         currentId = id;
         $('confirmText').textContent = `Xóa lịch học "${displayName(ev)}" (${fmtDM(parseISO(ev.date))}, Ca ${c.ca}: ${c.start} - ${c.end})?`;
@@ -350,6 +366,7 @@
 
     $('confirmYes').addEventListener('click', () => {
         const ev = findEvent(currentId);
+        if (!ev) { closeModal(confirmModal); render(); return; }
         const all = $('deleteAll').checked && ev.group;
         events = events.filter(e => all ? e.group !== ev.group : e.id !== currentId);
         saveEvents();

@@ -74,7 +74,7 @@
                     <label for="regName">Họ và tên</label>
                     <div class="input-wrap">
                         <i class="fa-solid fa-id-card input-icon"></i>
-                        <input type="text" id="regName" name="name" placeholder="Ví dụ: Nguyễn Văn A" autocomplete="name" required>
+                        <input type="text" id="regName" name="name" maxlength="50" placeholder="Ví dụ: Nguyễn Văn A" autocomplete="name" required>
                     </div>
                     <small class="error-message" id="regNameError"></small>
                 </div>
@@ -83,7 +83,7 @@
                     <label for="regEmail">Email</label>
                     <div class="input-wrap">
                         <i class="fa-solid fa-envelope input-icon"></i>
-                        <input type="email" id="regEmail" name="email" placeholder="Ví dụ: id@gmail.com" autocomplete="email" required>
+                        <input type="email" id="regEmail" name="email" maxlength="100" placeholder="Ví dụ: id@gmail.com" autocomplete="email" required>
                     </div>
                     <small class="error-message" id="regEmailError"></small>
                 </div>
@@ -92,7 +92,7 @@
                     <label for="regStudentId">Mã sinh viên</label>
                     <div class="input-wrap">
                         <i class="fa-solid fa-id-badge input-icon"></i>
-                        <input type="text" id="regStudentId" name="studentId" placeholder="Nhập 9 chữ số" inputmode="numeric" autocomplete="off" required>
+                        <input type="text" id="regStudentId" name="studentId" placeholder="Nhập 9 chữ số" maxlength="9" inputmode="numeric" autocomplete="off" required>
                     </div>
                     <small class="error-message" id="regStudentIdError"></small>
                 </div>
